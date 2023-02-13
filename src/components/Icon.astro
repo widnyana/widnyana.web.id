@@ -2,8 +2,10 @@
 import type { HTMLAttributes } from 'astro/types';
 import { iconPaths } from './IconPaths';
 
+
 export interface Props {
 	icon: keyof typeof iconPaths;
+	pack?: string;
 	color?: string;
 	gradient?: boolean;
 	size?: string;
