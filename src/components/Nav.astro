@@ -5,18 +5,14 @@ import ThemeToggle from './ThemeToggle.astro';
 /** Main menu items */
 const textLinks: { label: string; href: string }[] = [
 	{ label: 'Home', href: '/' },
-	{ label: 'Work', href: '/work/' },
-	{ label: 'About', href: '/about/' },
+	// { label: 'Work', href: '/work/' },
+	// { label: 'About', href: '/about/' },
 ];
 
 /** Icon links to social media — edit these with links to your profiles! */
 const iconLinks: { label: string; href: string; icon: IconProps['icon'] }[] = [
-	{ label: 'Twitter', href: 'https://twitter.com/me', icon: 'twitter-logo' },
-	{ label: 'Twitch', href: 'https://twitch.tv/me', icon: 'twitch-logo' },
-	{ label: 'GitHub', href: 'https://github.com/me', icon: 'github-logo' },
-	{ label: 'CodePen', href: 'https://codepen.io/me', icon: 'codepen-logo' },
-	{ label: 'dribbble', href: 'https://dribbble.com/me', icon: 'dribbble-logo' },
-	{ label: 'YouTube', href: 'https://www.youtube.com/@me/', icon: 'youtube-logo' },
+	{ label: 'Twitter', href: 'https://twitter.com/widnyana_', icon: 'twitter-logo' },
+	{ label: 'GitHub', href: 'https://github.com/widnyana', icon: 'github-logo' },
 ];
 ---
 
@@ -24,7 +20,7 @@ const iconLinks: { label: string; href: string; icon: IconProps['icon'] }[] = [
 	<div class="menu-header">
 		<a href="/" class="site-title">
 			<Icon icon="terminal-window" color="var(--accent-regular)" size="1.6em" gradient />
-			Jeanine White
+			Widnyana
 		</a>
 		<menu-button>
 			<template>
