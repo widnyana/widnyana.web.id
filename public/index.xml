@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>wid@internet:~$ </title>
+    <link>/</link>
+    <description>wid@internet:~$ </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    
+    <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Who?</title>
+      <link>/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/about/</guid>
+      <description>&lt;p&gt;A professional with over 11 years of experience in the field of Cloud Infrastructure, and Software Engineering.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m open to mentoring, partnering on side projects, brainstorming, beta testing new products, and writing.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;things-im-familiar-with&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#things-im-familiar-with&#34;&gt;
+        #
+    &lt;/a&gt;
+    Things I&amp;rsquo;m familiar with
+&lt;/div&gt;
+&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;http://localhost:1313/about/&#34;&gt;&lt;img alt=&#34;familiarity&#34; src=&#34;https://skillicons.dev/icons?i=aws,gcp,linux,redhat,kubernetes,git,docker,py,go,lua,mongodb,mysql,postgres,sqlite,nix,nodejs,raspberrypi,md,jenkins,flutter,dart,react,ts&amp;perline=10&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;and-many-more-&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#and-many-more-&#34;&gt;
+        #
+    &lt;/a&gt;
+    and many more :)
+&lt;/div&gt;
+&lt;/h2&gt;
+&lt;h2 id=&#34;work-experiences&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#work-experiences&#34;&gt;
+        #
+    &lt;/a&gt;
+    Work Experiences
+&lt;/div&gt;
+&lt;/h2&gt;
+&lt;p&gt;Apr 2023 - Mar 2024&lt;/p&gt;
+&lt;p&gt;Engineering Manager ~ Infrastructure.DevOps ~ &lt;a href=&#34;https://koinworks.com&#34;&gt;KoinWorks&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Jan 2022 - Mar 2023&lt;/p&gt;
+&lt;p&gt;Engineering Manager ~ Platform.Trust ~ &lt;a href=&#34;https://koinworks.com&#34;&gt;KoinWorks&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Oct 2021 - Dec 2021&lt;/p&gt;
+&lt;p&gt;Acting Engineering Manager ~ Platform.Trust ~ &lt;a href=&#34;https://koinworks.com&#34;&gt;KoinWorks&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Jan 2020 - Oct 2021&lt;/p&gt;
+&lt;p&gt;Sotfware Engineer ~ &lt;a href=&#34;https://koinworks.com&#34;&gt;KoinWorks&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Aug 2019 - Dec 2019&lt;/p&gt;
+&lt;p&gt;Linux System Administrator ~ PT. Forta Digital Indonesia&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Mar 2019 - Aug 2019&lt;/p&gt;
+&lt;p&gt;Full Stack Engineer ~ &lt;a href=&#34;https://mahapatih.id&#34;&gt;PT Mahapatih Sibernusa Teknologi&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Nov 2015 - Jan 2018&lt;/p&gt;
+&lt;p&gt;Senior Software Engineer ~ &lt;a href=&#34;https://binokular.net&#34;&gt;PT Binokular Media Utama&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Apr 2014 - Oct 2015&lt;/p&gt;
+&lt;p&gt;Backend Engineer ~ &lt;a href=&#34;https://sebangsanetwork.com/&#34;&gt;PT Sebangsa Bersama&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hello World!</title>
+      <link>/posts/hello/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/hello/</guid>
+      <description>&lt;p&gt;Hello!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

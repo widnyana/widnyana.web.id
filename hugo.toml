@@ -1,0 +1,78 @@
+baseURL = 'https://widnyana.web.id/'
+languageCode = 'en-us'
+theme = "anubis2"
+title = 'wid@internet:~$ '
+
+[author]
+name = "widnyana"
+location = "Ubud, Bali"
+
+[languages]
+[languages.en]
+languageName = "English"
+
+[params]
+description = "Personal webpage of Widnyana"
+dateFormat = "2006-01-02"
+paginationSinglePost = true
+colorTheme = "light"
+colorThemeSwitcher = true
+
+readMore = true
+readNextPosts = 2
+copyCodeButton = true
+rssAsSocialIcon = true
+locale = "en-us"
+
+math = true
+toc = false
+
+social = [
+  { id = "github", url = "https://github.com/widnyana" },
+  { id = "linkedin", url = "https://www.linkedin.com/in/widnyana" },
+  { id = "x", url = "https://x.com/widnyana_" },
+]
+
+[params.UmamiAnalytics]
+enabled = true
+dnt = false
+id = "50348f99-c4de-453a-b7dd-afcf29c969ce"                                            # Website ID
+datacache = false
+url = "https://cloud.umami.is/script.js"
+shareUrl = ""
+
+[markup]
+defaultMarkdownHandler = 'goldmark'
+
+[markup.goldmark.renderer]
+unsafe = true
+
+[markup.highlight]
+anchorLineNos      = false
+codeFences         = true
+noClasses          = true
+style              = 'base16-snazzy'
+tabWidth           = 4
+
+[taxonomies]
+category = "categories"
+tag = "tags"
+author = "authors"
+
+[[menu.main]]
+identifier = "home"
+name = "Home"
+url = "/"
+weight = 1
+
+[[menu.main]]
+identifier = "about"
+name = "Me"
+url = "/about/"
+weight = 2
+
+[[menu.main]]
+name = "Archive"
+identifier = "archive"
+url = "/posts/"
+weight = 4
