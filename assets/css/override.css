@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Balinese&display=swap');
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-style: normal;
+  font-weight: 400;
+
+}
+
+.noto-serif-balinese-regular {
+  font-family: "Noto Serif Balinese", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+
+code,
+pre,
+kbd {
+  font-family: "Fira Code", 'Courier New', 'Consolas', monospace;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+
+.post-tags li {
+  margin-right: 0em;
+}
