@@ -1,5 +1,5 @@
 +++
-author = "Wid"
+authors = ['widnyana']
 title = "Installing MongoDB 7 on Fedora 40 Workstation"
 date = "2024-06-16"
 description = "A note about installing MongoDB 7.0 on Fedora 40 Workstation"
