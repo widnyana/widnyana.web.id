@@ -1,17 +1,17 @@
-+++
-authors = ['widnyana']
-title = "Installing MongoDB 7 on Fedora 40 Workstation"
-date = "2024-06-16"
-description = "A note about installing MongoDB 7.0 on Fedora 40 Workstation"
-tags = [
-    "fedora",
-    "mongodb",
-    "database",
-    "nosql",
-    "linux"
-]
-
-+++
+---
+params:
+  author: 'widnyana'
+title: "Installing MongoDB 7 on Fedora 40 Workstation"
+date: "2024-06-16"
+draft: false
+description: "A note about installing MongoDB 7.0 on Fedora 40 Workstation"
+tags:
+ - fedora
+ - mongodb
+ - database
+ - nosql
+ - linux
+---
 
 I'm in the need to install `mongosh` on my Fedora Linux 40 Workstation, as a context the MongoDB server is using version 7.x running in container using `docker-compose.yaml` on docker version `26.1.4`.
 
