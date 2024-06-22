@@ -1,5 +1,6 @@
 ---
 title: '/uses'
+slug: 'uses'
 params:
   author: Widnyana
   toc: true
@@ -21,20 +22,14 @@ draft: false
 ### Primary  
 
 - Lenovo IdeaPad Slim 5 14IRL8. [_](https://psref.lenovo.com/syspool/Sys/PDF/IdeaPad/IdeaPad_Slim_5_14IRL8/IdeaPad_Slim_5_14IRL8_Spec.pdf)
-  - CPU: 13th Generation Intel® Core™ i7 Processor
-  - Memory: 16 GB
-  - Storage: Upgraded to 1TB SSD
   - OS: Fedora Linux 40 Workstation
   - WM: Gnome
 
 ### Secondary
 
 - MacBook Pro 13-inch, 2020. [_](https://support.apple.com/en-us/111893)
-  - OS: 14.5 (23F79)
-  - CPU: Apple Silicon M1
-  - Memory: 16 GB
-  - Storage: 1TB
   - OS: Sonoma 14.x
+  - WM: Amethyst
 
 
 ## Peripherals
@@ -69,48 +64,3 @@ draft: false
 - Cloudflare
 - Tailscale
 - Proton
-
----
-
-## Languages / Libraries / Frameworks
-
-- Versioning: 
-  - Git, 
-  - Conventional Commits, 
-  - Semantic Release
-- Language: 
-  - Go, 
-  - Python, 
-  - Rust, 
-  - Dart, 
-  - Bash, 
-  - Lua, 
-  - PHP, 
-  - Java, 
-  - Scala,
-  - TypeScript.
-- Database: 
-  - PostgreSQL, 
-  - MongoDB, 
-  - Cassandra,
-  - MySQL, 
-  - Redis,
-  - Memcached.
-- Cloud Provider: 
-  - AWS, 
-  - GCP*, 
-  - AlibabaCloud.
-- Tools: 
-  - Podman* // Docker,  
-  - Terraform, 
-  - Ansible,
-  - UptimeRobot
-- Frameworks: 
-  - Flutter, 
-  - FastAPI, 
-  - Laravel, 
-  - and anything you throw at me.
-
----
-
- `*` == Preferred
