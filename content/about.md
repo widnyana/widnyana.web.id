@@ -3,18 +3,21 @@ title='Who?'
 weight=2
 +++
 
-A professional with over 11 years of experience in the field of Cloud Infrastructure, and Software Engineering.
+Hello!
+
+I'm **Wid**nyana, a tech-agnostic guy with over 11 years of professional experience in the field of System Administration, Cloud Infrastructure, and Software Engineering.
 
 
-I'm open to mentoring, partnering on side projects, brainstorming, beta testing new products, and writing.
+I'm open to mentoring, partnering on side projects, brainstorming, beta testing new products, and writing. I'm also open for pro-bono activity, contact me if you need one.
 
 ---
 
 ## Things I'm familiar with
 
-[![familiarity](https://skillicons.dev/icons?i=aws,gcp,linux,redhat,kubernetes,git,docker,py,go,lua,mongodb,mysql,postgres,sqlite,nix,nodejs,raspberrypi,md,jenkins,flutter,dart,react,ts&perline=10)](/about/#)
+[![familiarity](https://skillicons.dev/icons?i=aws,gcp,linux,redhat,kubernetes,git,docker,py,go,lua,mongodb,mysql,postgres,sqlite,nix,nodejs,raspberrypi,md,jenkins,flutter,dart,react,ts&perline=10)](#_)
 
 and many more :)
+
 ---
 
 ## Work Experiences
