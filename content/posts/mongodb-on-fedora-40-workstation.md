@@ -11,6 +11,7 @@ tags:
  - database
  - nosql
  - linux
+type: post
 ---
 
 I'm in the need to install `mongosh` on my Fedora Linux 40 Workstation, as a context the MongoDB server is using version 7.x running in container using `docker-compose.yaml` on docker version `26.1.4`.
