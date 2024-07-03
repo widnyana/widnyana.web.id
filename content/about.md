@@ -12,11 +12,13 @@ I'm open to mentoring, partnering on side projects, brainstorming, beta testing 
 
 ---
 
-## Things I'm familiar with
+## Uses
+
+
 
 [![familiarity](https://skillicons.dev/icons?i=aws,gcp,linux,redhat,kubernetes,git,docker,py,go,lua,mongodb,mysql,postgres,sqlite,nix,nodejs,raspberrypi,md,jenkins,flutter,dart,react,ts&perline=10)](#_)
 
-and many more :)
+See my [/uses](/uses) for more.
 
 ---
 

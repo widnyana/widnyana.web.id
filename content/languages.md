@@ -1,18 +1,17 @@
 ---
 title: Tech-Stack
-description: list of tech-stacks (Language, Framework, Tools) i'm familiar with.
-param:
-  author: widnyana
 date: 2024-06-20T20:01:00+07:00
 lastmod: 2024-06-23:01:00+07:00
+params:
+  author: widnyana
 keywords:
   - tech-stack
-slug: tech-stack-languages-libraries-frameworks
+slug: tech-stack
 type: page
+
 ---
 
 This page contains tech-stack that I familiar with sorted by how frequently I use them. 
-
 
 - Language
   - Go 
