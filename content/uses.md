@@ -57,10 +57,15 @@ draft: false
 - Personal Knowledge Management tool: Obsidian [_](http://obsidian.md/)
 - Raycast. [_](https://www.raycast.com/)
 - DBeaver. [_](https://dbeaver.io/)
-- Flatpak *because snap is suck*! [_](https://flatpak.org/)
+- Flatpak. [_](https://flatpak.org/)
 
 ## Services
 
 - Cloudflare
 - Tailscale
 - Proton
+
+
+---
+
+- [Tech-Stack](/tech-stack)

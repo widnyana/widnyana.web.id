@@ -1,9 +1,8 @@
 ---
+title: "Installing MongoDB 7 on Fedora 40 Workstation"
 params:
   author: 'widnyana'
-title: "Installing MongoDB 7 on Fedora 40 Workstation"
 date: "2024-06-16"
-draft: false
 description: "A note about installing MongoDB 7.0 on Fedora 40 Workstation"
 tags:
  - fedora
@@ -11,7 +10,6 @@ tags:
  - database
  - nosql
  - linux
-type: post
 ---
 
 I'm in the need to install `mongosh` on my Fedora Linux 40 Workstation, as a context the MongoDB server is using version 7.x running in container using `docker-compose.yaml` on docker version `26.1.4`.
@@ -55,7 +53,7 @@ services:
 
 with following env file:
 
-```env
+```shell
 # file: ./env.mongodb
 
 MONGODB_ADVERTISED_HOSTNAME=rx-0

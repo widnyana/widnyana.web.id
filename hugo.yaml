@@ -1,54 +1,98 @@
 baseURL: https://widnyana.web.id/
 languageCode: en-us
-theme: anubis2
+theme: PaperMod
 title: "wid@internet:~$ "
+name: "widnyana"
 
-author:
-  name: widnyana
-  location: Ubud, Bali
 languages:
   en:
     languageName: English
+    weight: 1
+    taxonomies:
+      category: categories
+      tag: tags
+      series: series
+    menu:
+      main:
+        - name: Search
+          url: search/
+          weight: 100
+        - name: Posts
+          url: /posts/
+          weight: 3
+        - name: About
+          url: /about/
+          weight: 1
+
+buildDrafts: false
+buildExpired: false
+buildFuture: false
+enableEmoji: true
+enableGitInfo: true
+enableInlineShortcodes: true
+enableRobotsTXT: true
+mainsections: ["posts", "papermod"]
+paginate: 10
+pygmentsUseClasses: true
+
+minify:
+  disableXML: true
+  minifyOutput: true
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
 
 params:
-  description: Personal webpage of Widnyana
-  dateFormat: 2006-01-02
-  paginationSinglePost: true
-  colorTheme: dark
-  colorThemeSwitcher: true
-  readMore: true
-  readNextPosts: 4
-  copyCodeButton: true
-  rssAsSocialIcon: true
-  locale: en-us
-  math: true
-  toc: false
-  social:
-    - id: github
-      url: https://github.com/widnyana
-    - id: linkedin
-      url: https://www.linkedin.com/in/widnyana
-    - id: x
-      url: https://x.com/widnyana_
-  UmamiAnalytics:
+  assets:
+    disableHLJS: true
+
+  profileMode:
     enabled: true
-    dnt: false
-    id: 50348f99-c4de-453a-b7dd-afcf29c969ce
-    datacache: false
-    url: https://cloud.umami.is/script.js
-    shareUrl: ""
+    title: "~"
+    subtitle: "Farmer | { Cloud Infrastructure, Software, System } Engineer."
+    imageUrl: "https://avatars.githubusercontent.com/u/937158?v=4"
+    imageTitle: "lorem ipsum"
+    imageWidth: 120 # custom size
+    imageHeight: 120 # custom size
+  
+  socialIcons:
+    - name: "linkedin"
+      url: "https://linkedin.com/in/widnyana/"
+    - name: gitlab
+      url: "https://gitlab.com/widnyana"
+    - name: github
+      url: "https://github.com/widnyana"
+    - name: "twitter"
+      url: "https://x.com/widnyana_"
+    - name: "keybase"
+      url: "pwidnyana"
+
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 3
+    keys: ["title", "permalink", "summary", "content"]
+
+  cover:
+    responsiveImages: true
+  
+  env: production
+  ShowReadingTime: true
+  ShowBreadCrumbs: true
+  ShowPostNavLinks: true
+  ShowCodeCopyButtons: true
 
 markup:
   defaultMarkdownHandler: goldmark
   goldmark:
+    duplicateResourceFiles: false
     extensions:
-      definitionList: true
-      footnote: true
-      linkify: true
-      linkifyProtocol: https
-      strikethrough: true
-      table: true
-      taskList: true
       extras:
         insert:
           enable: false
@@ -58,35 +102,24 @@ markup:
           enable: false
         superscript:
           enable: false
+      definitionList: true
+      footnote: true
+      linkify: true
+      linkifyProtocol: https
+      strikethrough: true
+      table: true
+      taskList: true
     renderer:
-      unsafe: true
+      unsafe: false
+      hardWraps: false
   highlight:
-    anchorLineNos: false
+    anchorLineNos: true
     codeFences: true
     noClasses: true
-    style: base16-snazzy
+    style: "rose-pine"
     tabWidth: 4
-
-taxonomies:
-  category: categories
-  tag: tags
-  author: authors
-
-menu:
-  main:
-    - identifier: home
-      name: Home
-      url: /
-      weight: 1
-    - identifier: about
-      name: Me
-      url: /about/
-      weight: 2
-    - identifier: uses
-      name: /uses
-      url: /homepage/uses/
-      weight: 3
-    - name: Archive
-      identifier: archive
-      url: /posts/
-      weight: 4
+    lineNos: true
+  tableOfContents:
+    endLevel: 3
+    ordered: false
+    startLevel: 2
