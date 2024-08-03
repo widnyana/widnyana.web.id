@@ -69,6 +69,10 @@ params:
       url: "https://x.com/widnyana_"
     - name: "keybase"
       url: "pwidnyana"
+    - name: "medium"
+      url: "https://medium.com/@widnyana"
+    - name: "tanyaaja"
+      url: "https://www.tanyaaja.in/p/wid"
 
   fuseOpts:
     isCaseSensitive: false
