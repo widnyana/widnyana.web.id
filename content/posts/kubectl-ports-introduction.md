@@ -1,10 +1,7 @@
 ---
 title: "Introducing kubectl-ports: Easily List Exposed Ports in Kubernetes"
 date: 2024-10-10T21:30:00+07:00
-draft: true
 description: "kubectl-ports is a handy kubectl plugin that retrieves exposed ports information from Kubernetes pods and services, presenting it in a clean, readable table format."
-tags: ["kubernetes", "kubectl", "site Reliability engineering", "networking", "command-line", "opensource", "cloud-infrastructure"]
-categories: ["Command Line", "Kubernetes", "DevOps"]
 params:
   author: 'widnyana'
 cover:
@@ -15,6 +12,8 @@ cover:
   caption: "Photo by <a href='https://unsplash.com/@czarotg?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash'>Cezary Kukowka</a> on <a href='https://unsplash.com/photos/brown-galleon-ship-on-deck-MIpS1kkW-oA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash'>Unsplash</a>"
   relative: false
   responsiveImages: true
+tags: ["kubernetes", "kubectl", "site Reliability engineering", "networking", "command-line", "opensource", "cloud-infrastructure"]
+categories: ["Command Line", "Kubernetes", "DevOps"]
 --- 
 
 As a Kubernetes user, have you ever found yourself digging through resource definitions or running multiple commands just to find out what ports are exposed by your pods and services? It can be a tedious process. That's why I created `kubectl-ports`, a handy kubectl plugin that retrieves the exposed ports information and presents it in a clean, readable table format.
