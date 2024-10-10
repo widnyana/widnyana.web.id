@@ -24,17 +24,18 @@ draft: false
 - Lenovo IdeaPad Slim 5 14IRL8. [_](https://psref.lenovo.com/syspool/Sys/PDF/IdeaPad/IdeaPad_Slim_5_14IRL8/IdeaPad_Slim_5_14IRL8_Spec.pdf)
   - OS: Fedora Linux 40 Workstation
   - WM: Gnome
+  - Intel i7-13620H, 16 GB RAM, 1 TB Disk
 
 ### Secondary
 
 - MacBook Pro 13-inch, 2020. [_](https://support.apple.com/en-us/111893)
   - OS: Sonoma 14.x
   - WM: Amethyst
-
+  - Apple M1 Chip, 16 GB RAM, 1 TB Disk
 
 ## Peripherals
 
-- Monitor: BenQ GW2283. [_](https://www.benq.com/en-us/monitor/home/gw2283.html) 
+- Monitor: BenQ GW2283. [_](https://www.benq.com/en-us/monitor/home/gw2283.html)
 - Keyboard: Keychron K3 Low-Profile. [_](https://www.keychron.com/products/keychron-k3-wireless-mechanical-keyboard)
 - Mouse: Logitech M590 Multi-Device Silent Wireless Mouse. [_](https://www.logitech.com/en-us/products/mice/m590-silent-wireless-mouse.html)
 - USB Dongle: Baseus 8-in-1 USB-C dongle. [_](https://baseusonline.com/product/60/baseus-metal-gleam-series-8-in-1-multifunctional-type-c-hub-docking-station)
@@ -54,6 +55,7 @@ draft: false
 - k9s [_](https://k9s.io)
 
 ### Misc
+
 - Personal Knowledge Management tool: Obsidian [_](http://obsidian.md/)
 - Raycast. [_](https://www.raycast.com/)
 - DBeaver. [_](https://dbeaver.io/)
@@ -65,7 +67,7 @@ draft: false
 - Tailscale
 - Proton
 
-
 ---
 
 - [Tech-Stack](/tech-stack)
+
