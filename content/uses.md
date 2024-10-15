@@ -65,7 +65,7 @@ draft: false
 
 - Cloudflare
 - Tailscale
-- Proton
+- [Proton](https://pr.tn/ref/SXTGTA1BAGP0)
 
 ---
 
