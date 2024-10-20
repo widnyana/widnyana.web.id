@@ -52,7 +52,7 @@ params:
   profileMode:
     enabled: true
     title: "~"
-    subtitle: "Farmer | { Cloud Infrastructure, Software, System } Engineer."
+    subtitle: "{ Cloud Infrastructure, Software, System } Engineer."
     imageUrl: "https://avatars.githubusercontent.com/u/937158?v=4"
     imageTitle: "lorem ipsum"
     imageWidth: 120 # custom size
