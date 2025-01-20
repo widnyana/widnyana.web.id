@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
 hugo server \
-  --gc \
   --buildDrafts \
   --buildFuture \
   --disableFastRender \
   --enableGitInfo \
+  --gc \
   --ignoreCache \
   --noHTTPCache \
-  --watch 
+  --poll 1s \
+  --templateMetrics \
+  --watch \
+  --logLevel debug
