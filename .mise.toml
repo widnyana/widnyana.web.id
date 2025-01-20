@@ -1,0 +1,5 @@
+[tools]
+hugo = "latest"
+
+[settings]
+env_file = '.env' # load env vars from a dotenv file, see `MISE_ENV_FILE`
