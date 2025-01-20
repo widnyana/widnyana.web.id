@@ -4,5 +4,4 @@ hugo \
   --logLevel info \
   --enableGitInfo \
   --environment production \
-  --forceSyncStatic \
-  --verbose
+  --forceSyncStatic

@@ -32,7 +32,8 @@ enableGitInfo: true
 enableInlineShortcodes: true
 enableRobotsTXT: true
 mainsections: ["posts", "papermod"]
-paginate: 10
+pagination:
+  pagerSize: 10
 pygmentsUseClasses: true
 
 minify:
@@ -44,6 +45,13 @@ outputs:
     - HTML
     - RSS
     - JSON
+frontmatter:
+  date:
+  - date
+  - publishdate
+  - pubdate
+  - lastmod
+  - modified
 
 params:
   assets:
