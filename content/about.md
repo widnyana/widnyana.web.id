@@ -1,72 +1,83 @@
 +++
-title='Who?'
+title='Hello!'
 weight=2
 +++
 
-Hello!
-
 I'm **Wid**nyana, a tech-agnostic guy with over 11 years of professional experience in the field of System Administration, Cloud Infrastructure, and Software Engineering.
-
 
 I'm open to mentoring, partnering on side projects, brainstorming, beta testing new products, and writing. I'm also open for pro-bono activity, contact me if you need one.
 
 ---
 
+## Work Experiences
+
+### Stealth Startup 
+
+#### Sr. DevOps Engineer --- June 2024 ‑ January 2025
+
+- Built and maintained IaC on GCP while managing Kubernetes clusters and VMs, ensuring scalability and reliability.  
+- Led OpenTelemetry adoption for observability, optimized data pipelines with the Data Team, and reduced cloud costs by **33.33%**.
+
+### Koinworks
+
+#### Engineering Manager at Infrastructure.DevOps team --- *Apr 2023 - Mar 2024*
+
+- Led cloud infrastructure cost optimization (33.33% savings) while transforming DevOps culture—enabling engineers to own deployments, CI/CD pipelines, and workflow automation.
+- Established a strong documentation and knowledge-sharing culture, improving onboarding, decision-making (ADR, RFC), and team efficiency through mentorship and system reliability practices.
+
+#### Engineering Manager at  Platform.Trust team --- *Oct 2021 - Mar 2023*
+
+- Re-architected cloud infrastructure, shifting from VM-based to container-based deployments on GKE, and led the migration from a monolith to event-driven microservices, adopting GitLab CI and RabbitMQ.  
+- Built a high-performing, autonomous engineering team, streamlined Scrum ceremonies (reducing meeting time by 50%), and drove observability adoption using Datadog.  
+
+#### Sotfware Engineer --- *Jan 2020 - Oct 2021*
+
+- Built and optimized data pipelines, backend services, and private integrations while independently managing Kubernetes clusters and GCP services.  
+- Introduced CI/CD with GitLab CI and ensured security compliance through rigorous report validation.  
+---
+
+### PT. Forta Digital Indonesia
+
+#### Linux System Administrator --- *Aug 2019 - Dec 2019*
+
+- Set up and maintained the office network, local development ecosystem, and key infrastructure components like Tenable.SC, Splunk, MongoDB, and RabbitMQ.  
+- Implemented Continuous Deployment with Ansible and GitLab CI, while managing product deployments to client environments.  
+
+---
+
+### [PT Mahapatih Sibernusa Teknologi](https://mahapatih.id)
+
+#### Full Stack Engineer --- *Mar 2019 - Aug 2019*
+
+- Developed backend API for Sistem Manajemen Kerentanan (Sepatih) and implemented a missing Python SDK for the Tenable.SC API.  
+- Automated deployment processes using Ansible and GitLab CI.
+
+---
+
+### [Binokular Media Utama](https://binokular.net)
+
+#### Senior Software Engineer --- *Nov 2015 - Jan 2018*
+
+- Built and optimized AI-driven media monitoring systems, including entity extraction, sentiment analysis, and topic classification.  
+- Designed and maintained high-availability database and search clusters, ensuring reliability and scalability.
+
+---
+
+### [PT Sebangsa Bersama](https://sebangsanetwork.com/)
+
+#### Backend Engineer ~ *Apr 2014 - Oct 2015*
+
+- Developed Sebangsa Auth with OAuth 1.0 and maintained Sebangsa Premium API.  
+- Implemented a fan-out algorithm for efficient post distribution to followers.
+
+---
+
+
+Detailed view of my experience and skills can be found on this [CV](/cv/widnyana-20250300.pdf).
+
 ## Uses
-
-
 
 [![familiarity](https://skillicons.dev/icons?i=aws,gcp,linux,redhat,kubernetes,git,docker,py,go,lua,mongodb,mysql,postgres,sqlite,nix,nodejs,raspberrypi,md,jenkins,flutter,dart,react,ts&perline=10)](#_)
 
 See my [/uses](/uses) for more.
-
----
-
-## Work Experiences
-
-Apr 2023 - Mar 2024
-
-Engineering Manager ~ Infrastructure.DevOps ~ [KoinWorks](https://koinworks.com)
-
----
-
-Jan 2022 - Mar 2023
-
-Engineering Manager ~ Platform.Trust ~ [KoinWorks](https://koinworks.com)
-
----
-
-Oct 2021 - Dec 2021
-
-Acting Engineering Manager ~ Platform.Trust ~ [KoinWorks](https://koinworks.com)
-
----
-
-Jan 2020 - Oct 2021
-
-Sotfware Engineer ~ [KoinWorks](https://koinworks.com)
-
----
-
-Aug 2019 - Dec 2019
-
-Linux System Administrator ~ PT. Forta Digital Indonesia
-
----
-
-Mar 2019 - Aug 2019
-
-Full Stack Engineer ~ [PT Mahapatih Sibernusa Teknologi](https://mahapatih.id)
-
----
-
-Nov 2015 - Jan 2018
-
-Senior Software Engineer ~ [PT Binokular Media Utama](https://binokular.net)
-
----
-
-Apr 2014 - Oct 2015
-
-Backend Engineer ~ [PT Sebangsa Bersama](https://sebangsanetwork.com/)
 
