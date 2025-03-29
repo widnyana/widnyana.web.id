@@ -16,7 +16,7 @@ I'm open to mentoring, partnering on side projects, brainstorming, beta testing 
 #### Sr. DevOps Engineer --- June 2024 ‑ January 2025
 
 - Built and maintained IaC on GCP while managing Kubernetes clusters and VMs, ensuring scalability and reliability.  
-- Led OpenTelemetry adoption for observability, optimized data pipelines with the Data Team, and reduced cloud costs by **33.33%**.
+- Led OpenTelemetry adoption for observability, optimized data pipelines with the Data Team, and Optimize cloud infrastructure costs.
 
 ### Koinworks
 
