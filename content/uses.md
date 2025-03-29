@@ -35,10 +35,16 @@ draft: false
 
 ## Peripherals
 
-- Monitor: BenQ GW2283. [_](https://www.benq.com/en-us/monitor/home/gw2283.html)
+- Monitor: Xiaomi G34WQi. [_](https://www.mi.com/global/product/xiaomi-curved-gaming-monitor-g34wqi/)
 - Keyboard: Keychron K3 Low-Profile. [_](https://www.keychron.com/products/keychron-k3-wireless-mechanical-keyboard)
 - Mouse: Logitech M590 Multi-Device Silent Wireless Mouse. [_](https://www.logitech.com/en-us/products/mice/m590-silent-wireless-mouse.html)
 - USB Dongle: Baseus 8-in-1 USB-C dongle. [_](https://baseusonline.com/product/60/baseus-metal-gleam-series-8-in-1-multifunctional-type-c-hub-docking-station)
+- 2x Lenovo Thinkcentre m720q tiny. [_](https://www.lenovo.com/us/en/p/desktops/thinkcentre/m-series-tiny/thinkcentre-m720q/11tc1mtm72q)
+  - Core i5 Gen 8, 16GB DDR4, 256GB NVMe.
+
+### Retired
+
+- Monitor: BenQ GW2283. [_](https://www.benq.com/en-us/monitor/home/gw2283.html)
 
 ## Applications
 
