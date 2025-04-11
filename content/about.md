@@ -11,11 +11,11 @@ I'm open to mentoring, partnering on side projects, brainstorming, beta testing 
 
 ## Work Experiences
 
-### Stealth Startup 
+### Stealth Startup
 
 #### Sr. DevOps Engineer --- June 2024 ‑ January 2025
 
-- Built and maintained IaC on GCP while managing Kubernetes clusters and VMs, ensuring scalability and reliability.  
+- Built and maintained IaC on GCP while managing Kubernetes clusters and VMs, ensuring scalability and reliability.
 - Led OpenTelemetry adoption for observability, optimized data pipelines with the Data Team, and Optimize cloud infrastructure costs.
 
 ### Koinworks
@@ -34,6 +34,7 @@ I'm open to mentoring, partnering on side projects, brainstorming, beta testing 
 
 - Built and optimized data pipelines, backend services, and private integrations while independently managing Kubernetes clusters and GCP services.  
 - Introduced CI/CD with GitLab CI and ensured security compliance through rigorous report validation.  
+
 ---
 
 ### PT. Forta Digital Indonesia
@@ -72,7 +73,6 @@ I'm open to mentoring, partnering on side projects, brainstorming, beta testing 
 
 ---
 
-
 Detailed view of my experience and skills can be found on this [CV](/cv/widnyana-20250300.pdf).
 
 ## Uses
@@ -80,4 +80,3 @@ Detailed view of my experience and skills can be found on this [CV](/cv/widnyana
 [![familiarity](https://skillicons.dev/icons?i=aws,gcp,linux,redhat,kubernetes,git,docker,py,go,lua,mongodb,mysql,postgres,sqlite,nix,nodejs,raspberrypi,md,jenkins,flutter,dart,react,ts&perline=10)](#_)
 
 See my [/uses](/uses) for more.
-
