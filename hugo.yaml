@@ -103,6 +103,10 @@ params:
   ShowPostNavLinks: true
   ShowCodeCopyButtons: true
 
+  cloudflare:
+    turnstile:
+      enabled: true
+
 markup:
   defaultMarkdownHandler: goldmark
   goldmark:
