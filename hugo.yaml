@@ -4,6 +4,10 @@ theme: PaperMod
 title: "wid@internet:~$ "
 name: "widnyana"
 
+# https://gohugo.io/content-management/page-resources/#multilingual
+defaultContentLanguage: en
+defaultContentLanguageInSubdir: true
+
 languages:
   en:
     languageName: English
@@ -51,7 +55,7 @@ outputs:
 frontmatter:
   date:
   - date
-  - publishdate
+  - publishDate
   - pubdate
   - lastmod
   - modified
@@ -129,7 +133,7 @@ markup:
       table: true
       taskList: true
     renderer:
-      unsafe: false
+      unsafe: true
       hardWraps: false
   highlight:
     anchorLineNos: true
