@@ -61,13 +61,15 @@ frontmatter:
   - modified
 
 params:
+  defaultTheme: light
+
   assets:
     disableHLJS: true
 
   profileMode:
     enabled: true
     title: "~"
-    subtitle: "{ Cloud Infrastructure, Software, System } Engineer."
+    subtitle: "System Architect"
     imageUrl: "https://avatars.githubusercontent.com/u/937158?v=4"
     imageTitle: "lorem ipsum"
     imageWidth: 240 # custom size
