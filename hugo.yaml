@@ -114,6 +114,22 @@ params:
     turnstile:
       enabled: true
 
+  comments:
+    enabled: true
+    provider: giscus
+    giscus:
+      repo: widnyana/widnyana.web.id
+      repoID: R_kgDOI9KAfQ
+      category: General
+      categoryID: DIC_kwDOI9KAfc4Cw3a0
+      mapping: pathname
+      strict: 0
+      reactionsEnabled: 1
+      emitMetadata: 0
+      inputPosition: bottom
+      theme: noborder_dark
+      lang: en
+
 markup:
   defaultMarkdownHandler: goldmark
   goldmark:
