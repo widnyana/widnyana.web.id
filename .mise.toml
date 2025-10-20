@@ -1,5 +1,5 @@
 [tools]
-hugo = "latest"
+"aqua:gohugoio/hugo/hugo-extended" = "latest"
 
 [settings]
 env_file = '.env' # load env vars from a dotenv file, see `MISE_ENV_FILE`
