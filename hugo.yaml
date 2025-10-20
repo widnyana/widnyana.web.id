@@ -18,6 +18,9 @@ languages:
       series: series
     menu:
       main:
+        - name: Categories
+          url: /categories/
+          weight: 3
         - name: Search
           url: search/
           weight: 100
@@ -26,7 +29,7 @@ languages:
           weight: 2
         - name: Projects
           url: /projects/
-          weight: 3
+          weight: 4
         - name: About
           url: /about/
           weight: 1
@@ -88,8 +91,6 @@ params:
       url: "pwidnyana"
     - name: "medium"
       url: "https://medium.com/@widnyana"
-    - name: "tanyaaja"
-      url: "https://www.tanyaaja.in/p/wid"
 
   fuseOpts:
     isCaseSensitive: false
