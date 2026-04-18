@@ -5,6 +5,17 @@ draft: true
 description: ""
 params:
   author: 'widnyana'
+  cover:
+    image: ""
+    alt: ""
+    caption: ""
 tags: []
-categories: []
+categories: ["Tutorials"]
+keywords: []
+series: []
 ---
+
+## Prerequisites
+
+## Steps
+

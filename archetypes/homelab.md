@@ -5,6 +5,16 @@ draft: true
 description: ""
 params:
   author: 'widnyana'
-tags: []
-categories: []
+  cover:
+    image: ""
+    alt: ""
+    caption: ""
+tags: ["homelab"]
+categories: ["Homelab"]
+keywords: []
 ---
+
+## Hardware
+
+## Setup
+
