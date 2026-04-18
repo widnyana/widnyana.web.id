@@ -19,13 +19,15 @@ These are some open source projects I've contributed to or created along the way
 
 ## Personal Projects
 
+- [solana-onchain-mcp](https://github.com/widnyana/solana-onchain-mcp) - MCP server for Solana on-chain activity, built in Rust.
+- [idrx-go](https://github.com/widnyana/idrx-go) - Unofficial Go SDK for IDRX stablecoin.
+- [Docker Intro](https://github.com/widnyana/docker-intro) - Tips and tricks to build docker container image for various stack.
 - [kubectl-ports-rs](https://github.com/widnyana/kubectl-ports-rs) - A kubectl krew plugin to provide a list of exposed ports on Kubernetes Pod / Service resources. Read [here](/posts/kubectl-ports-introduction/) for more.
 - [Monitoring Stack](https://github.com/widnyana/monitoring-stack) - Partial part of my self-hosted monitoring stack.
 - [DevOps Toolkits](https://github.com/widnyana/devop-toolkit) - Various tools for DevOps daily routine.
-- [Docker Intro](https://github.com/widnyana/docker-intro) - This repository showcasing tips and tricks to build docker container image for various stack.
-- [boilerplate-rs](https://github.com/widnyana/boilerplate-rs) -  Rust Web App boilerplate using Axum and SeaORM.
-- [nvltr](https://github.com/widnyana/nvltr) -  Telegram Bot Boilerplate using Golang.
 - [gallang](https://github.com/widnyana/gallang) - Golang HTTP service that provide oEmbed metadata.
+- [boilerplate-rs](https://github.com/widnyana/boilerplate-rs) - Rust Web App boilerplate using Axum and SeaORM.
+- [nvltr](https://github.com/widnyana/nvltr) - Telegram Bot Boilerplate using Golang.
 
 ### Obsoleted
 
