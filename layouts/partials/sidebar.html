@@ -1,0 +1,12 @@
+<aside class="post-sidebar">
+  <h3 class="sidebar-title">Posts</h3>
+  <ul class="sidebar-posts">
+    {{- $posts := where site.RegularPages "Type" "posts" }}
+    {{- range $posts }}
+    <li>
+      <a href="{{ .Permalink }}">{{ .Title }}</a>
+      <span class="sidebar-date">{{ .Date.Format "Jan 02, 2006" }}</span>
+    </li>
+    {{- end }}
+  </ul>
+</aside>
