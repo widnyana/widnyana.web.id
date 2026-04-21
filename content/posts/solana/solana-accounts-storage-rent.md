@@ -255,7 +255,7 @@ Put it all in motion. A user submits a transaction. The runtime loads every acco
 
 Every account involved needs its lamport balance at or above the rent-exempt minimum. If PDAs are part of the flow, your program signs with `invoke_signed` using the seeds. The runtime double-checks all ownership and signing rules. No exceptions.
 
-Accounts, storage, rent, and PDAs. Nail these four, and the rest of Solana development gets a lot more straightforward. Part 2 covers compute units: how Solana measures and limits the work your transactions can do.
+Accounts, storage, rent, and PDAs. Nail these four, and the rest of Solana development gets a lot more straightforward. [Part 2](/posts/solana-compute-units/) covers compute units: how Solana measures and limits the work your transactions can do.
 
 ---
 
