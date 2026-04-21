@@ -11,12 +11,24 @@ Saya terbuka untuk kegiatan mentoring, kolaborasi proyek sampingan, diskusi ide,
 
 ## Work Experiences
 
+### Self-Employed
+
+#### Cloud Infrastructure & System Architecture Consultant --- January 2025 - Present
+
+- Helping organizations design and scale resilient infrastructure across AWS, GCP, and other public clouds. Specializing in System Architecture, Team Management, Web3 infrastructure, and Cloud Infrastructure Strategy.
+
+### Indonesian Stablecoin Provider
+
+#### Sr. Infrastructure Engineer --- June 2025 - Present
+
+- Designing and maintaining cloud infrastructure for a stablecoin issuance and management platform.
+
 ### Stealth Startup
 
 #### Sr. DevOps Engineer --- June 2024 ‑ January 2025
 
-- Built and maintained IaC on GCP while managing Kubernetes clusters and VMs, ensuring scalability and reliability.
-- Led OpenTelemetry adoption for observability, optimized data pipelines with the Data Team, and Optimize cloud infrastructure costs.
+- Built and maintained IaC on GCP; ensuring scalability and reliability on Kubernetes clusters and VMs.
+- Led OpenTelemetry adoption for observability, collaborated with Data Team on data pipelines optimization, and reduced Cloud Infrastructure costs.
 
 ### Koinworks
 
