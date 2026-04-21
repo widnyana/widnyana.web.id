@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Balinese&display=swap');
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-style: normal;
+  font-weight: 400;
+
+}
+
+.noto-serif-balinese-regular {
+  font-family: "Noto Serif Balinese", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+
+code,
+pre,
+kbd {
+  font-family: "Fira Code", 'Courier New', 'Consolas', monospace;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+
+.post-tags li {
+  margin-right: 0em;
+}
+
+/* Sidebar layout */
+.main--wide {
+  max-width: calc(1060px + var(--gap) * 2);
+}
+
+.main-with-sidebar {
+  display: flex;
+  gap: var(--gap);
+  align-items: flex-start;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.post-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  position: sticky;
+  top: var(--gap);
+  max-height: calc(100vh - var(--gap) * 2);
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  border-left: 1px solid var(--border);
+  padding-left: var(--gap);
+}
+
+.sidebar-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-posts {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-posts li {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-posts li:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.sidebar-posts a {
+  display: block;
+  font-size: 14px;
+  color: var(--content);
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.sidebar-posts a:hover {
+  color: var(--primary);
+}
+
+.sidebar-posts .sidebar-date {
+  display: block;
+  font-size: 12px;
+  color: var(--secondary);
+  margin-top: 2px;
+}
+
+@media (max-width: 900px) {
+  .main-with-sidebar {
+    flex-direction: column;
+  }
+
+  .post-sidebar {
+    width: 100%;
+    position: static;
+    max-height: none;
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid var(--border);
+    padding-top: var(--gap);
+  }
+}

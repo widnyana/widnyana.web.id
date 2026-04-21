@@ -1,0 +1,44 @@
+{{- if lt hugo.Version "0.146.0" }}
+{{- errorf "=> hugo v0.146.0 or greater is required for hugo-PaperMod to build " }}
+{{- end -}}
+
+<!DOCTYPE html>
+{{- $theme := site.Params.defaultTheme | default "auto" }}
+{{- if eq $theme "dark" }}
+<html lang="{{ site.Language }}" dir="{{ .Language.LanguageDirection | default "auto" }}" data-theme="dark">
+{{- else if eq $theme "light" }}
+<html lang="{{ site.Language }}" dir="{{ .Language.LanguageDirection | default "auto" }}" data-theme="light">
+{{- else }}
+<html lang="{{ site.Language }}" dir="{{ .Language.LanguageDirection | default "auto" }}" data-theme="auto">
+{{- end }}
+
+<head>
+    {{- partial "head.html" . }}
+</head>
+
+{{- if (or (ne .Kind `page` ) (eq .Layout `archives`) (eq .Layout `search`)) }}
+<body class="list" id="top">
+{{- else }}
+<body id="top">
+{{- end }}
+    {{ partialCached "header.html" . .Page -}}
+    {{- $mainClass := "main" -}}
+    {{- if and (eq .Kind "page") (eq .Section "posts") -}}
+        {{- $mainClass = "main main--wide" -}}
+    {{- end }}
+    <main class="{{ $mainClass }}">
+        {{- if and (eq .Kind "page") (eq .Section "posts") }}
+        <div class="main-with-sidebar">
+            <div class="main-content">
+                {{- block "main" . }}{{ end }}
+            </div>
+            {{- partial "sidebar.html" . }}
+        </div>
+        {{- else }}
+        {{- block "main" . }}{{ end }}
+        {{- end }}
+    </main>
+    {{ partialCached "footer.html" . .Layout .Kind (.Param "hideFooter") (.Param "ShowCodeCopyButtons") -}}
+</body>
+
+</html>
