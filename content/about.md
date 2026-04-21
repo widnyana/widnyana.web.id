@@ -11,6 +11,18 @@ I mentor engineers, collaborate on side projects, take on pro-bono work, and am 
 
 ## Work Experiences
 
+### Self-Employed
+
+#### Cloud Infrastructure & System Architecture Consultant --- January 2025 - Present
+
+- Helping organizations design and scale resilient infrastructure across AWS, GCP, and other public clouds. Specializing in System Architecture, Team Management, Web3 infrastructure, and Cloud Infrastructure Strategy.
+
+### Indonesian Stablecoin Provider
+
+#### Sr. Infrastructure Engineer --- June 2025 - Present
+
+- Designing and maintaining cloud infrastructure for a stablecoin issuance and management platform.
+
 ### Stealth Startup
 
 #### Sr. DevOps Engineer --- June 2024 ‑ January 2025
