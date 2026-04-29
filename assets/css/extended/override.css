@@ -6,7 +6,6 @@ html {
   font-family: -apple-system, BlinkMacSystemFont, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-style: normal;
   font-weight: 400;
-
 }
 
 .noto-serif-balinese-regular {
@@ -14,8 +13,6 @@ html {
   font-weight: 400;
   font-style: normal;
 }
-
-
 
 code,
 pre,
@@ -25,98 +22,256 @@ kbd {
   font-style: normal;
 }
 
-
 .post-tags li {
   margin-right: 0em;
 }
 
-/* Sidebar layout */
+/* ============================================================
+   Blog detail page — responsive layout
+   Approach: fluid typography + reading-first composition.
+   Breakpoints intentionally use min-width to layer enhancements.
+   ============================================================ */
+
+/* ---- Layout wrapper ---- */
 .main--wide {
   max-width: calc(1060px + var(--gap) * 2);
 }
 
 .main-with-sidebar {
   display: flex;
+  flex-direction: column;
   gap: var(--gap);
-  align-items: flex-start;
+  align-items: stretch;
 }
+
+/* min-width:0 cascade — required so flex/grid children can shrink
+   below their content's intrinsic size (long code blocks, URLs). */
+.main-with-sidebar > * { min-width: 0; }
 
 .main-content {
   flex: 1;
   min-width: 0;
 }
 
-.post-sidebar {
-  width: 260px;
-  flex-shrink: 0;
-  position: sticky;
-  top: var(--gap);
-  max-height: calc(100vh - var(--gap) * 2);
-  overflow-y: auto;
-  scroll-behavior: smooth;
-  scrollbar-width: thin;
-  border-left: 1px solid var(--border);
-  padding-left: var(--gap);
+.main-content,
+.main-content .post-single,
+.main-content .post-content,
+.main-content .md-content {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
 
-.sidebar-title {
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0 0 12px 0;
-  color: var(--secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+/* Defensive overflow control for content that escapes the flow */
+.main-content img,
+.main-content video,
+.main-content iframe,
+.main-content svg,
+.main-content table { max-width: 100%; }
+
+.main-content pre,
+.main-content .highlight,
+.main-content .highlighttable,
+.main-content figure { max-width: 100%; overflow-x: auto; }
+
+/* Chroma syntax-highlighted tables are the most common overflow culprit */
+.main-content .highlighttable { display: block; }
+.main-content .highlighttable tbody,
+.main-content .highlighttable tr { display: block; }
+.main-content .highlighttable td { display: table-cell; }
+
+/* ---- Post header: fluid title with hairline accent ---- */
+.post-single .post-title {
+  font-size: clamp(1.625rem, 1.15rem + 2.4vw, 2.75rem); /* 26px → 44px */
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.5rem;
 }
 
-.sidebar-posts {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar-posts li {
-  margin-bottom: 10px;
-  padding-bottom: 10px;
+.post-single .post-header {
+  position: relative;
+  padding-bottom: 1.25rem;
+  margin-bottom: var(--content-gap);
   border-bottom: 1px solid var(--border);
 }
 
-.sidebar-posts li:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
+.post-single .post-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 64px;
+  height: 2px;
+  background: var(--primary);
+  opacity: 0.85;
 }
+
+/* ---- Markdown content: fluid heading scale ---- */
+.post-single .md-content h1 { font-size: clamp(1.5rem, 1.15rem + 1.6vw, 2.25rem); margin: 2rem 0 1.25rem; }
+.post-single .md-content h2 { font-size: clamp(1.375rem, 1.05rem + 1.4vw, 1.875rem); margin: 1.75rem 0 1rem; }
+.post-single .md-content h3 { font-size: clamp(1.125rem, 0.95rem + 0.8vw, 1.375rem); margin: 1.5rem 0 0.875rem; }
+.post-single .md-content h4 { font-size: 1.05rem; }
+
+.post-single .post-content { margin: 1.75rem 0; line-height: 1.75; }
+
+.post-single .md-content p,
+.post-single .md-content li { font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1rem); }
+
+/* ---- Post tags: refined pills ---- */
+.post-single .post-tags { gap: 8px; margin-top: 1rem; }
+.post-single .post-tags a {
+  padding: 0.25rem 0.875rem;
+  line-height: 28px;
+  border-radius: 999px;
+  transition: background 150ms ease, transform 150ms ease;
+}
+.post-single .post-tags a:hover { transform: translateY(-1px); }
+
+/* ---- Paginav: card-like prev/next ---- */
+.post-single .paginav {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: transparent;
+}
+.post-single .paginav a {
+  padding: 1rem 1.125rem;
+  transition: background 150ms ease;
+}
+.post-single .paginav a:hover { background: var(--code-bg); }
+.post-single .paginav .title { font-size: 0.7rem; opacity: 0.75; }
+
+/* ---- Sidebar (stacked default) ---- */
+.post-sidebar {
+  width: 100%;
+  position: static;
+  max-height: none;
+  border-left: none;
+  padding-left: 0;
+  border-top: 1px solid var(--border);
+  padding-top: var(--gap);
+}
+
+.sidebar-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin: 0 0 0.875rem 0;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sidebar-posts { list-style: none; padding: 0; margin: 0; }
+
+.sidebar-posts li {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-posts li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
 
 .sidebar-posts a {
   display: block;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--content);
   text-decoration: none;
-  line-height: 1.4;
+  line-height: 1.45;
+  transition: color 150ms ease;
 }
-
-.sidebar-posts a:hover {
-  color: var(--primary);
-}
+.sidebar-posts a:hover { color: var(--primary); }
 
 .sidebar-posts .sidebar-date {
   display: block;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--secondary);
   margin-top: 2px;
+  font-variant-numeric: tabular-nums;
 }
 
-@media (max-width: 900px) {
+/* ============================================================
+   Breakpoint enhancements (mobile-first, additive via min-width)
+   ============================================================ */
+
+/* Phone-only refinements (< 480px) */
+@media (max-width: 479px) {
+  .post-single .breadcrumbs,
+  .post-single .breadcrumbs a,
+  .post-single .post-meta { font-size: 0.8125rem; }
+
+  .post-single .paginav { flex-direction: column; }
+  .post-single .paginav a { width: 100%; }
+  .post-single .paginav a + a { border-top: 1px solid var(--border); }
+  .post-single .paginav .next { text-align: left; }
+
+  /* Touch-target sizing for tag chips */
+  .post-single .post-tags a {
+    padding: 0.4rem 1rem;
+    line-height: 26px;
+    font-size: 0.8125rem;
+  }
+
+  /* Compact code blocks */
+  .post-single .md-content pre code { padding: 0.625rem; font-size: 0.75rem; }
+
+  /* Definition lists stack on narrow screens */
+  .post-single .md-content dt,
+  .post-single .md-content dd { width: 100%; padding-inline-start: 0; }
+}
+
+/* Tablet (>= 768px) — slightly larger scale, but sidebar still stacked */
+@media (min-width: 768px) {
+  .post-single .post-content { margin: 2rem 0; }
+  .post-single .post-tags { margin-top: 1.25rem; }
+}
+
+/* Desktop (>= 1024px) — sidebar appears as companion column */
+@media (min-width: 1024px) {
   .main-with-sidebar {
-    flex-direction: column;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: calc(var(--gap) * 1.5);
   }
 
   .post-sidebar {
-    width: 100%;
-    position: static;
-    max-height: none;
-    border-left: none;
-    padding-left: 0;
-    border-top: 1px solid var(--border);
-    padding-top: var(--gap);
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: var(--gap);
+    max-height: calc(100vh - var(--gap) * 2);
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    border-top: none;
+    border-left: 1px solid var(--border);
+    padding-top: 0;
+    padding-left: var(--gap);
   }
+
+  .post-sidebar::-webkit-scrollbar { width: 6px; }
+  .post-sidebar::-webkit-scrollbar-thumb { background: var(--tertiary); border-radius: 3px; }
+
+  /* Cap prose measure for reading comfort even though container is wider */
+  .post-single .post-content > p,
+  .post-single .post-content > ul,
+  .post-single .post-content > ol,
+  .post-single .post-content > blockquote { max-width: 70ch; }
+
+  .post-single .paginav { display: flex; }
+  .post-single .paginav a + a { border-inline-start: 1px solid var(--border); }
+}
+
+/* Desktop widescreen (>= 1280px) — more breathing room */
+@media (min-width: 1280px) {
+  .main--wide { max-width: calc(1200px + var(--gap) * 2); }
+  .post-sidebar { width: 280px; }
+  .post-single .post-content > p,
+  .post-single .post-content > ul,
+  .post-single .post-content > ol,
+  .post-single .post-content > blockquote { max-width: 72ch; }
+}
+
+/* Ultra-wide (>= 1600px) — generous companion sidebar */
+@media (min-width: 1600px) {
+  .main--wide { max-width: calc(1320px + var(--gap) * 2); }
+  .post-sidebar { width: 320px; }
 }
