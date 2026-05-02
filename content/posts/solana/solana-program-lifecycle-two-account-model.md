@@ -130,7 +130,7 @@ The `UpgradeableLoaderState` enum uses bincode serialization. Here's the exact b
 [37..]   raw program bytes (uploaded in chunks)
 ```
 
-The Buffer account is the temporary holding area used during deploy and upgrade. More on that in [Part 4](/posts/solana-program-lifecycle-part-4/).
+The Buffer account is the temporary holding area used during deploy and upgrade. More on that in [Part 4](/posts/solana/solana-program-deploy-upgrade-buffer/).
 
 ---
 
@@ -241,7 +241,7 @@ A Solana program is two accounts working together:
 - **BPF Loader** owns both accounts and controls all modifications through its instruction set.
 - The split exists so the program ID can remain stable while the bytecode gets replaced. This is how Solana does hot upgrades without breaking client integrations, PDA derivations, or cross-program invocations.
 
-Next up: [Part 4](/posts/solana-program-lifecycle-part-4/) covers the full deploy and upgrade flow, including the buffer account pattern and what happens when things fail mid-way.
+Next up: [Part 4](/posts/solana/solana-program-deploy-upgrade-buffer/) covers the full deploy and upgrade flow, including the buffer account pattern and what happens when things fail mid-way.
 
 ---
 
