@@ -316,15 +316,12 @@ The third thing: the CU numbers in `cargo test-sbf` logs are real data from your
 
 ---
 
-### Summary
+### Tying it together
 
-Compute units are what it costs to run our code on Solana. Here's what matters:
+Put it all in motion. A transaction lands. The runtime gives it 1.4M CU. Each instruction inside gets 200K. Every operation, from a memory read to a secp256k1 recovery, chips away at that budget. When it hits zero, the transaction dies. No refund.
 
-- **Know the budgets**: 200K per instruction, 1.4M per transaction, 32 accounts (64 with ALTs).
-- **Measure with cargo test-sbf**: get real numbers, not guesses.
-- **CPIs are expensive**: 946 CU base, but the callee's full execution cost is what matters. Stack them and the budget blows.
-- **Optimize the bottleneck**: use profiling to find where CU actually goes.
-- **Plan for mainnet**: priority fees add up. Budget for them early.
-- **Test the hard case**: before shipping, run a test with max constraints and see the real cost.
+The reliable move is to profile before anything else. `cargo test-sbf` gives real numbers. Use them. Find where the CU actually goes. Usually it is CPIs: one unnecessary cross-program invoke can cost more than everything else combined. Eliminate it, and the budget opens back up.
 
-Next up: [Part 3](/posts/solana-program-lifecycle-part-3/) covers how Solana programs actually live onchain and the two-account model that makes upgrades possible.
+Priority fees get you through congestion. But they won't save you from code that burns 1.2M CU on lazy CPI stacking. A transaction that uses 80K CU because the hot paths are tight will rarely need priority fees at all.
+
+[Part 3](/posts/solana/solana-program-lifecycle-two-account-model/) covers how Solana programs actually live onchain: the two-account model that makes upgrades possible without breaking everything that depends on the program.

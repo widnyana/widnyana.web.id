@@ -9,7 +9,7 @@ categories: ["solana", "blockchain"]
 keywords: ["solana program deploy", "solana buffer account", "solana program upgrade", "solana program close buffers", "solana program write-buffer", "DeployWithMaxDataLen", "loader-v3 upgrade", "solana orphaned buffer", "solana-keygen recover buffer", "solana program extend"]
 series: ["Solana Program Lifecycle"]
 cover:
-  image: "/images/solana-buffer-account-flow.svg"
+  image: "images/solana/solana-program-deploy-upgrade-buffer.png"
 ---
 
 This is Part 4 of the [Solana Program Lifecycle](/series/solana-program-lifecycle/) series. In [Part 3](/posts/solana/solana-program-lifecycle-two-account-model/) we saw that a program is two accounts: a 36-byte Program Account that points to a ProgramData Account holding the actual bytecode. Now we look at how those two accounts get created and replaced.
@@ -298,25 +298,15 @@ After the deploy, run `solana program show --buffers` again. The buffer is gone.
 
 ---
 
-### Summary
+### Tying it together
 
-A Solana deploy is three accounts and three phases:
+Put it all in motion. You run `solana program deploy`. Behind the scenes, the CLI creates a Buffer account, writes your bytecode into it across hundreds of transactions, and then sends one final activation instruction that copies the bytecode into the ProgramData Account and drains the Buffer. The program is live.
 
-- **Buffer account**: a temporary holding area, sized to fit the bytecode, owned by the BPF Loader, with an authority that gates writes.
-- **Program account**: created during activation, never modified afterward.
-- **ProgramData account**: created during activation (deploy) or overwritten in place (upgrade).
+If the write phase fails, you end up with an orphaned Buffer holding SOL. If the activation fails, the buffer is complete but the program is untouched. In both cases, the live program is fine. The Buffer pattern isolates failures. `solana program close --buffers` reclaims the SOL.
 
-The phases:
+The upload-then-activate split has a useful side effect: the party that uploads the bytecode does not have to be the party that approves the deploy. A developer writes a buffer, transfers its authority to a multisig, and the multisig approves the upgrade. That separation is what makes team-controlled and governance-controlled upgrades possible.
 
-1. **Create**: a Buffer account is allocated and initialized.
-2. **Write**: the bytecode is uploaded in chunks, each chunk a separate transaction.
-3. **Activate**: a single `DeployWithMaxDataLen` (first deploy) or `Upgrade` (subsequent) transaction validates the buffer, copies the bytecode into the ProgramData account, and drains the buffer.
-
-Failures during the write phase leave orphaned Buffer accounts holding SOL. Recover them with `solana program close --buffers`, or resume the deploy with `solana-keygen recover` and `--buffer`. Either way, the SOL is not lost, just temporarily locked.
-
-The upload-then-activate pattern exists because Solana transactions are 1232 bytes and programs are kilobytes. But it has a useful side effect: the party that uploads the bytecode does not have to be the party that approves the deploy. That separation is what makes multisig-controlled upgrades possible.
-
-Next up: [Part 5](/posts/solana-program-lifecycle-part-5/) covers the upgrade authority itself, from a single keypair through Squads multisigs and SPL Governance, all the way to the irreversible `--final` flag that freezes a program forever.
+[Part 5](/posts/solana/solana-upgrade-authority-keypair-to-immutable/) covers the upgrade authority itself, from a single keypair through Squads multisigs and SPL Governance, all the way to the irreversible `--final` flag that freezes a program forever.
 
 ---
 

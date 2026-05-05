@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web3 Security Roadmap — DevOps Engineer</title>
+<style>
+  :root {
+    --bg: #0d0d0e;
+    --bg2: #141416;
+    --bg3: #1a1a1d;
+    --border: rgba(255,255,255,0.07);
+    --border-hover: rgba(255,255,255,0.14);
+    --text: #e8e6df;
+    --muted: #6b6960;
+    --muted2: #9b998f;
+    --accent-blue: #3d8ef0;
+    --accent-amber: #e8a020;
+    --accent-red: #d94f4f;
+    --accent-green: #3faa6e;
+    --accent-purple: #8b6ff0;
+    --accent-teal: #2abaaa;
+    --mono: 'JetBrains Mono', 'Fira Mono', 'Cascadia Code', monospace;
+    --sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --line-color: rgba(255,255,255,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 18px; line-height: 1.6; }
+  body { max-width: 960px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+
+  /* ── Header ── */
+  .header { margin-bottom: 3.5rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+  .header h1 { font-size: 1.65rem; font-weight: 600; letter-spacing: -0.02em; color: var(--text); margin-bottom: 0.4rem; }
+  .header p { color: var(--muted2); font-size: 0.95rem; }
+  .header-meta { display: flex; gap: 1.5rem; margin-top: 1rem; }
+  .meta-chip { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 3px 8px; }
+
+  /* ── Section titles ── */
+  .section-title {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── Phase layout ── */
+  .phases { display: grid; grid-template-columns: 110px 1fr; gap: 0; }
+  .phase-col { }
+
+  .phase-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-right: 1.5rem;
+    padding-top: 1rem;
+    position: relative;
+  }
+  .phase-marker::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 1.1rem;
+    bottom: -24px;
+    width: 1px;
+    background: var(--line-color);
+  }
+  .phase-row:last-child .phase-marker::after { display: none; }
+  .phase-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    position: absolute;
+    right: -4.5px;
+    top: 1.1rem;
+    flex-shrink: 0;
+  }
+  .phase-label-text { font-family: var(--mono); font-size: 0.76rem; color: var(--muted); text-align: right; line-height: 1.3; }
+  .phase-duration { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); opacity: 0.6; margin-top: 2px; text-align: right; }
+
+  .phase-row { display: contents; }
+  .phase-body { padding: 0.75rem 0 2rem 1.75rem; }
+  .phase-heading { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 0.75rem; }
+
+  /* ── Cards grid ── */
+  .cards { display: flex; flex-wrap: wrap; gap: 7px; }
+  .card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 13px;
+    min-width: 170px;
+    max-width: 240px;
+    cursor: default;
+    transition: border-color 0.15s;
+  }
+  .card:hover { border-color: var(--border-hover); }
+  .card-title { font-size: 0.92rem; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .card-body { font-size: 0.85rem; color: var(--muted2); line-height: 1.5; }
+  .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+  .t-blue   { background: rgba(61,142,240,0.12); color: var(--accent-blue); }
+  .t-amber  { background: rgba(232,160,32,0.12); color: var(--accent-amber); }
+  .t-red    { background: rgba(217,79,79,0.12); color: var(--accent-red); }
+  .t-green  { background: rgba(63,170,110,0.12); color: var(--accent-green); }
+  .t-purple { background: rgba(139,111,240,0.12); color: var(--accent-purple); }
+  .t-teal   { background: rgba(42,186,170,0.12); color: var(--accent-teal); }
+  .t-gray   { background: rgba(255,255,255,0.06); color: var(--muted2); }
+
+  .milestone {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    padding-left: 10px;
+    border-left: 2px solid var(--border);
+  }
+  .milestone::before { content: '◆ '; font-size: 0.7rem; opacity: 0.5; }
+
+  /* ── Certifications section ── */
+  .certs-section { margin-top: 3rem; }
+  .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; margin-top: 1.25rem; }
+  .cert-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    transition: border-color 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .cert-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .cert-card.priority-1::before { background: var(--accent-green); }
+  .cert-card.priority-2::before { background: var(--accent-blue); }
+  .cert-card.priority-3::before { background: var(--accent-amber); }
+  .cert-card.skip::before { background: rgba(255,255,255,0.08); }
+  .cert-card:hover { border-color: var(--border-hover); }
+
+  .cert-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+  .cert-name { font-size: 0.95rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+  .cert-org { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+  .cert-badge {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 2px 7px;
+    border-radius: 3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .badge-must  { background: rgba(63,170,110,0.15); color: var(--accent-green); border: 1px solid rgba(63,170,110,0.25); }
+  .badge-good  { background: rgba(61,142,240,0.12); color: var(--accent-blue); border: 1px solid rgba(61,142,240,0.2); }
+  .badge-optional { background: rgba(232,160,32,0.1); color: var(--accent-amber); border: 1px solid rgba(232,160,32,0.2); }
+  .badge-skip  { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid var(--border); }
+
+  .cert-desc { font-size: 0.85rem; color: var(--muted2); line-height: 1.55; margin-bottom: 10px; }
+  .cert-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+  .cert-chip {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 2px 7px;
+  }
+  .cert-chip.highlight { color: var(--accent-teal); border-color: rgba(42,186,170,0.2); background: rgba(42,186,170,0.06); }
+
+  .cert-skip-reason {
+    font-size: 0.82rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* ── Track-record note ── */
+  .track-record-box {
+    background: rgba(42,186,170,0.05);
+    border: 1px solid rgba(42,186,170,0.15);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 1.5rem;
+  }
+  .track-record-box h4 { font-size: 0.92rem; font-weight: 600; color: var(--accent-teal); margin-bottom: 8px; }
+  .track-record-box p { font-size: 0.85rem; color: var(--muted2); line-height: 1.6; }
+  .track-record-box ul { margin: 8px 0 0 1rem; }
+  .track-record-box li { font-size: 0.85rem; color: var(--muted2); margin-bottom: 4px; }
+
+  /* ── Legend ── */
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 2rem; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--muted2); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── Priority order ── */
+  .priority-list { margin-top: 1.5rem; }
+  .priority-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .priority-item:last-child { border-bottom: none; }
+  .pnum {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 2px 7px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .pitem-title { font-size: 0.92rem; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .pitem-desc { font-size: 0.85rem; color: var(--muted2); }
+
+  /* ── Footer ── */
+  .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 0.78rem; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Web3 Security Roadmap — DevOps Engineer</h1>
+  <p>Private key management · Shared wallets · Multisig · Threat modeling · Key ceremony ops</p>
+  <div class="header-meta">
+    <span class="meta-chip">~40 weeks core</span>
+    <span class="meta-chip">8–10 hrs/week</span>
+    <span class="meta-chip">infra-first track</span>
+    <span class="meta-chip">EVM + Solana</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     ROADMAP
+══════════════════════════════════════════ -->
+<div class="section-title">Learning Phases</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#3d8ef0"></div>Fundamentals</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#e8a020"></div>Key management</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#d94f4f"></div>Threat model</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#3faa6e"></div>Ops & tooling</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#8b6ff0"></div>Advanced</div>
+</div>
+
+<div class="phases">
+
+  <!-- Phase 0 -->
+  <div class="phase-row">
+    <div class="phase-marker">
+      <div class="phase-dot" style="background:#3d8ef0"></div>
+      <div class="phase-label-text">Phase 0</div>
+      <div class="phase-duration">wk 1–4</div>
+    </div>
+    <div class="phase-body">
+      <div class="phase-heading">Cryptographic foundations</div>
+      <div class="cards">
+        <div class="card"><div class="card-title">Asymmetric crypto</div><div class="card-body">secp256k1, ed25519. Sign vs encrypt. Key derivation math.</div><span class="tag t-blue">theory</span></div>
+        <div class="card"><div class="card-title">BIP32/39/44</div><div class="card-body">HD wallets, derivation paths, entropy → mnemonic → master key.</div><span class="tag t-blue">theory</span></div>
+        <div class="card"><div class="card-title">Account vs UTXO</div><div class="card-body">ETH vs BTC key models. Nonces, replay, address reuse risks.</div><span class="tag t-blue">theory</span></div>
+        <div class="card"><div class="card-title">Shamir (SSS) & MPC</div><div class="card-body">Secret splitting, threshold schemes. Contrast with multisig.</div><span class="tag t-blue">theory</span></div>
+      </div>
+      <div class="milestone">Can explain why losing entropy = losing funds, not losing a password</div>
+    </div>
+  </div>
+
+  <!-- Phase 1 -->
+  <div class="phase-row">
+    <div class="phase-marker">
+      <div class="phase-dot" style="background:#e8a020"></div>
+      <div class="phase-label-text">Phase 1</div>
+      <div class="phase-duration">wk 5–10</div>
+    </div>
+    <div class="phase-body">
+      <div class="phase-heading">Private key lifecycle ops</div>
+      <div class="cards">
+        <div class="card"><div class="card-title">Key generation</div><div class="card-body">Entropy sources. HSM vs software. Airgap ceremony design.</div><span class="tag t-amber">key mgmt</span></div>
+        <div class="card"><div class="card-title">Storage at rest</div><div class="card-body">HSM (Nitro, Thales, YubiHSM). AWS KMS / GCP CloudHSM. Vault transit.</div><span class="tag t-amber">key mgmt</span></div>
+        <div class="card"><div class="card-title">Rotation & revocation</div><div class="card-body">Hot wallet rotation windows. Signing key retirement. Audit trails.</div><span class="tag t-amber">key mgmt</span></div>
+        <div class="card"><div class="card-title">Backup & DR</div><div class="card-body">Encrypted offsite shards. Geographic split. Recovery drills.</div><span class="tag t-amber">key mgmt</span></div>
+        <div class="card"><div class="card-title">Key ceremonies</div><div class="card-body">M-of-N quorum setup. Witness roles. Chain-of-custody docs.</div><span class="tag t-amber">key mgmt</span></div>
+      </div>
+      <div class="milestone">Run an airgap key gen ceremony on testnet, document the full procedure</div>
+    </div>
+  </div>
+
+  <!-- Phase 2 -->
+  <div class="phase-row">
+    <div class="phase-marker">
+      <div class="phase-dot" style="background:#d94f4f"></div>
+      <div class="phase-label-text">Phase 2</div>
+      <div class="phase-duration">wk 11–18</div>
+    </div>
+    <div class="phase-body">
+      <div class="phase-heading">Threat modeling & attack surface</div>
+      <div class="cards">
+        <div class="card"><div class="card-title">Hot wallet attacks</div><div class="card-body">RPC poisoning, supply chain, memory scraping, CI/CD injection.</div><span class="tag t-red">threats</span></div>
+        <div class="card"><div class="card-title">Multisig bypass</div><div class="card-body">Sig malleability, threshold manipulation, signer collusion.</div><span class="tag t-red">threats</span></div>
+        <div class="card"><div class="card-title">Address poisoning</div><div class="card-body">Clipboard hijack, vanity address phishing, EIP-55 validation gaps.</div><span class="tag t-red">threats</span></div>
+        <div class="card"><div class="card-title">Side channels</div><div class="card-body">Timing attacks on signing. Power analysis. TEE leakage vectors.</div><span class="tag t-red">threats</span></div>
+        <div class="card"><div class="card-title">Drainer mechanics</div><div class="card-body">Approval abuse, setApprovalForAll, permit2 exploits, tx simulation bypass.</div><span class="tag t-red">threats</span></div>
+        <div class="card"><div class="card-title">Reentrancy & MEV</div><div class="card-body">Read-only reentrancy, cross-contract, sandwich attacks on signing ops.</div><span class="tag t-red">threats</span></div>
+      </div>
+      <div class="milestone">Write a STRIDE threat model for a shared hot wallet service</div>
+    </div>
+  </div>
+
+  <!-- Phase 3 -->
+  <div class="phase-row">
+    <div class="phase-marker">
+      <div class="phase-dot" style="background:#3faa6e"></div>
+      <div class="phase-label-text">Phase 3</div>
+      <div class="phase-duration">wk 19–28</div>
+    </div>
+    <div class="phase-body">
+      <div class="phase-heading">Multisig & shared wallet ops</div>
+      <div class="cards">
+        <div class="card"><div class="card-title">Safe / Squads ops</div><div class="card-body">Gnosis Safe on EVM, Squads v4 on Solana. Tx builder, guard contracts.</div><span class="tag t-green">tooling</span></div>
+        <div class="card"><div class="card-title">Policy engines</div><div class="card-body">Spending limits, timelock guards, allowlist enforcement, anomaly rules.</div><span class="tag t-green">tooling</span></div>
+        <div class="card"><div class="card-title">TSS / threshold sigs</div><div class="card-body">Fireblocks MPC, ZenGo, Lit Protocol. No on-chain footprint, lower fees.</div><span class="tag t-green">tooling</span></div>
+        <div class="card"><div class="card-title">Signing service design</div><div class="card-body">Sidecar signing daemon, HSM backends, audit log immutability.</div><span class="tag t-green">tooling</span></div>
+        <div class="card"><div class="card-title">Signer OPSEC</div><div class="card-body">Hardware wallets for signers, YubiKey 2FA, offboarding key rotation.</div><span class="tag t-green">tooling</span></div>
+      </div>
+      <div class="milestone">Deploy a 3-of-5 Safe on testnet with a guard contract and spending policy</div>
+    </div>
+  </div>
+
+  <!-- Phase 4 -->
+  <div class="phase-row">
+    <div class="phase-marker">
+      <div class="phase-dot" style="background:#8b6ff0"></div>
+      <div class="phase-label-text">Phase 4</div>
+      <div class="phase-duration">wk 29–40</div>
+    </div>
+    <div class="phase-body">
+      <div class="phase-heading">Detection, response & compliance</div>
+      <div class="cards">
+        <div class="card"><div class="card-title">On-chain monitoring</div><div class="card-body">Helius webhooks, Tenderly alerts, custom indexers. Anomaly detection rules.</div><span class="tag t-purple">advanced</span></div>
+        <div class="card"><div class="card-title">Incident response</div><div class="card-body">Key compromise playbook. Pause mechanisms, tx revocation, fund migration.</div><span class="tag t-purple">advanced</span></div>
+        <div class="card"><div class="card-title">Chain forensics</div><div class="card-body">Chainalysis, Arkham, manual tx graph tracing. Evidence chain-of-custody.</div><span class="tag t-purple">advanced</span></div>
+        <div class="card"><div class="card-title">SOC 2 / compliance</div><div class="card-body">Key management controls for SOC 2. VASP obligations. Audit evidence.</div><span class="tag t-purple">advanced</span></div>
+        <div class="card"><div class="card-title">Red team exercises</div><div class="card-body">Social engineering drills, sig bypass attempts, infra access scenarios.</div><span class="tag t-purple">advanced</span></div>
+      </div>
+      <div class="milestone">Run a tabletop key compromise incident, write the post-mortem</div>
+    </div>
+  </div>
+
+  <!-- Continuous -->
+  <div class="phase-row">
+    <div class="phase-marker">
+      <div class="phase-dot" style="background:#3b3b3e; border: 1px solid rgba(255,255,255,0.15)"></div>
+      <div class="phase-label-text">Ongoing</div>
+      <div class="phase-duration">continuous</div>
+    </div>
+    <div class="phase-body">
+      <div class="phase-heading">Continuous signal</div>
+      <div class="cards">
+        <div class="card"><div class="card-title">Exploit tracking</div><div class="card-body">Rekt.news, BlockSec, Immunefi disclosures. Post-mortem deep dives.</div><span class="tag t-gray">signal</span></div>
+        <div class="card"><div class="card-title">CTFs & certs</div><div class="card-body">Ethernaut, Damn Vulnerable DeFi, Paradigm CTF. OpenZeppelin certs.</div><span class="tag t-gray">signal</span></div>
+        <div class="card"><div class="card-title">OSS contribution</div><div class="card-body">Foundry, Slither, Echidna, Forta agents. Build detection rules.</div><span class="tag t-gray">signal</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /phases -->
+
+
+<!-- ══════════════════════════════════════════
+     CERTIFICATIONS
+══════════════════════════════════════════ -->
+<div class="certs-section">
+  <div class="section-title" style="margin-top: 3rem;">Certifications</div>
+
+  <p style="font-size:0.9rem; color:var(--muted2); margin-bottom:1.5rem; line-height:1.7;">
+    The Web3 cert landscape is immature — no single credential functions as a hard HR filter yet.
+    Verifiable track record (Immunefi payouts, CodeHawks rankings, named audit reports) carries more weight
+    than any cert. That said, some credentials are worth the time.
+  </p>
+
+  <div class="cert-grid">
+
+    <!-- Cyfrin Qualified Web3 Signer -->
+    <div class="cert-card priority-1">
+      <div class="cert-header">
+        <div>
+          <div class="cert-name">Qualified Web3 Signer</div>
+          <div class="cert-org">Cyfrin Updraft</div>
+        </div>
+        <span class="cert-badge badge-must">must-have</span>
+      </div>
+      <div class="cert-desc">
+        Proctored exam covering transaction verification, calldata review, and signing OPSEC.
+        Launched 2025 by the most credible practitioner org in the space. Directly maps to
+        phases 1–3 of this roadmap — key management, multisig ops, and signer security.
+      </div>
+      <div class="cert-meta">
+        <span class="cert-chip highlight">proctored exam</span>
+        <span class="cert-chip">2025 launch</span>
+        <span class="cert-chip">free course</span>
+        <span class="cert-chip">updraft.cyfrin.io</span>
+      </div>
+    </div>
+
+    <!-- Cyfrin SC Security -->
+    <div class="cert-card priority-1">
+      <div class="cert-header">
+        <div>
+          <div class="cert-name">Smart Contract Security & Auditing</div>
+          <div class="cert-org">Cyfrin Updraft</div>
+        </div>
+        <span class="cert-badge badge-must">must-have</span>
+      </div>
+      <div class="cert-desc">
+        Free course + completion cert. 24+ hrs covering Solidity auditing, fuzzing, invariant testing,
+        formal verification. Instructors from ex-OpenZeppelin and Trail of Bits. Covers the attacker
+        mindset directly applicable to threat modeling in phases 2–3.
+      </div>
+      <div class="cert-meta">
+        <span class="cert-chip highlight">free</span>
+        <span class="cert-chip">24+ hrs content</span>
+        <span class="cert-chip">5 real audits</span>
+        <span class="cert-chip">updraft.cyfrin.io/courses/security</span>
+      </div>
+    </div>
+
+    <!-- Hashlock SSCAC -->
+    <div class="cert-card priority-2">
+      <div class="cert-header">
+        <div>
+          <div class="cert-name">SSCAC — Solidity Smart Contract Auditor</div>
+          <div class="cert-org">Hashlock</div>
+        </div>
+        <span class="cert-badge badge-good">good signal</span>
+      </div>
+      <div class="cert-desc">
+        Practitioner-level proctored exam where you audit a live codebase. Built by auditors behind
+        high-profile DeFi projects. More rigorous than most certs — finish by auditing real code,
+        not answering MCQ. Recognized as a "global gold standard" candidate, growing recognition.
+      </div>
+      <div class="cert-meta">
+        <span class="cert-chip highlight">live codebase exam</span>
+        <span class="cert-chip">proctored</span>
+        <span class="cert-chip">DeFi-focused</span>
+        <span class="cert-chip">hashlock.com.au</span>
+      </div>
+    </div>
+
+    <!-- OSCP+ -->
+    <div class="cert-card priority-2">
+      <div class="cert-header">
+        <div>
+          <div class="cert-name">OSCP+ (PEN-200)</div>
+          <div class="cert-org">OffSec</div>
+        </div>
+        <span class="cert-badge badge-good">good signal</span>
+      </div>
+      <div class="cert-desc">
+        Not Web3-specific, but still the strongest general infosec signal for anyone positioning
+        as security-first. As of Nov 2024 it's OSCP+: a 3-year renewable credential (+ lifetime OSCP).
+        Enhanced AD focus. Removes all doubt about offensive fundamentals. Recommended only if you
+        don't already hold it.
+      </div>
+      <div class="cert-meta">
+        <span class="cert-chip highlight">gold standard</span>
+        <span class="cert-chip">3-yr renewable</span>
+        <span class="cert-chip">hands-on exam</span>
+        <span class="cert-chip">~$1,499 USD</span>
+        <span class="cert-chip">offsec.com</span>
+      </div>
+    </div>
+
+    <!-- Immunefi leaderboard -->
+    <div class="cert-card priority-3">
+      <div class="cert-header">
+        <div>
+          <div class="cert-name">Immunefi Verified Finding</div>
+          <div class="cert-org">Immunefi (bug bounty)</div>
+        </div>
+        <span class="cert-badge badge-optional">best proof-of-work</span>
+      </div>
+      <div class="cert-desc">
+        Not a certification — a verifiable on-chain track record. One confirmed medium or high
+        finding on Immunefi outweighs any cert on a protocol security resume. The leaderboard
+        rank is the industry's de facto credential. $162M+ in bounties available. Target first
+        finding within 12 months of completing phase 2.
+      </div>
+      <div class="cert-meta">
+        <span class="cert-chip highlight">leaderboard rank</span>
+        <span class="cert-chip">verifiable payouts</span>
+        <span class="cert-chip">$162M+ available</span>
+        <span class="cert-chip">immunefi.com</span>
+      </div>
+    </div>
+
+    <!-- CodeHawks -->
+    <div class="cert-card priority-3">
+      <div class="cert-header">
+        <div>
+          <div class="cert-name">CodeHawks Competitive Audits</div>
+          <div class="cert-org">Cyfrin CodeHawks</div>
+        </div>
+        <span class="cert-badge badge-optional">best proof-of-work</span>
+      </div>
+      <div class="cert-desc">
+        Ranked competitive audit platform. Named findings in public audit reports = portable
+        reputation. AI First Flights (launched late 2025) provide on-demand practice with instant
+        feedback. Ranked placement on competitive contests is treated as a real credential by
+        hiring protocol teams.
+      </div>
+      <div class="cert-meta">
+        <span class="cert-chip highlight">public reports</span>
+        <span class="cert-chip">contest rankings</span>
+        <span class="cert-chip">AI First Flights</span>
+        <span class="cert-chip">codehawks.com</span>
+      </div>
+    </div>
+
+    <!-- W3CB — skip -->
+    <div class="cert-card skip">
+      <div class="cert-header">
+        <div>
+          <div class="cert-name">W3CB Cyber+ / Blockchain Security Pro</div>
+          <div class="cert-org">Web3 Certification Board</div>
+        </div>
+        <span class="cert-badge badge-skip">skip</span>
+      </div>
+      <div class="cert-desc">
+        MCQ-based, 60 questions, 60 minutes. Covers wallet/cipher security, decentralized app bugs,
+        and web3 infra risks at surface level. Not recognized by protocol security teams.
+      </div>
+      <div class="cert-skip-reason">No practitioner credibility. Not worth the $295. Skip.</div>
+    </div>
+
+    <!-- Blockchain Council — skip -->
+    <div class="cert-card skip">
+      <div class="cert-header">
+        <div>
+          <div class="cert-name">Certified Web3 Expert™ Bundle</div>
+          <div class="cert-org">Blockchain Council</div>
+        </div>
+        <span class="cert-badge badge-skip">skip</span>
+      </div>
+      <div class="cert-desc">
+        Five MCQ courses covering blockchain, metaverse, cryptocurrency, DAOs, and Web3 communities.
+        Zero key management depth, zero adversarial content. Targets non-technical audiences.
+      </div>
+      <div class="cert-skip-reason">Credential mill. Not respected by anyone hiring for security ops.</div>
+    </div>
+
+    <!-- 101 Blockchains CW3P — skip -->
+    <div class="cert-card skip">
+      <div class="cert-header">
+        <div>
+          <div class="cert-name">CW3P — Certified Web3 Professional</div>
+          <div class="cert-org">101 Blockchains</div>
+        </div>
+        <span class="cert-badge badge-skip">skip</span>
+      </div>
+      <div class="cert-desc">
+        CPD-accredited, MCQ-based (70% pass mark). Covers Ethereum, NFT, metaverse fundamentals.
+        Broad overview cert with no security depth, no key management, no adversarial content.
+      </div>
+      <div class="cert-skip-reason">Wrong audience. Built for Web3 generalists, not security practitioners.</div>
+    </div>
+
+  </div><!-- /cert-grid -->
+
+  <!-- Track record note -->
+  <div class="track-record-box">
+    <h4>Track record &gt; certifications in this space</h4>
+    <p>
+      Web3 protocol teams care about verifiable proof of work, not paper. The following carry
+      more hiring signal than any certification:
+    </p>
+    <ul>
+      <li>A named finding in a public audit report (Cyfrin, Sherlock, Code4rena)</li>
+      <li>A confirmed Immunefi payout, any severity</li>
+      <li>A CodeHawks contest ranking in the top 10</li>
+      <li>An open-source Forta agent or detection rule with real usage</li>
+      <li>A documented key ceremony or multisig deployment with a named protocol</li>
+    </ul>
+  </div>
+
+  <!-- Priority order -->
+  <div style="margin-top: 2.5rem;">
+    <div class="section-title">Recommended Acquisition Order</div>
+    <div class="priority-list">
+      <div class="priority-item">
+        <span class="pnum">#1</span>
+        <div>
+          <div class="pitem-title">Cyfrin Qualified Web3 Signer</div>
+          <div class="pitem-desc">Directly maps to key management + signing ops. Pursue after completing phase 1–2.</div>
+        </div>
+      </div>
+      <div class="priority-item">
+        <span class="pnum">#2</span>
+        <div>
+          <div class="pitem-title">Cyfrin Updraft Smart Contract Security (completion cert)</div>
+          <div class="pitem-desc">Free, high signal, covers attacker mindset. Run parallel to phase 2.</div>
+        </div>
+      </div>
+      <div class="priority-item">
+        <span class="pnum">#3</span>
+        <div>
+          <div class="pitem-title">First Immunefi finding (any severity)</div>
+          <div class="pitem-desc">Target within 12 months of completing phase 2. Medium/high = stronger than any cert on a resume.</div>
+        </div>
+      </div>
+      <div class="priority-item">
+        <span class="pnum">#4</span>
+        <div>
+          <div class="pitem-title">OSCP+ (if not already held)</div>
+          <div class="pitem-desc">Baseline infosec credibility for institutional and consulting contexts. Skip if already certified.</div>
+        </div>
+      </div>
+      <div class="priority-item">
+        <span class="pnum">#5</span>
+        <div>
+          <div class="pitem-title">Hashlock SSCAC (optional, post-phase 3)</div>
+          <div class="pitem-desc">Practitioner-level live codebase exam. Pursue if targeting audit firm roles or consulting.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /certs-section -->
+
+<div class="footer">
+  <span>web3-security-devops-roadmap.html</span>
+  <span>updated May 2026</span>
+</div>
+
+</body>
+</html>
