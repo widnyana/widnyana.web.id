@@ -232,16 +232,15 @@ This should match the `ProgramData Address` shown by `solana program show`.
 
 ---
 
-### Summary
+### Tying it together
 
-A Solana program is two accounts working together:
+Put it all in motion. A transaction invokes your program. The runtime checks: is the account `executable: true`? Is it owned by a loader? If yes, it follows the pointer from the Program Account to the ProgramData Account, loads the ELF bytecode, and starts running.
 
-- **Program Account** (36 bytes): the stable identity. Holds the program ID and a pointer to the ProgramData account. Marked `executable: true`. Never changes across upgrades.
-- **ProgramData Account** (45 bytes header + bytecode): the swappable implementation. Holds the ELF bytecode, the deployment slot, and the upgrade authority. This is what gets replaced during upgrades.
-- **BPF Loader** owns both accounts and controls all modifications through its instruction set.
-- The split exists so the program ID can remain stable while the bytecode gets replaced. This is how Solana does hot upgrades without breaking client integrations, PDA derivations, or cross-program invocations.
+The program ID never changes. The pointer never changes. When you upgrade, the loader replaces the bytecode inside the ProgramData Account and bumps the slot number. Every client, every PDA derivation, every CPI call that referenced the program ID before the upgrade still works after. That is the whole point of the split.
 
-Next up: [Part 4](/posts/solana/solana-program-deploy-upgrade-buffer/) covers the full deploy and upgrade flow, including the buffer account pattern and what happens when things fail mid-way.
+The BPF Loader owns both accounts. It decides what gets modified and what does not. Your program cannot touch its own code. No other program can either. All modifications go through the loader's instructions, and every one of those instructions checks the upgrade authority.
+
+[Part 4](/posts/solana/solana-program-deploy-upgrade-buffer/) covers the full deploy and upgrade flow, including the buffer account pattern and what happens when things fail mid-way.
 
 ---
 
