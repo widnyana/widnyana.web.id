@@ -20,7 +20,7 @@ That one thing is the `upgrade_authority_address` field: 33 bytes in the Program
 
 ### The upgrade authority field
 
-Recall from Part 3 that the ProgramData account holds the bytecode and some metadata. The layout, serialized with bincode:
+Recall from [Part 3](/posts/solana/solana-program-lifecycle-two-account-model/) that the ProgramData account holds the bytecode and some metadata. The layout, serialized with bincode:
 
 ```
 [0..4]    u32 discriminator = 3 (ProgramData variant)
@@ -312,7 +312,7 @@ The progression tends to match how mature the protocol is. Keypair while develop
 
 One thing worth remembering: `SetAuthorityChecked` exists because someone, at some point, fat-fingered a transfer address. A typo in `SetAuthority` is just as permanent as `--final`.
 
-Part 6 covers the full deployment pipeline from local testing through mainnet.
+[Part 6](/posts/solana/solana-deployment-pipeline-local-to-mainnet/) covers the full deployment pipeline from local testing through mainnet.
 
 ---
 

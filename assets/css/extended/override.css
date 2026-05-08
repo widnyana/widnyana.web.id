@@ -1,11 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Balinese&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&display=swap');
 
 html {
-  font-family: -apple-system, BlinkMacSystemFont, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: "Lexend Deca", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-style: normal;
   font-weight: 400;
+}
+
+body {
+  font-size: 17px;
+  line-height: 1.65;
 }
 
 .noto-serif-balinese-regular {
@@ -24,6 +30,276 @@ kbd {
 
 .post-tags li {
   margin-right: 0em;
+}
+
+/* ============================================================
+   Posts list page — editorial redesign
+   Aesthetic: technical magazine. Fraunces serif titles,
+   thumbnail-right grid cards, hairline separators, warm page.
+   ============================================================ */
+
+/* Match list page background to single pages — removes gray/white inconsistency */
+.list {
+  background: var(--theme) !important;
+}
+[data-theme="dark"] .list {
+  background: var(--theme) !important;
+}
+
+/* ---- Fraunces as the consistent display heading font site-wide ---- */
+.page-header h1,
+.post-single .post-title {
+  font-family: 'Fraunces', Georgia, serif;
+}
+
+/* ---- Page header h1: section/taxonomy/projects pages (.page-header) ---- */
+.page-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  line-height: 1.1;
+  margin: 4px 0 0;
+}
+
+.page-header .post-description {
+  font-size: 13px;
+  color: var(--secondary);
+  margin: 4px 0 0;
+}
+
+/* ============================================================
+   Categories — reader-first list (custom template)
+   Name is the hero. Count is context. Fast to scan, easy to tap.
+   ============================================================ */
+
+.cat-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+  border-top: 1px solid var(--border);
+}
+
+.cat-list__item {
+  border-bottom: 1px solid var(--border);
+}
+
+.cat-list__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  text-decoration: none;
+  color: var(--primary);
+  transition: color 130ms ease;
+}
+
+.cat-list__link:hover { color: #15803d; }
+[data-theme="dark"] .cat-list__link:hover { color: #4ade80; }
+
+.cat-list__name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.15px;
+  line-height: 1.3;
+}
+
+.cat-list__meta {
+  flex-shrink: 0;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--secondary);
+  white-space: nowrap;
+}
+
+/* ---- Regular post cards: grid layout (content left, thumbnail right) ---- */
+.list .post-entry {
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  padding: 28px 0;
+  margin-bottom: 0;
+  display: grid;
+  grid-template-columns: 1fr 148px;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "header  cover"
+    "content cover"
+    "footer  cover";
+  gap: 0 20px;
+  transition: none;
+}
+
+.list .post-entry:active {
+  transform: none;
+}
+
+.list .post-entry:hover {
+  background: transparent;
+}
+
+.list .post-entry .entry-cover {
+  grid-area: cover;
+  margin-bottom: 0;
+  align-self: start;
+}
+
+.list .post-entry .entry-cover img {
+  width: 148px;
+  height: 96px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 4px;
+  display: block;
+}
+
+.list .post-entry .entry-header {
+  grid-area: header;
+  align-self: start;
+}
+
+.list .post-entry .entry-header h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  line-height: 1.35;
+  color: var(--primary);
+  transition: color 140ms ease;
+}
+
+.list .post-entry:hover .entry-header h2 {
+  color: #15803d;
+}
+
+[data-theme="dark"] .list .post-entry:hover .entry-header h2 {
+  color: #4ade80;
+}
+
+.list .post-entry .entry-content {
+  grid-area: content;
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--secondary);
+  line-height: 1.55;
+  -webkit-line-clamp: 2;
+}
+
+.list .post-entry .entry-footer {
+  grid-area: footer;
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--secondary);
+  margin-top: 12px;
+  letter-spacing: 0.2px;
+}
+
+/* Cards without a cover image: full-width single-column */
+.list .post-entry:not(:has(.entry-cover img)) {
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "header"
+    "content"
+    "footer";
+}
+
+/* ---- First entry: hero card ---- */
+.list .first-entry {
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  border-top: none;
+  border-bottom: 2px solid var(--border);
+  padding: 0 0 36px;
+  margin-bottom: 0;
+  min-height: 0;
+}
+
+.list .first-entry .entry-cover {
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.list .first-entry .entry-cover img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 6px;
+  display: block;
+}
+
+.list .first-entry .entry-header h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  line-height: 1.25;
+  color: var(--primary);
+  transition: color 140ms ease;
+}
+
+.list .first-entry:hover .entry-header h2 {
+  color: #15803d;
+}
+
+[data-theme="dark"] .list .first-entry:hover .entry-header h2 {
+  color: #4ade80;
+}
+
+.list .first-entry .entry-content {
+  margin: 10px 0 0;
+  font-size: 14px;
+  -webkit-line-clamp: 3;
+}
+
+.list .first-entry .entry-footer {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  margin-top: 14px;
+  letter-spacing: 0.2px;
+}
+
+/* ---- Tag entries (from tag/category pages) ---- */
+.list .tag-entry {
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "header"
+    "content"
+    "footer";
+}
+
+/* ---- Pagination ---- */
+.list .page-footer {
+  margin-top: 40px;
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+
+/* Mobile: stack image above content */
+@media (max-width: 600px) {
+  .list .post-entry {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "cover"
+      "header"
+      "content"
+      "footer";
+  }
+
+  .list .post-entry .entry-cover img {
+    width: 100%;
+    height: 160px;
+  }
+
+  .list .first-entry .entry-cover img {
+    height: 200px;
+  }
 }
 
 /* ============================================================
@@ -112,7 +388,7 @@ kbd {
 .post-single .md-content h3 { font-size: clamp(1.125rem, 0.95rem + 0.8vw, 1.375rem); margin: 1.5rem 0 0.875rem; }
 .post-single .md-content h4 { font-size: 1.05rem; }
 
-.post-single .post-content { margin: 1.75rem 0; line-height: 1.75; }
+.post-single .post-content { margin: 1.75rem 0; line-height: 1.65; }
 
 .post-single .md-content p,
 .post-single .md-content li { font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1rem); }

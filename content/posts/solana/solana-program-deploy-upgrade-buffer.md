@@ -52,7 +52,7 @@ Each chunk is a separate transaction. Each transaction pays a fee. `solana progr
 
 ### The Buffer account, in detail
 
-A Buffer account is just a regular account, owned by the BPF Loader Upgradeable program, with a specific layout. Recall the discriminator table from Part 3:
+A Buffer account is just a regular account, owned by the BPF Loader Upgradeable program, with a specific layout. Recall the discriminator table from [Part 3](/posts/solana/solana-program-lifecycle-two-account-model/):
 
 | Value | Variant |
 |-------|---------|

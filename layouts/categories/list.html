@@ -1,0 +1,26 @@
+{{- define "main" }}
+
+{{- if .Data.Terms }}
+
+<header class="page-header">
+  <h1>{{ .Title }}</h1>
+</header>
+
+<ul class="cat-list">
+  {{- range .Data.Terms.ByCount }}
+  <li class="cat-list__item">
+    <a href="{{ .Page.RelPermalink }}" class="cat-list__link">
+      <span class="cat-list__name">{{ .Page.Title }}</span>
+      <span class="cat-list__meta">{{ .Count }}&thinsp;{{ if eq .Count 1 }}post{{ else }}posts{{ end }}</span>
+    </a>
+  </li>
+  {{- end }}
+</ul>
+
+{{- else }}
+
+{{- partial "list_main.html" . }}
+
+{{- end }}
+
+{{- end }}

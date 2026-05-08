@@ -79,7 +79,7 @@ The program ID is the stable identity. The ProgramData account is the swappable 
 
 ### What "executable" actually means
 
-In Part 1, we saw that every account has an `executable` field. For most accounts, it's `false`. For program accounts, it's `true`. But what does the runtime actually do with this?
+In [Part 1](/posts/solana/solana-accounts-storage-rent/), we saw that every account has an `executable` field. For most accounts, it's `false`. For program accounts, it's `true`. But what does the runtime actually do with this?
 
 When a transaction invokes a program, the runtime checks:
 
@@ -138,7 +138,7 @@ The Buffer account is the temporary holding area used during deploy and upgrade.
 
 Both the Program Account and ProgramData Account have their `owner` field set to `BPFLoaderUpgradeab1e11111111111111111111111`. This isn't a suggestion. The runtime enforces it.
 
-Recall the ownership rules from Part 1: only the owner program can modify an account's data. By owning the Program and ProgramData accounts, the BPF Loader is the only entity that can change the bytecode pointer or the bytecode itself. Your program can't modify its own code. No other program can either.
+Recall the ownership rules from [Part 1](/posts/solana/solana-accounts-storage-rent/): only the owner program can modify an account's data. By owning the Program and ProgramData accounts, the BPF Loader is the only entity that can change the bytecode pointer or the bytecode itself. Your program can't modify its own code. No other program can either.
 
 This is why upgrades go through the BPF Loader's instructions (`Upgrade`, `DeployWithMaxDataLen`, `SetAuthority`). The loader checks the upgrade authority signature before allowing any changes. Without a valid authority signature, nothing happens.
 
@@ -148,7 +148,7 @@ When you make a program immutable (with `solana program deploy --final` or `sola
 
 ### The runtime cost of the two-account model
 
-In Part 2 we covered compute unit costs. The upgradeable loader has its own CU cost:
+In [Part 2](/posts/solana/solana-compute-units/) we covered compute unit costs. The upgradeable loader has its own CU cost:
 
 ```
 UPGRADEABLE_LOADER_COMPUTE_UNITS: 2,370 CU
