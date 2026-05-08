@@ -35,6 +35,32 @@ languages:
           url: /about/
           weight: 1
 
+  id:
+    languageName: Bahasa Indonesia
+    weight: 2
+    taxonomies:
+      category: categories
+      series: series
+      tag: tags
+
+    menu:
+      main:
+        - name: Kategori
+          url: /id/categories/
+          weight: 3
+        - name: Pencarian
+          url: id/search/
+          weight: 100
+        - name: Blog
+          url: /id/posts/
+          weight: 2
+        - name: Proyek
+          url: /id/projects/
+          weight: 4
+        - name: Tentang
+          url: /id/about/
+          weight: 1
+
 buildDrafts: false
 buildExpired: false
 buildFuture: false
