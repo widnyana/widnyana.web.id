@@ -265,15 +265,6 @@ kbd {
   letter-spacing: 0.2px;
 }
 
-/* ---- Tag entries (from tag/category pages) ---- */
-.list .tag-entry {
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "header"
-    "content"
-    "footer";
-}
-
 /* ---- Pagination ---- */
 .list .page-footer {
   margin-top: 40px;
