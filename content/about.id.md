@@ -85,7 +85,7 @@ Saya terbuka untuk kegiatan mentoring, kolaborasi proyek sampingan, diskusi ide,
 
 ---
 
-Detail pengalaman dan keahlian saya dapat Anda temukan melalui tautan berikut [CV](/cv/widnyana-20250300.pdf).
+Detail pengalaman dan keahlian saya dapat Anda temukan melalui tautan berikut [CV](/cv/widnyana-20260500.pdf).
 
 ## Uses
 

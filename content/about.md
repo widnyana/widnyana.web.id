@@ -47,7 +47,7 @@ I mentor engineers, collaborate on side projects, take on pro-bono work, and am 
 - Built data pipelines, backend services, and integrations while managing team's Kubernetes clusters and GCP services.
 - Introduced CI/CD with GitLab CI and ensured security compliance through validation processes.
 
-Detailed view of my experience and skills can be found on this [CV](/cv/widnyana-20250300.pdf).
+Detailed view of my experience and skills can be found on this [CV](/cv/widnyana-20260500.pdf).
 
 ## Uses
 
