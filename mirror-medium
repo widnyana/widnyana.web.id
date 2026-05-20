@@ -61,11 +61,12 @@ def build_cover_html(metadata, base_url=BASE_URL):
     return f'<figure><img src="{src}" alt="{alt}"></figure>', src
 
 
-def convert_tables_to_code_blocks(content):
-    """Convert markdown tables to fenced code blocks for Medium compatibility.
+def convert_tables_to_medium(content):
+    """Convert markdown tables to a Medium-friendly labeled format.
 
-    Medium's API strips <table> HTML. Converting to a code block preserves
-    the table structure in monospaced text.
+    Medium's API strips <table> HTML and code-block tables look terrible.
+    Each data row becomes labeled lines using the header as labels,
+    separated by horizontal rules.
     """
     lines = content.split('\n')
     result = []
@@ -81,18 +82,18 @@ def convert_tables_to_code_blocks(content):
             table_lines.append(stripped)
         else:
             if in_table:
-                result.append(_format_table_as_code(table_lines))
+                result.append(_format_table_as_medium(table_lines))
                 table_lines = []
                 in_table = False
             result.append(line)
 
     if in_table:
-        result.append(_format_table_as_code(table_lines))
+        result.append(_format_table_as_medium(table_lines))
 
     return '\n'.join(result)
 
 
-def _format_table_as_code(table_lines):
+def _format_table_as_medium(table_lines):
     rows = []
     for line in table_lines:
         if re.match(r'^\|[\s\-:|]+\|$', line):
@@ -100,30 +101,33 @@ def _format_table_as_code(table_lines):
         cells = [c.strip() for c in line.strip('|').split('|')]
         rows.append(cells)
 
-    if not rows:
+    if len(rows) < 2:
         return ''
 
-    ncols = max(len(row) for row in rows)
-    widths = [0] * ncols
-    for row in rows:
-        for i, cell in enumerate(row):
-            widths[i] = max(widths[i], len(cell))
+    header = rows[0]
+    data_rows = rows[1:]
+    ncols = len(header)
 
-    lines = []
-    for i, row in enumerate(rows):
-        padded = []
-        for j in range(ncols):
-            cell = row[j] if j < len(row) else ''
-            padded.append(cell.ljust(widths[j]))
-        lines.append('| ' + ' | '.join(padded) + ' |')
-        if i == 0:
-            lines.append('|' + '|'.join('-' * (w + 2) for w in widths) + '|')
+    parts = []
+    for row in data_rows:
+        row_lines = []
+        for i in range(ncols):
+            label = header[i] if i < len(header) else ''
+            value = row[i] if i < len(row) else ''
+            if not label and not value:
+                continue
+            if label and value:
+                row_lines.append(f"**{label}:** {value}")
+            elif value:
+                row_lines.append(value)
+        if row_lines:
+            parts.append('\n'.join(row_lines))
 
-    return '```\n' + '\n'.join(lines) + '\n```'
+    return '\n\n---\n\n'.join(parts)
 
 
 def transform_content(content, base_url=BASE_URL, title=None, metadata=None, lang='en'):
-    content = convert_tables_to_code_blocks(content)
+    content = convert_tables_to_medium(content)
     content, code_map = protect_code(content)
     content, n_shortcodes = strip_shortcodes(content)
     content, n_images = resolve_relative_images(content, base_url)
