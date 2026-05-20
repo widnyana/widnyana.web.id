@@ -1,0 +1,307 @@
+#!/usr/bin/env -S .venv/bin/python
+import re
+import requests
+import json
+import os
+import sys
+import argparse
+import frontmatter
+import markdown as md_lib
+
+BASE_URL = "https://widnyana.web.id"
+
+
+def protect_code(content):
+    blocks = {}
+
+    def _store(match):
+        key = f"\x00CODE{len(blocks)}\x00"
+        blocks[key] = match.group(0)
+        return key
+
+    protected = re.sub(r'```[\s\S]*?```', _store, content)
+    protected = re.sub(r'`[^`\n]+`', _store, protected)
+    return protected, blocks
+
+
+def unprotect_code(content, blocks):
+    for key, original in blocks.items():
+        content = content.replace(key, original)
+    return content
+
+
+def strip_shortcodes(content):
+    cleaned, count = re.subn(r'\{\{[<%].*?[>%]\}\}', '', content, flags=re.DOTALL)
+    return cleaned, count
+
+
+def resolve_relative_images(content, base_url):
+    def replacer(m):
+        return f"![{m.group(1)}]({base_url}{m.group(2)})"
+    result, count = re.subn(r'!\[([^\]]*)\]\((/[^)]+)\)', replacer, content)
+    return result, count
+
+
+def resolve_relative_links(content, base_url, lang='en'):
+    lang_prefix = f'/{lang}' if lang else ''
+    def replacer(m):
+        return f"[{m.group(1)}]({base_url}{lang_prefix}{m.group(2)})"
+    result, count = re.subn(r'(?<!!)\[([^\]]+)\]\((/[^)]+)\)', replacer, content)
+    return result, count
+
+
+def build_cover_html(metadata, base_url=BASE_URL):
+    cover = metadata.get("cover", {})
+    if not cover or not cover.get("image"):
+        return None, None
+    src = cover["image"]
+    if cover.get("relative", True) and not src.startswith("http"):
+        src = f"{base_url}{src}"
+    alt = cover.get("alt", "") or cover.get("caption", "") or ""
+    return f'<figure><img src="{src}" alt="{alt}"></figure>', src
+
+
+def convert_tables_to_code_blocks(content):
+    """Convert markdown tables to fenced code blocks for Medium compatibility.
+
+    Medium's API strips <table> HTML. Converting to a code block preserves
+    the table structure in monospaced text.
+    """
+    lines = content.split('\n')
+    result = []
+    table_lines = []
+    in_table = False
+
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith('|') and stripped.endswith('|'):
+            if not in_table:
+                in_table = True
+                table_lines = []
+            table_lines.append(stripped)
+        else:
+            if in_table:
+                result.append(_format_table_as_code(table_lines))
+                table_lines = []
+                in_table = False
+            result.append(line)
+
+    if in_table:
+        result.append(_format_table_as_code(table_lines))
+
+    return '\n'.join(result)
+
+
+def _format_table_as_code(table_lines):
+    rows = []
+    for line in table_lines:
+        if re.match(r'^\|[\s\-:|]+\|$', line):
+            continue
+        cells = [c.strip() for c in line.strip('|').split('|')]
+        rows.append(cells)
+
+    if not rows:
+        return ''
+
+    ncols = max(len(row) for row in rows)
+    widths = [0] * ncols
+    for row in rows:
+        for i, cell in enumerate(row):
+            widths[i] = max(widths[i], len(cell))
+
+    lines = []
+    for i, row in enumerate(rows):
+        padded = []
+        for j in range(ncols):
+            cell = row[j] if j < len(row) else ''
+            padded.append(cell.ljust(widths[j]))
+        lines.append('| ' + ' | '.join(padded) + ' |')
+        if i == 0:
+            lines.append('|' + '|'.join('-' * (w + 2) for w in widths) + '|')
+
+    return '```\n' + '\n'.join(lines) + '\n```'
+
+
+def transform_content(content, base_url=BASE_URL, title=None, metadata=None, lang='en'):
+    content = convert_tables_to_code_blocks(content)
+    content, code_map = protect_code(content)
+    content, n_shortcodes = strip_shortcodes(content)
+    content, n_images = resolve_relative_images(content, base_url)
+    content, n_links = resolve_relative_links(content, base_url, lang)
+    content = unprotect_code(content, code_map)
+    html = md_lib.markdown(content, extensions=["fenced_code", "tables"])
+
+    prefix = ""
+    if metadata:
+        cover_html, cover_src = build_cover_html(metadata, base_url)
+        if cover_html:
+            prefix += cover_html + "\n"
+    if title:
+        prefix += f"<h1>{title}</h1>\n"
+    if prefix:
+        html = prefix + html
+
+    transforms = []
+    if n_shortcodes:
+        transforms.append(f"{n_shortcodes} Hugo shortcode(s) stripped")
+    if n_images:
+        transforms.append(f"{n_images} local image(s) resolved to absolute URLs")
+    if n_links:
+        transforms.append(f"{n_links} internal link(s) resolved to absolute URLs (/{lang}/)")
+    if metadata and metadata.get("cover", {}).get("image"):
+        transforms.append(f"cover image prepended as <figure><img>")
+    if title:
+        transforms.append(f"title prepended as <h1>")
+    return html, transforms
+
+
+def validate_frontmatter(metadata, tags):
+    warnings = []
+    if not metadata.get("title"):
+        warnings.append("No title in frontmatter (will use filename)")
+    if not metadata.get("description"):
+        warnings.append("No description in frontmatter")
+    if not tags:
+        warnings.append("No tags found")
+    elif len(tags) > 3:
+        warnings.append(f"{len(tags)} tags found — Medium uses only the first 3, extras will be dropped")
+    if metadata.get("draft"):
+        warnings.append("Post is marked as draft")
+    cover = metadata.get("cover", {})
+    if not cover or not cover.get("image"):
+        warnings.append("No cover image in frontmatter")
+    return warnings
+
+
+def validate_content(html):
+    warnings = []
+    if not html.strip():
+        warnings.append("Content is empty after transformation")
+    elif len(html.encode("utf-8")) > 50000:
+        warnings.append(f"Content is {len(html.encode('utf-8')) // 1024}KB — may exceed Medium's limits")
+    return warnings
+
+
+def die(msg):
+    print(f"[ERROR] {msg}", file=sys.stderr)
+    sys.exit(1)
+
+
+def publish_to_medium(token, title, content, tags=None, publish_status='draft'):
+    if not token:
+        die("MEDIUM_API_TOKEN env var is required")
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    }
+
+    try:
+        resp = requests.get('https://api.medium.com/v1/me', headers=headers, timeout=30)
+        resp.raise_for_status()
+        user_id = resp.json()['data']['id']
+    except requests.ConnectionError:
+        die("Cannot reach Medium API — check your network connection")
+    except requests.Timeout:
+        die("Medium API timed out")
+    except requests.HTTPError as e:
+        if resp.status_code == 401:
+            die("MEDIUM_API_TOKEN is invalid or expired")
+        die(f"Medium API error: {e}")
+    except (KeyError, json.JSONDecodeError):
+        die("Unexpected response from Medium API")
+
+    data = {
+        'title': title,
+        'contentFormat': 'html',
+        'content': content,
+        'publishStatus': publish_status,
+    }
+    if tags:
+        data['tags'] = tags
+
+    try:
+        resp = requests.post(
+            f'https://api.medium.com/v1/users/{user_id}/posts',
+            headers=headers,
+            json=data,
+            timeout=60,
+        )
+        resp.raise_for_status()
+    except requests.ConnectionError:
+        die("Cannot reach Medium API — check your network connection")
+    except requests.Timeout:
+        die("Medium API timed out during publish")
+    except requests.HTTPError as e:
+        if resp.status_code == 401:
+            die("MEDIUM_API_TOKEN is invalid or expired")
+        die(f"Medium API error during publish: {e}")
+
+    return resp.json()
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Publish a markdown article to Medium")
+    parser.add_argument("file", help="Path to markdown file")
+    parser.add_argument("--title", help="Override article title (default: from frontmatter)")
+    parser.add_argument("--tags", nargs="+", help="Override tags (default: from frontmatter, max 3)")
+    parser.add_argument("--status", default="draft", choices=["draft", "public", "unlisted"],
+                        help="Publish status (default: draft)")
+    parser.add_argument("--dry-run", action="store_true", help="Print payload without sending to Medium")
+    parser.add_argument("--lang", default="en", help="Language prefix for relative links (default: en)")
+    args = parser.parse_args()
+
+    if not os.path.isfile(args.file):
+        die(f"File not found: {args.file}")
+
+    post = frontmatter.load(args.file)
+
+    title = args.title or post.metadata.get("title", os.path.splitext(os.path.basename(args.file))[0])
+
+    tags = args.tags
+    if tags is None:
+        tags = post.metadata.get("tags", [])
+    if isinstance(tags, str):
+        tags = [tags]
+    tags = [str(t) for t in tags[:3]]
+
+    content = post.content
+    html, transforms = transform_content(content, title=title, metadata=post.metadata, lang=args.lang)
+
+    warnings = validate_frontmatter(post.metadata, tags) + validate_content(html)
+
+    if warnings:
+        print(f"--- Warnings ({len(warnings)}) ---", file=sys.stderr)
+        for w in warnings:
+            print(f"[WARN] {w}", file=sys.stderr)
+        print(file=sys.stderr)
+    if transforms:
+        print("--- Transforms ---", file=sys.stderr)
+        for t in transforms:
+            print(f"  {t}", file=sys.stderr)
+        print(file=sys.stderr)
+
+    if args.dry_run:
+        print(json.dumps({
+            "file": args.file,
+            "title": title,
+            "description": post.metadata.get("description"),
+            "date": str(post.metadata.get("date", "")),
+            "tags": tags,
+            "status": args.status,
+            "series": post.metadata.get("series"),
+            "cover": post.metadata.get("cover"),
+            "content_format": "html",
+            "content_length": len(html),
+            "content": html,
+        }, indent=2, default=str))
+    else:
+        token = os.getenv("MEDIUM_API_TOKEN")
+        response = publish_to_medium(
+            token=token,
+            title=title,
+            content=html,
+            tags=tags if tags else None,
+            publish_status=args.status,
+        )
+        print(json.dumps(response, indent=2))
