@@ -62,11 +62,11 @@ def build_cover_html(metadata, base_url=BASE_URL):
 
 
 def convert_tables_to_medium(content):
-    """Convert markdown tables to a Medium-friendly labeled format.
+    """Convert markdown tables to a compact Medium-friendly list.
 
-    Medium's API strips <table> HTML and code-block tables look terrible.
-    Each data row becomes labeled lines using the header as labels,
-    separated by horizontal rules.
+    Medium's API strips <table> HTML. Instead, render each data row as a
+    bullet: bold first-column value, then remaining columns joined by
+    periods. Reads naturally, looks clean.
     """
     lines = content.split('\n')
     result = []
@@ -104,26 +104,23 @@ def _format_table_as_medium(table_lines):
     if len(rows) < 2:
         return ''
 
-    header = rows[0]
     data_rows = rows[1:]
-    ncols = len(header)
+    ncols = len(rows[0])
 
-    parts = []
+    items = []
     for row in data_rows:
-        row_lines = []
-        for i in range(ncols):
-            label = header[i] if i < len(header) else ''
+        term = row[0] if row else ''
+        rest = []
+        for i in range(1, ncols):
             value = row[i] if i < len(row) else ''
-            if not label and not value:
-                continue
-            if label and value:
-                row_lines.append(f"**{label}:** {value}")
-            elif value:
-                row_lines.append(value)
-        if row_lines:
-            parts.append('\n'.join(row_lines))
+            if value:
+                rest.append(value)
+        if rest:
+            items.append(f"- **{term}:** {'. '.join(rest)}")
+        elif term:
+            items.append(f"- **{term}**")
 
-    return '\n\n---\n\n'.join(parts)
+    return '\n'.join(items)
 
 
 def transform_content(content, base_url=BASE_URL, title=None, metadata=None, lang='en'):
