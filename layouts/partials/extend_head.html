@@ -11,3 +11,49 @@
   async defer
 ></script>
 {{- end }}
+
+<style>
+  /* Apps > Tulkit dropdown — borderless, to match PaperMod's flat text nav.
+     No box: text links appear under "Apps", underline-on-hover like .menu .active.
+     Touch/keyboard toggle lives in extend_footer.html; hover + focus-within here. */
+  #menu { overflow: visible; } /* override PaperMod .menu overflow-x:auto so the submenu isn't clipped */
+
+  #menu .has-submenu { position: relative; }
+  #menu .has-submenu > a .caret { display: inline-block; font-size: 0.75em; }
+  #menu .has-submenu:hover > a .caret,
+  #menu .has-submenu:focus-within > a .caret,
+  #menu .has-submenu[data-open] > a .caret { transform: rotate(180deg); }
+
+  #menu .submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;                 /* Apps sits right-of-center; grow left to clear the viewport */
+    margin: 0;
+    padding: 6px 0;
+    list-style: none;
+    background: var(--theme); /* page-bg backing for legibility; no border/shadow = no visible chrome */
+    white-space: nowrap;
+    z-index: 50;
+  }
+  #menu .has-submenu:hover > .submenu,
+  #menu .has-submenu:focus-within > .submenu,
+  #menu .has-submenu[data-open] > .submenu { display: block; }
+
+  /* submenu links speak the nav's own language: 16px, underline-on-hover (like .menu .active) */
+  #menu .submenu li a {
+    display: block;
+    padding: 4px 2px;
+    font-size: 16px;
+    border-bottom: 2px solid transparent;
+  }
+  #menu .submenu li a:hover,
+  #menu .submenu li a:focus-visible {
+    border-bottom-color: currentColor;
+    outline: none;
+  }
+
+  @media (max-width: 768px) {
+    #menu { flex-wrap: wrap; white-space: normal; }
+  }
+</style>
