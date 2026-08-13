@@ -1,0 +1,42 @@
+{{- /* Apps > Tulkit dropdown toggle: tap/keyboard for touch + a11y.
+      Hover and focus-within are handled in CSS (extend_head.html). */ -}}
+<script>
+(function () {
+  var items = document.querySelectorAll('#menu .has-submenu');
+  if (!items.length) return;
+
+  function closeAll() {
+    items.forEach(function (li) {
+      li.removeAttribute('data-open');
+      var t = li.querySelector(':scope > a');
+      if (t) t.setAttribute('aria-expanded', 'false');
+    });
+  }
+  function toggle(li) {
+    var trigger = li.querySelector(':scope > a');
+    if (!trigger) return;
+    var willOpen = li.getAttribute('data-open') !== 'true';
+    closeAll();
+    if (willOpen) {
+      li.setAttribute('data-open', 'true');
+      trigger.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  items.forEach(function (li) {
+    var trigger = li.querySelector(':scope > a');
+    if (!trigger) return;
+    trigger.addEventListener('click', function (e) {
+      e.preventDefault();
+      toggle(li);
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('#menu .has-submenu')) closeAll();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeAll();
+  });
+})();
+</script>

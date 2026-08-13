@@ -65,10 +65,10 @@
                     <ul class="lang-menu">
                         {{- range .Translations }}
                         <li>
-                            <a href="{{ .Permalink }}" title="{{ .Language.Params.languageAltTitle | default (.Language.LanguageName | emojify) | default (.Lang | title) }}"
-                                aria-label="{{ .Language.LanguageName | default (.Lang | title) }}">
-                                {{- if (and site.Params.displayFullLangName (.Language.LanguageName)) }}
-                                {{- .Language.LanguageName | emojify -}}
+                            <a href="{{ .Permalink }}" title="{{ .Language.Params.languageAltTitle | default (.Language.Label | emojify) | default (.Lang | title) }}"
+                                aria-label="{{ .Language.Label | default (.Lang | title) }}">
+                                {{- if (and site.Params.displayFullLangName (.Language.Label)) }}
+                                {{- .Language.Label | emojify -}}
                                 {{- else }}
                                 {{- .Lang | title -}}
                                 {{- end -}}
@@ -78,10 +78,10 @@
                         {{- range site.Home.Translations }}
                         {{- if ne $currentLang .Lang }}
                         <li>
-                            <a href="{{ .Permalink }}" title="{{ .Language.Params.languageAltTitle | default (.Language.LanguageName | emojify) | default (.Lang | title) }}"
-                                aria-label="{{ .Language.LanguageName | default (.Lang | title) }}">
-                                {{- if (and site.Params.displayFullLangName (.Language.LanguageName)) }}
-                                {{- .Language.LanguageName | emojify -}}
+                            <a href="{{ .Permalink }}" title="{{ .Language.Params.languageAltTitle | default (.Language.Label | emojify) | default (.Lang | title) }}"
+                                aria-label="{{ .Language.Label | default (.Lang | title) }}">
+                                {{- if (and site.Params.displayFullLangName (.Language.Label)) }}
+                                {{- .Language.Label | emojify -}}
                                 {{- else }}
                                 {{- .Lang | title -}}
                                 {{- end -}}
@@ -101,15 +101,17 @@
             {{- $menu_item_url := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL) ) | absLangURL }}
             {{- $page_url:= $currentPage.Permalink | absLangURL }}
             {{- $is_search := eq (site.GetPage .KeyName).Layout `search` }}
-            <li>
-                <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }} {{- cond $is_search (" (Alt + /)" | safeHTMLAttr) ("" | safeHTMLAttr ) }}"
-                {{- cond $is_search (" accesskey=/" | safeHTMLAttr) ("" | safeHTMLAttr ) }}>
-                    <span {{- if eq $menu_item_url $page_url }} class="active" {{- end }}>
+            <li{{- if .HasChildren }} class="has-submenu"{{- end }}>
+                <a href="{{ if .URL }}{{ .URL | absLangURL }}{{ else }}#{{ end }}" title="{{ .Title | default .Name }} {{- cond $is_search (" (Alt + /)" | safeHTMLAttr) ("" | safeHTMLAttr ) }}"
+                {{- cond $is_search (" accesskey=/" | safeHTMLAttr) ("" | safeHTMLAttr ) }}
+                {{- if .HasChildren }} aria-haspopup="true" aria-expanded="false"{{- end }}>
+                    <span {{- if and (not .HasChildren) (eq $menu_item_url $page_url) }} class="active" {{- end }}>
                         {{- .Pre }}
                         {{- .Name -}}
                         {{ .Post -}}
+                        {{- if .HasChildren }}&nbsp;<span class="caret" aria-hidden="true">▾</span>{{- end }}
                     </span>
-                    {{- if (findRE "://" .URL) }}&nbsp;
+                    {{- if and (not .HasChildren) (findRE "://" .URL) }}&nbsp;
                     <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
                         stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
                         <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
@@ -118,6 +120,30 @@
                     </svg>
                     {{- end }}
                 </a>
+                {{- if .HasChildren }}
+                <ul class="submenu">
+                    {{- range .Children }}
+                    {{- $child_url := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL) ) | absLangURL }}
+                    <li>
+                        <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }}">
+                            <span {{- if eq $child_url $page_url }} class="active" {{- end }}>
+                                {{- .Pre }}
+                                {{- .Name -}}
+                                {{ .Post -}}
+                            </span>
+                            {{- if (findRE "://" .URL) }}&nbsp;
+                            <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="10" width="10">
+                                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                                <path d="M15 3h6v6"></path>
+                                <path d="M10 14L21 3"></path>
+                            </svg>
+                            {{- end }}
+                        </a>
+                    </li>
+                    {{- end }}
+                </ul>
+                {{- end }}
             </li>
             {{- end }}
         </ul>
