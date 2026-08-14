@@ -13,44 +13,82 @@
 {{- end }}
 
 <style>
-  /* Apps > Tulkit dropdown — borderless, to match PaperMod's flat text nav.
-     No box: text links appear under "Apps", underline-on-hover like .menu .active.
-     Touch/keyboard toggle lives in extend_footer.html; hover + focus-within here. */
+  /* Apps > Tulkit dropdown — derived from PaperMod's own surface vocabulary
+     (.post-entry / .searchResults li): var(--entry) panel, --border hairline,
+     --radius, NO shadow, and the theme's transform/.25s motion. Theme-native in light + dark.
+     Touch/keyboard toggle in extend_footer.html; hover + focus-within here. */
   #menu { overflow: visible; } /* override PaperMod .menu overflow-x:auto so the submenu isn't clipped */
 
   #menu .has-submenu { position: relative; }
-  #menu .has-submenu > a .caret { display: inline-block; font-size: 0.75em; }
+  #menu .has-submenu > a .caret {
+    display: inline-block;
+    font-size: 0.7em;
+    margin-inline-start: 0.15em;
+    transition: transform .25s ease;
+  }
   #menu .has-submenu:hover > a .caret,
   #menu .has-submenu:focus-within > a .caret,
   #menu .has-submenu[data-open] > a .caret { transform: rotate(180deg); }
 
-  #menu .submenu {
-    display: none;
+  /* invisible hover bridge — keeps the submenu alive across the 8px gap below Apps */
+  #menu .has-submenu > a::after {
+    content: '';
     position: absolute;
     top: 100%;
-    right: 0;                 /* Apps sits right-of-center; grow left to clear the viewport */
+    left: 0;
+    right: 0;
+    height: 10px;
+  }
+
+  #menu .submenu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;                       /* Apps sits right-of-center; grow left to clear the viewport */
+    min-width: 12rem;
     margin: 0;
-    padding: 6px 0;
+    padding: 4px;
     list-style: none;
-    background: var(--theme); /* page-bg backing for legibility; no border/shadow = no visible chrome */
+    background: var(--entry);       /* PaperMod surface token — elevated above --theme in dark */
+    border: 1px solid var(--border);
+    border-radius: var(--radius);   /* no box-shadow — PaperMod surfaces define themselves without one */
     white-space: nowrap;
     z-index: 50;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    pointer-events: none;
+    transition: transform .25s ease, opacity .2s ease, visibility .2s;
   }
   #menu .has-submenu:hover > .submenu,
   #menu .has-submenu:focus-within > .submenu,
-  #menu .has-submenu[data-open] > .submenu { display: block; }
+  #menu .has-submenu[data-open] > .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
 
-  /* submenu links speak the nav's own language: 16px, underline-on-hover (like .menu .active) */
   #menu .submenu li a {
-    display: block;
-    padding: 4px 2px;
-    font-size: 16px;
-    border-bottom: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.5ch;
+    padding: 4px 12px;
+    line-height: 1.25;
+    border-radius: calc(var(--radius) - 3px);
+    color: var(--secondary);
+    transition: background .2s ease, color .2s ease;
   }
   #menu .submenu li a:hover,
   #menu .submenu li a:focus-visible {
-    border-bottom-color: currentColor;
+    background: var(--code-bg);
+    color: var(--primary);
     outline: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #menu .submenu,
+    #menu .has-submenu > a .caret,
+    #menu .submenu li a { transition: none; }
   }
 
   @media (max-width: 768px) {
