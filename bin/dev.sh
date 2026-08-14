@@ -1,17 +1,24 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ "$(uname -s)" == "Darwin" ]]; then
-  LOCAL_IP=$(ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null || true)
-else
-  LOCAL_IP=$(hostname -I 2>/dev/null | awk '{print $1}' || true)
-fi
-: "${LOCAL_IP:=127.0.0.1}" # fall back to loopback if no LAN iface is up
+BIND=127.0.0.1
+HOST=127.0.0.1
 
-HUGO_BASEURL="http://${LOCAL_IP}:1313/" \
+if [[ "${1:-}" == "--lan" ]]; then
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    LOCAL_IP=$(ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null || true)
+  else
+    LOCAL_IP=$(hostname -I 2>/dev/null | awk '{print $1}' || true)
+  fi
+  : "${LOCAL_IP:=127.0.0.1}" # fall back to loopback if no LAN iface is up
+  BIND=0.0.0.0
+  HOST="${LOCAL_IP}"
+fi
+
+HUGO_BASEURL="http://${HOST}:1313/" \
 hugo server \
-  --bind 0.0.0.0 \
-  --baseURL "http://${LOCAL_IP}/" \
+  --bind "${BIND}" \
+  --baseURL "http://${HOST}/" \
   --buildDrafts \
   --buildFuture \
   --disableFastRender \
