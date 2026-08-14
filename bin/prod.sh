@@ -1,7 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
 hugo \
   --gc \
   --minify \
-  --logLevel info \
-  --enableGitInfo \
+  --cleanDestinationDir \
   --environment production \
-  --forceSyncStatic
+  --logLevel warn
