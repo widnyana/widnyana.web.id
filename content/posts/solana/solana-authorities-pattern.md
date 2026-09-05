@@ -9,6 +9,8 @@ tags: ["solana", "blockchain", "web3", "authorities", "spl-token", "ownership"]
 categories: ["solana", "blockchain"]
 keywords: ["solana authority", "solana owner vs authority", "solana renounce authority", "solana Option Pubkey", "solana authority pattern", "spl-token authority", "solana account authority"]
 series: ["Solana Authorities"]
+cover:
+  image: "/images/solana/solana-authorities-pattern.png"
 ---
 
 This is Part 1 of the [Solana Authorities](/series/solana-authorities/) series. If you work with tokens, NFTs, staking, or governance on Solana, this series maps every authority field you will encounter, what each one controls, and what happens when you hand it off or burn it.

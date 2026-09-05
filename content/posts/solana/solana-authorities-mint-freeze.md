@@ -9,6 +9,8 @@ tags: ["solana", "blockchain", "web3", "spl-token", "mint-authority", "freeze-au
 categories: ["solana", "blockchain"]
 keywords: ["solana mint authority", "solana freeze authority", "spl-token authorize", "spl-token freeze", "solana token renounce", "COption Pubkey", "solana mint account layout"]
 series: ["Solana Authorities"]
+cover:
+  image: "/images/solana/solana-authorities-mint-freeze.png"
 ---
 
 This is Part 2 of the [Solana Authorities](/series/solana-authorities/) series. In [Part 1](/posts/solana/solana-authorities-pattern/) we covered the authority pattern itself: what authorities are, how they differ from ownership, and what `None` means. Now we go deep on the two authorities every SPL token has.
