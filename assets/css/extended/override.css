@@ -517,11 +517,10 @@ kbd {
   .post-sidebar::-webkit-scrollbar { width: 6px; }
   .post-sidebar::-webkit-scrollbar-thumb { background: var(--tertiary); border-radius: 3px; }
 
-  /* Cap prose measure for reading comfort even though container is wider */
   .post-single .post-content > p,
   .post-single .post-content > ul,
   .post-single .post-content > ol,
-  .post-single .post-content > blockquote { max-width: 70ch; }
+  .post-single .post-content > blockquote { max-width: 100%; }
 
   .post-single .paginav { display: flex; }
   .post-single .paginav a + a { border-inline-start: 1px solid var(--border); }
@@ -534,7 +533,7 @@ kbd {
   .post-single .post-content > p,
   .post-single .post-content > ul,
   .post-single .post-content > ol,
-  .post-single .post-content > blockquote { max-width: 72ch; }
+  .post-single .post-content > blockquote { max-width: 100%; }
 }
 
 /* Ultra-wide (>= 1600px) — generous companion sidebar */
