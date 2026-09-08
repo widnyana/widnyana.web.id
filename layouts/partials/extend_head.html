@@ -1,5 +1,5 @@
 {{- /* Head custom content area start */ -}}
-{{- partialCached "templates/schema_json.html" . . }}
+{{- /* NOTE: schema_json.html is already emitted by the theme's head.html; do not call it here or the JSON-LD is duplicated on every page. */ -}}
 {{- /*     Insert any custom code (web-analytics, resources, etc.) - it will appear in the <head></head> section of every page. */ -}}
 {{- /*     Can be overwritten by partial with the same name in the global layouts. */ -}}
 {{- /* Head custom content area end */ -}}
