@@ -19,19 +19,26 @@ draft: false
 
 ## Laptop
 
-### Primary  
+### Daily driver
+
+- MacBook Pro 13-inch, 2020. [_](https://support.apple.com/en-us/111893)
+  - OS: Tahoe 26.6.2 (25G83)
+  - WM: Amethyst
+  - Apple M1 Chip, 16 GB RAM, 1 TB Disk
+
+### Build machine
+
+- MacBook Air 13-inch, M5, 2026.
+  - OS: Tahoe 26.6.2 (25G83)
+  - WM: Amethyst
+  - Apple M5 Chip, 16 GB RAM, 512 GB Disk
+
+### Standby backup
 
 - Lenovo IdeaPad Slim 5 14IRL8. [_](https://psref.lenovo.com/syspool/Sys/PDF/IdeaPad/IdeaPad_Slim_5_14IRL8/IdeaPad_Slim_5_14IRL8_Spec.pdf)
   - OS: Fedora Linux 40 Workstation
   - WM: Gnome
   - Intel i7-13620H, 16 GB RAM, 1 TB Disk
-
-### Secondary
-
-- MacBook Pro 13-inch, 2020. [_](https://support.apple.com/en-us/111893)
-  - OS: Sonoma 14.x
-  - WM: Amethyst
-  - Apple M1 Chip, 16 GB RAM, 1 TB Disk
 
 ## Peripherals
 
