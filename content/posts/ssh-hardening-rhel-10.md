@@ -220,13 +220,13 @@ A typo here is a lockout: `AllowUsers deploi` locks out `deploy`. This is the ot
 ```
 MaxAuthTries 3
 LoginGraceTime 20
-MaxStartups 10:30:60
-PerSourceMaxStartups 3
 PerSourcePenalties yes
 # PerSourcePenaltyExemptList your-home-ip/32
 ```
 
-`MaxAuthTries 3` drops the connection after three failed attempts. `LoginGraceTime 20` gives a client 20 seconds to authenticate before sshd hangs up, down from the default 120. `MaxStartups 10:30:60` starts refusing new unauthenticated connections once 10 are in progress, randomly, ramping to a hard cap at 60. `PerSourceMaxStartups 3` limits unauthenticated connections from a single address to 3 at once, so one host cannot eat the global pool.
+`MaxAuthTries 3` drops the connection after three failed attempts. `LoginGraceTime 20` gives a client 20 seconds to authenticate before sshd hangs up, down from the default 120.
+
+This block does not set `MaxStartups` or `PerSourceMaxStartups`, and that is on purpose. An earlier version of this post set `MaxStartups 10:30:60` and `PerSourceMaxStartups 3`, and the suspected cause of a lockout was those two lines. I have not confirmed it from the sshd log. The default `MaxStartups` is `10:30:100`: once 10 unauthenticated connections are open, sshd randomly drops 30% of new ones, and that share grows until the hard cap. On port 22, bots keep those slots busy, so your own login can be dropped at random. `PerSourceMaxStartups` has no limit by default. Set to 3, it refuses a fourth parallel connection from your address, which an Ansible run, an IDE, or `scp` next to `ssh` can open without trying. `PerSourcePenalties`, below, already handles one address misbehaving, so the two limits add lockout risk and little else.
 
 `PerSourcePenalties` is an OpenSSH feature added in [version 9.8](https://www.openssh.com/txt/release-9.8) (July 2024). sshd tracks the behavior of each source address and imposes escalating timeouts, then outright blocks, on addresses that keep failing authentication, crashing, or disconnecting mid-protocol. It is `fail2ban` built into sshd, without the log-parsing or the extra service. RHEL 10 ships OpenSSH 9.9, where `PerSourcePenalties` is on by default, so `PerSourcePenalties yes` here is just making the default explicit.
 
@@ -239,7 +239,7 @@ curl -s ifconfig.me
 That line is commented out with a `#` in the config above on purpose. Remove the `#` and replace `your-home-ip` with what `curl` printed, keeping the `/32` on the end (that means "just this one address"):
 
 ```
-PerSourcePenaltyExemptList 198.51.100.7/32
+PerSourcePenaltyExemptList your-home-ip/32
 ```
 
 Leave the `#` in place until you have done that. A literal `your-home-ip` makes the config invalid, `sshd -t` fails, and the service will not restart. If your home IP changes often, either exempt the wider range your provider gives you or leave this line commented and just be careful during setup. Getting locked out here is recoverable only from the provider's web console.
@@ -472,11 +472,12 @@ ssh-audit -p 14567 localhost  # no fail/warn lines
 - **Do not treat the port move as security.** It reduces noise. A targeted attacker finds the new port immediately.
 - **Do not set `PasswordAuthentication no` before a key login has worked from a second terminal.** Confirm first, then disable.
 - **Do not paste `PerSourcePenaltyExemptList your-home-ip/32` literally.** Either set it to a real address or leave the line commented. A literal placeholder breaks the config and the SSH service will not restart.
+- **Do not tighten `MaxStartups` or `PerSourceMaxStartups` on a public SSH port.** Bots fill the unauthenticated slots, and your own login gets dropped or refused.
 - **Do not put access rules in the main `/etc/ssh/sshd_config`.** Use `sshd_config.d/` drop-ins so a package update's config handling never fights your changes, and so your hardening is one file you can diff and copy.
 
 ## The part that surprises people
 
-`PerSourcePenalties` changes the threat model in a way that is easy to miss. A botnet hitting you from ten thousand addresses is now throttled per address, which is great. But you connect from one address, every time, and that address gets penalized on the same rules. One bad passphrase during a late-night change, then another, then a reconnect that times out because sshd is now sitting on your IP with a penalty, and you have locked yourself out of a box that is working perfectly. The exempt list is how you do not do that to yourself.
+`PerSourcePenalties` changes the threat model in a way that is easy to miss. A botnet hitting you from ten thousand addresses is now throttled per address, which is great. But you connect from one address, every time, and that address gets penalized on the same rules. One bad passphrase during a late-night change, then another, then a reconnect that times out because sshd is now sitting on your IP with a penalty, and you have locked yourself out of a box that is working perfectly. The exempt list is how you do not do that to yourself. Connection caps like `MaxStartups` hit you the same way, and they have no exempt list, which is why this post leaves them at the default.
 
 The other one: with 9.9's penalties on by default, running `fail2ban` for SSH specifically is mostly redundant now. It still earns its place watching other services, but the SSH jail is doing work sshd already does.
 
@@ -500,7 +501,7 @@ No. SELinux confines a compromised sshd to almost nothing, and turning it off re
 
 ### How do I harden SSH without locking myself out?
 
-Keep your current SSH session open, make one change at a time, and test each change from a second terminal before trusting it. The changes that cause lockouts are a typo in `AllowUsers`, disabling password auth before a key login works, a firewall reload whose ruleset omits your access, and a literal placeholder left in `PerSourcePenaltyExemptList`. If you do lock yourself out, recovery is through the VPS provider's web console.
+Keep your current SSH session open, make one change at a time, and test each change from a second terminal before trusting it. The changes that cause lockouts are a typo in `AllowUsers`, disabling password auth before a key login works, a firewall reload whose ruleset omits your access, tight `MaxStartups` or `PerSourceMaxStartups` values, and a literal placeholder left in `PerSourcePenaltyExemptList`. If you do lock yourself out, recovery is through the VPS provider's web console.
 
 ### Will these settings work on distributions other than RHEL 10?
 
@@ -548,11 +549,9 @@ AllowUsers deploy
 # --- brute-force / DoS limits ---
 MaxAuthTries 3
 LoginGraceTime 20
-MaxStartups 10:30:60
-PerSourceMaxStartups 3
 PerSourcePenalties yes
 # uncomment and set to your own IP once you know it (see the post):
-# PerSourcePenaltyExemptList 198.51.100.7/32
+# PerSourcePenaltyExemptList your-home-ip/32
 
 # --- idle session reaping ---
 ClientAliveInterval 300
