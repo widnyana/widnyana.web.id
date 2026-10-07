@@ -49,3 +49,4 @@ hugo.linux
 /.hugo_build.lock
 
 ideas/*
+docs/plans/
