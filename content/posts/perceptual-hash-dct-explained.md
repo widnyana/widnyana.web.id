@@ -30,7 +30,7 @@ Take a photo, resize it by 1 percent, and save it again. A byte hash such as SHA
 
 A perceptual hash wants the opposite property. Similar images should give similar hashes, so that "how different are these two images" becomes "how many bits differ between two 64-bit numbers".
 
-This post builds one from scratch. There is no incident behind it: it is an explainer, written because two other posts here use it as a step without explaining it. Those are [26,000 images on the GPU](/posts/metal-threadgroup-per-image/) and [searching the hashes by hamming distance](/posts/perceptual-hash-hamming-search/).
+This post builds one from scratch. There is no incident behind it: it is an explainer, and the groundwork for later posts on hashing and searching images at scale.
 
 ## The recipe in four lines
 
@@ -128,9 +128,3 @@ Adding a constant to every pixel changes exactly one coefficient: the first one,
 The hash records where the broad light and dark areas sit. It follows that edits which move those areas change the hash a lot: rotating the image, mirroring it, or cropping off a large part. This is a property of the design, and I did not test those cases here. If rotated or mirrored copies matter to you, hash each variant and compare against all of them.
 
 Two very different images can also land close together when both are mostly flat, such as blank pages or solid backgrounds. Their low frequencies are all near zero, so the median split is close to arbitrary.
-
-## What to read next
-
-Hashing one image is cheap. Hashing 26,000 of them is where the cost shows up: [Running the hash for 26,000 images on the GPU](/posts/metal-threadgroup-per-image/) covers the speed side, using the same steps as above. Once you have all those 64-bit numbers, comparing every pair stops being practical, and [searching them with a pigeonhole index](/posts/perceptual-hash-hamming-search/) covers that.
-
-If you want to argue with the reasoning, I am at [about](/about).
