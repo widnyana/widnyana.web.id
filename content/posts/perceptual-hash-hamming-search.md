@@ -138,5 +138,3 @@ The index is the right structure when the comparison itself is expensive or the 
 - **Exactness.** Everything here is exact. Approximate structures (locality sensitive hashing, random projection) would cut the work further and give up the guarantee, which is not a trade a duplicate finder should make quietly.
 
 The honest summary is the boring one: measure the constant before choosing the algorithm. 350 million comparisons is 0.25 seconds on one core and 0.13 seconds on the GPU, so the pair search was never the bottleneck in that photo step. The fixed buffer was.
-
-If you want to argue with the numbers, I am at [about](/about).
