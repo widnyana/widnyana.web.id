@@ -217,7 +217,7 @@ How these were taken:
 
 The 600-image fixture is a separate folder, 1/44 of the large one, used as a check that the same shape holds at a different size. It does not prove anything about caching: it proves the change was not specific to one folder's mix of file sizes.
 
-A later re-measure of the same step, after two further changes (the allocator relief above, and a fixed pair buffer in the near-duplicate search), gave 77.2 s for the photo step, 172.9 s for the whole scan, and 1.29 GB peak RSS against the same 1.5 GB gate. That is a separate run on a later state of the folder, not a continuation of the table above.
+A later re-measure of the same step, after two further changes (the allocator relief described below, and a fixed pair buffer in the near-duplicate search), gave 77.2 s for the photo step, 172.9 s for the whole scan, and 1.29 GB peak RSS against the same 1.5 GB gate. That is a separate run on a later state of the folder, not a continuation of the table above.
 
 ## What still sits in memory
 
