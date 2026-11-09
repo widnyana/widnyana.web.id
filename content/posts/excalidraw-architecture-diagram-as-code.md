@@ -135,5 +135,3 @@ Every value must come from the doc. Tag anything undecided as proposed.
 ```
 
 The build, the preview, the validator, and the cross-check are scripts inside the skill, and its workflow tells the agent to run them in that order.
-
-If you keep infrastructure diagrams that have to stay true to a doc and want a second opinion on the checks, more on how I work is on the [about page](/about).
