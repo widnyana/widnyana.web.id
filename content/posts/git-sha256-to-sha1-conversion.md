@@ -38,7 +38,7 @@ Nothing was wrong with the network or the credentials. The repository stored its
 
 This post is the conversion I ran, the checks that convinced me nothing was lost, and the parts that did not survive the trip.
 
-## Confirm the format
+## Check the object format: 64-character ids mean SHA-256
 
 ```bash
 git rev-parse --show-object-format
@@ -57,7 +57,7 @@ The setting lives in `.git/config` and is written at `git init` time:
 
 With that extension, every object id is 64 hex characters instead of 40. You cannot switch the format on an existing repository: the ids are stored inside every commit, tree and tag, so changing the algorithm means rewriting every object.
 
-## The two ways out
+## Two outcomes: keep the ids, or rewrite every one
 
 If your host accepts SHA-256 repositories, keep the repository as it is and push. That is cheaper and shorter.
 
@@ -81,9 +81,9 @@ The `symbolic-ref` line is not optional. `fast-import` writes the branches but l
 
 `--signed-tags=strip` keeps the import from stopping on a signed tag it cannot reproduce. My repository had no tags, so I did not see that path run.
 
-`git fast-import --force` is safe to re-run over a repository that already holds the result. The input is the same stream, so the commits come back with the same ids. I used that once to add the commit made after the conversion, without rebuilding the repository.
+`git fast-import --force` is safe to re-run over a repository that already holds the result. The input is the same stream, so the commits come back with the same ids. I used that once: one more commit landed in the SHA-256 repository after the first import, I exported again and imported with `--force`, and only that commit was added. That is why the failed push happened at 151 commits and the final export held 152.
 
-The output stream carries commits, trees, blobs, branches, tags and the stash ref. On the repo I converted that was 152 commits and 1,727 objects reachable from `main`.
+The output stream carries commits, trees, blobs, branches, tags and the stash ref. In this repository that came to 1,727 objects reachable from `main`.
 
 ## Prove nothing was lost
 
@@ -120,6 +120,8 @@ diff /tmp/content-a.txt /tmp/content-b.txt
 ```
 
 The `tar -xO` matters. `git archive` writes the commit id into a pax global header, so the tarballs differ between the two repositories even when the files inside are identical. My first attempt hashed the tarballs and reported a mismatch on a clean conversion.
+
+`shasum` ships with macOS. On Linux, `sha256sum` does the same job and takes no `-a` flag.
 
 The check I trust most is a second, independent import. Export the source again into a throwaway SHA-1 repository and compare the full object graph:
 
@@ -186,7 +188,9 @@ printf '%040d %s %s\t%s\n' 0 "$sha" "$committer" "On <branch>: <message>" \
 - Remote configuration and hooks. Re-add `origin` and copy `.git/hooks` if you had any.
 - Commit and tag signatures. This repository had none, so I cannot show what the import does with them. The export stream does not carry a signature field.
 
-## Small traps from the same session
+## Two traps that break the conversion silently
+
+`--quiet` on `git fast-export` truncates the stream. Git accepts the flag, the export exits 0, and filemodify lines disappear: on git 2.56.0 a two-commit test produced three `M` lines without the flag and one with it, and the import built trees with missing files and reported nothing. Keep `--quiet` on `fast-import`, never on `fast-export`. The file-list diff above catches the damage.
 
 `set -o pipefail` plus `git log --format=%H | head -n 1` exits 141 and kills the script, because `head` closes the pipe early. Capture the value with `git rev-parse main` instead, and do not put a `| head` on any step of the conversion script.
 
