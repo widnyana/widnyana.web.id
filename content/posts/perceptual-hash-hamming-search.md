@@ -1,6 +1,6 @@
 ---
 title: "Hamming search over 26,000 perceptual hashes: the index I built lost to comparing every pair"
-date: 2026-11-09T21:00:00+07:00
+date: 2026-11-16T09:00:00+07:00
 draft: true
 params:
   author: 'widnyana'
@@ -27,9 +27,13 @@ cover:
   alt: "A dark cover reading '350,767,341 comparisons.' above a card with the measured GPU and CPU times"
 ---
 
+This post searches perceptual hashes. [Perceptual hash from scratch](/posts/perceptual-hash-dct-explained/) explains how one is built, and the [GPU hashing post](/posts/metal-threadgroup-per-image/) covers computing 26,000 of them fast.
+
 26,487 perceptual hashes, a 64-bit fingerprint per image, and a rule: two images are near duplicates when their hashes differ in at most 10 bits. Comparing every hash against every other is
 
-$$\frac{n(n-1)}{2} = 350{,}767{,}341$$
+```text
+n * (n - 1) / 2 = 350,767,341
+```
 
 comparisons on a 115 GB working folder.
 
@@ -54,7 +58,9 @@ With `d = 10` that is 11 ranges over 64 bits, 9 of 6 bits and 2 of 5 bits. Build
 
 The expected saving comes from uniform hashing: two random 64-bit values share a 6-bit range with probability `2^-6`, so a 6-bit range contributes about `n^2 / 2^7` candidates. Summing over 9 ranges of 6 bits and 2 of 5 bits:
 
-$$\frac{9}{64} + \frac{2}{32} = 0.203$$
+```text
+9 / 64 + 2 / 32 = 0.203
+```
 
 About a fifth of the pairs, or 71 million checks instead of 350 million. That is the number I believed.
 
