@@ -143,5 +143,3 @@ I ran this on macOS. `rfd` uses a different backend on Windows and Linux, so rep
 ## One cost outside the code
 
 After the change I ran the repo's formatter, and it rewrote about 120 files unrelated to the fix. Merged, that would have conflicted with every other branch in flight. I reverted the formatter output and committed only the three files I had touched: `Cargo.lock`, `Cargo.toml`, and `lib.rs`. If your formatter is not a no-op on `main`, look at `git status` before you stage.
-
-If you ship desktop apps and want a second pair of eyes on startup failure paths, more on how I work is on the [about page](/about).

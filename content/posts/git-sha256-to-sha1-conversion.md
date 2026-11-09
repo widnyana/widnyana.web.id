@@ -201,5 +201,3 @@ This repository had one branch, no tags, no submodules, no Git LFS, no merge com
 One consequence I can state without testing: every commit id changed. Anything that recorded a short sha (a release note, a deploy log, an issue link) now points at an id that does not exist.
 
 I also skipped the in-place variant, where you rename `.git` to a backup, import into a fresh repository and move the working tree across. It works the same way and keeps one directory, and it is the version I would test first on a repository with uncommitted work.
-
-I write about the systems I run and the failures I fix at [/about](/about/).

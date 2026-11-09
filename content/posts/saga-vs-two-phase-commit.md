@@ -99,5 +99,3 @@ No, it means the consistency arrives later instead of atomically. That's still a
 ## So what
 
 Two-phase commit gives you atomicity, but it's rarely available in a system built from message brokers, managed databases, and third-party APIs, none of which speak XA. Saga is usually the only real option once a transaction crosses those boundaries, and the actual work is in designing honest compensating actions and picking orchestration or choreography deliberately rather than by default. Orchestration centralizes that decision in a workflow (Temporal is one way to build that workflow); choreography spreads it across event handlers, and is easiest to reason about only while the saga stays small.
-
-If you're mapping this onto a transaction your team already owns and want a second opinion on where the compensating actions get hard, more on how I work is on the [about page](/about).

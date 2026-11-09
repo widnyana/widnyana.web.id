@@ -131,5 +131,3 @@ Not the services that do the actual work. Workflow code (the part that has to be
 The pattern worth noticing: this tends to make sense when a process genuinely spans time, steps, and failure modes that already cost you an on-call rotation and a support queue to paper over. The trade, then, is moving that cost from application code your team maintains forever into a platform that has already solved it. It tends not to make sense for a call that already works, a stream that's already fast, or a cron job nobody's ever lost sleep over. There the platform's operational weight is a cost with no matching return.
 
 Score your own workload against the table and checklist above, not against how compelling this piece has been. The answer will look different from one system to the next, and it should.
-
-If you're working through that table for your own systems, or you've already decided and want a second opinion on the self-hosted-versus-Cloud call or sizing the Worker fleet, feel free to reach out. More on how I work is on the [about page](/about).
