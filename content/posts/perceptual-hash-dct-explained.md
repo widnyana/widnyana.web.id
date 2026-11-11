@@ -1,7 +1,6 @@
 ---
 title: "Perceptual hash from scratch: 32x32 pixels, one DCT, 64 bits, in Swift"
 date: 2026-11-09T19:00:00+07:00
-draft: true
 params:
   author: 'widnyana'
 description: "A normal hash changes completely when one pixel changes, so it cannot find near-duplicate photos. A perceptual hash shrinks the image to 32x32 grayscale, runs a discrete cosine transform, keeps the 64 lowest frequencies, and writes one bit per coefficient. Full Swift reference, real output, and where it breaks."
@@ -30,7 +29,7 @@ Take a photo, resize it by 1 percent, and save it again. A byte hash such as SHA
 
 A perceptual hash wants the opposite property. Similar images should give similar hashes, so that "how different are these two images" becomes "how many bits differ between two 64-bit numbers".
 
-This post builds one from scratch. There is no incident behind it: it is an explainer, and the groundwork for later posts on hashing and searching images at scale.
+This post builds one from scratch. There is no incident behind it: it is an explainer.
 
 ## The recipe in four lines
 
@@ -57,9 +56,9 @@ For a 2D image the transform runs twice, once along rows and once along columns.
 coef[v][u] = sum over y, x of  gray[y][x] * cos(pi * u * (x + 0.5) / 32) * cos(pi * v * (y + 0.5) / 32)
 ```
 
-Two passes cost far less than the double sum looks like. Because only 8 frequencies per axis are kept, the row pass makes 32 x 8 values, and the column pass turns them into 8 x 8.
+The double sum is cheaper than it looks when done as two passes. Only 8 frequencies per axis are kept, so the row pass makes 32 x 8 values and the column pass turns them into 8 x 8.
 
-## Step 3 and 4: the median decides the bits
+## Steps 3 and 4: the median decides the bits
 
 A coefficient can be large and positive, large and negative, or near zero. The hash does not store the value. It only stores whether the coefficient is above or below the median of all 64, which makes every bit a fair coin flip for a typical image and keeps the hash independent of the image's overall contrast.
 
@@ -103,7 +102,7 @@ func hamming(_ a: UInt64, _ b: UInt64) -> Int { (a ^ b).nonzeroBitCount }
 
 The input is a 32 x 32 grid of brightness values. Getting there from a real file (decode, convert to grayscale, average blocks) is ordinary image code and is left out, so the function above is the whole algorithm.
 
-One honest caveat: this version skips the scale factors that a textbook DCT applies per frequency. The bits do not depend on a global scale, but they do depend on the per-frequency scale, so this hash will not match another library bit for bit. It only has to match itself, which is true for any perceptual hash you compare with your own code.
+This version skips the scale factors that a textbook DCT applies per frequency. The bits do not depend on a global scale, but they do depend on the per-frequency scale, so this hash will not match another library bit for bit. It only has to match your own hashes, which holds for any perceptual hash you compare with your own code.
 
 ## Does it work?
 
@@ -117,7 +116,7 @@ unrelated a5a4a4a5a55a5b5b  distance 30
 
 The brighter copy differs in 4 bits out of 64. The unrelated image differs in 30. Two random 64-bit numbers differ in about 32 bits on average, so 30 is what "no relation" looks like.
 
-Most of the 4 flipped bits come from the noise: a coefficient that sat close to the median can cross it after a small change. That is the reason a threshold exists. The two posts linked above use at most 10 bits.
+Most of the 4 flipped bits come from the noise: a coefficient that sat close to the median can cross it after a small change. That is the reason a distance threshold exists: a small number of flipped bits, such as 10 out of 64, still counts as the same image.
 
 ## Why brightness barely matters
 
@@ -125,6 +124,6 @@ Adding a constant to every pixel changes exactly one coefficient: the first one,
 
 ## Where it breaks
 
-The hash records where the broad light and dark areas sit. It follows that edits which move those areas change the hash a lot: rotating the image, mirroring it, or cropping off a large part. This is a property of the design, and I did not test those cases here. If rotated or mirrored copies matter to you, hash each variant and compare against all of them.
+The hash records where the broad light and dark areas sit. It follows that edits which move those areas change the hash a lot: rotating the image, mirroring it, or cropping off a large part. I did not test those cases here. If rotated or mirrored copies matter to you, hash each variant and compare against all of them.
 
 Two very different images can also land close together when both are mostly flat, such as blank pages or solid backgrounds. Their low frequencies are all near zero, so the median split is close to arbitrary.
