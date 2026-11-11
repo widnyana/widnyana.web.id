@@ -36,8 +36,6 @@ fatal: the receiving end does not support this repository's hash algorithm
 
 Nothing was wrong with the network or the credentials. The repository stored its objects with SHA-256 ids, and the remote only understood SHA-1. Every commit existed locally and none of them could leave the machine.
 
-This post is the conversion I ran, the checks that convinced me nothing was lost, and the parts that did not survive the trip.
-
 ## Check the object format: 64-character ids mean SHA-256
 
 ```bash

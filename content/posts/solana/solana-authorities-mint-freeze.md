@@ -13,7 +13,7 @@ cover:
   image: "/images/solana/solana-authorities-mint-freeze.png"
 ---
 
-This is Part 2 of the [Solana Authorities](/series/solana-authorities/) series. In [Part 1](/posts/solana/solana-authorities-pattern/) we covered the authority pattern itself: what authorities are, how they differ from ownership, and what `None` means. Now we go deep on the two authorities every SPL token has.
+This is Part 2 of the [Solana Authorities](/series/solana-authorities/) series. In [Part 1](/posts/solana/solana-authorities-pattern/) we covered the authority pattern itself: what authorities are, how they differ from ownership, and what `None` means. This part covers the two authorities every SPL token has.
 
 Disabling the mint authority does not disable the freeze authority. A token with a "renounced" mint can still have every holder locked out of their tokens. These are two independent fields in a single 82-byte account, and checking only one of them is not enough.
 
@@ -73,7 +73,7 @@ Freeze authority has both legitimate and illegitimate uses.
 
 - **Rug pulls.** The creator keeps freeze authority enabled, waits for enough buyers, then freezes seller accounts so no one can exit. The creator's own tokens remain unfrozen, and the liquidity pool gets drained.
 
-Detecting this is straightforward: if a token's freeze authority is not `None`, someone can freeze your account. Whether they will is a trust question, not a technical one.
+Detecting this is straightforward: if a token's freeze authority is not `None`, someone can freeze your account. Whether they will is a question of trust.
 
 ---
 
@@ -87,7 +87,7 @@ spl-token display <MINT_ADDRESS>
 
 Check two things:
 
-1. **Mint Authority** should show `none`. Not a burn address like `1nc1nerator11111111111111111111111111111111`. Not a dead key. The word `none` in the CLI output means the capability is permanently disabled.
+1. **Mint Authority** should show `none`. It should not be a burn address like `1nc1nerator11111111111111111111111111111111` or a dead key. The word `none` in the CLI output means the capability is permanently disabled.
 2. **Freeze Authority** should show `none`. Same check.
 
 Some projects "renounce" by transferring authority to a burn address (a key whose private key is unknown). This is not the same as disabling. A future vulnerability, key recovery, or quantum computing advance could theoretically allow someone to use that key.

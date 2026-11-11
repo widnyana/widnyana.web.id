@@ -102,7 +102,7 @@ pub fn run() {
 
 Delete the same check from the `setup` hook, so it runs once. `MessageDialog::show` blocks until the user closes the box, then the process exits with code 1. There is no panic and no backtrace, and the sentence that used to live only in the terminal is on screen.
 
-Two details are easy to get wrong. Use `eprintln!` and not `log::error!`: the log plugin is registered on the builder, and before the builder exists there is nowhere for `log::error!` to go. And set the dialog level to `Error` so the operating system draws it as a failure and not as a notice.
+Two details matter. Use `eprintln!` and not `log::error!`: the log plugin is registered on the builder, and before the builder exists there is nowhere for `log::error!` to go. And set the dialog level to `Error` so the operating system draws it as a failure and not as a notice.
 
 ## Where else this technique fits
 
@@ -116,7 +116,7 @@ Any startup failure that you can detect without a window, a webview, or a Tauri 
 | Required external binary or driver missing | Look it up on `PATH`, name the one that is missing |
 | Local port already taken by another instance | Try to bind it, say which port and suggest closing the other copy |
 
-The common thread is that the user can fix each of these themselves if the app tells them what it is. The same dialog also suits a warning you want acknowledged before the app starts, because `show()` waits for the user to close it.
+The user can fix each of these themselves if the app says what it is. The same dialog also suits a warning you want acknowledged before the app starts, because `show()` waits for the user to close it.
 
 ## Why not the dialog plugin
 

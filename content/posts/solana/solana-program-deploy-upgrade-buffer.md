@@ -14,7 +14,7 @@ cover:
 
 This is Part 4 of the [Solana Program Lifecycle](/series/solana-program-lifecycle/) series. In [Part 3](/posts/solana/solana-program-lifecycle-two-account-model/) we saw that a program is two accounts: a 36-byte Program Account that points to a ProgramData Account holding the actual bytecode. Now we look at how those two accounts get created and replaced.
 
-The short version: there is a third account involved. A temporary one. It exists only during the deploy or upgrade, and if anything goes wrong, it can sit on chain holding your SOL until you reclaim it.
+The short version: there is a third, temporary account involved. It exists only during the deploy or upgrade, and if anything goes wrong, it can sit on chain holding your SOL until you reclaim it.
 
 That third account is the Buffer.
 
@@ -24,7 +24,7 @@ That third account is the Buffer.
 
 A Solana transaction has a hard upper limit of 1232 bytes. That covers the signatures, the message header, the account list, and the instruction data. After overhead, the usable instruction payload is roughly 800 to 1000 bytes per transaction.
 
-A typical Anchor program is between 200KB and 500KB of compiled ELF bytecode. The math does not work. There is no way to fit the bytecode of a real program inside a single transaction.
+A typical Anchor program is between 200KB and 500KB of compiled ELF bytecode. The bytecode of a real program does not fit inside a single transaction.
 
 So Solana splits the work across many transactions. The bytecode lands in a holding area first, then gets activated in a final step. That holding area is the Buffer Account.
 
@@ -138,7 +138,7 @@ The new version becomes effective in the next slot (`deployment_slot + 1`).
 
 The Program account does not change. The `programdata_address` pointer does not change. Only the bytecode inside the ProgramData account is replaced. Everything that referenced the program ID before the upgrade still works after.
 
-The `Upgrade` instruction takes a fourth account that the deploy version does not: a **spill account**. The buffer's lamports first top up the ProgramData account to rent-exemption, and anything left over lands in the spill account. The CLI defaults this to the deployer wallet, so the SOL comes back, just by way of a couple of hops.
+The `Upgrade` instruction takes a fourth account that the deploy version does not: a spill account. The buffer's lamports first top up the ProgramData account to rent-exemption, and anything left over lands in the spill account. The CLI defaults this to the deployer wallet, so the SOL comes back, just by way of a couple of hops.
 
 Three constraints to remember:
 
@@ -300,7 +300,7 @@ After the deploy, run `solana program show --buffers` again. The buffer is gone.
 
 ### Tying it together
 
-Put it all in motion. You run `solana program deploy`. Behind the scenes, the CLI creates a Buffer account, writes your bytecode into it across hundreds of transactions, and then sends one final activation instruction that copies the bytecode into the ProgramData Account and drains the Buffer. The program is live.
+You run `solana program deploy`. Behind the scenes, the CLI creates a Buffer account, writes your bytecode into it across hundreds of transactions, and then sends one final activation instruction that copies the bytecode into the ProgramData Account and drains the Buffer. The program is live.
 
 If the write phase fails, you end up with an orphaned Buffer holding SOL. If the activation fails, the buffer is complete but the program is untouched. In both cases, the live program is fine. The Buffer pattern isolates failures. `solana program close --buffers` reclaims the SOL.
 

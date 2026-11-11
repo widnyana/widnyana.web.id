@@ -18,9 +18,9 @@ cover:
 
 ### Using Backblaze B2 as State Storage for OpenTofu
 
-Infrastructure as Code (IaC) tools like **OpenTofu** rely on state files to keep track of the resources they manage. This state file is critical—it’s how OpenTofu knows what’s already been deployed, updated, or destroyed. If you're looking for a cost-effective, reliable, and scalable storage solution for your state files, **Backblaze B2** is an excellent choice. 
+Infrastructure as Code (IaC) tools like **OpenTofu** rely on state files to keep track of the resources they manage. The state file is how OpenTofu knows what’s already been deployed, updated, or destroyed. Backblaze B2 is a cost-effective place to store them.
 
-The good news? Configuring OpenTofu to use Backblaze B2 is a breeze! It’s almost identical to setting up Amazon S3 as the backend, with just a tiny tweak. Let’s walk through it.
+Configuring OpenTofu to use Backblaze B2 is almost identical to setting up Amazon S3 as the backend, with a small tweak.
 
 ---
 
@@ -28,15 +28,15 @@ The good news? Configuring OpenTofu to use Backblaze B2 is a breeze! It’s almo
 
 1. **Cost Savings:** Backblaze B2 offers cloud storage at a fraction of the cost of traditional providers.
 2. **S3 Compatibility:** Fully supports the S3 API, so you can reuse familiar configurations.
-3. **Performance and Reliability:** Backed by robust infrastructure for seamless operation.
+3. **Performance and Reliability:** Runs on Backblaze's storage infrastructure.
 
-If you're already comfortable with S3, you're in for an easy ride. If not, don’t worry—this guide will make you feel like a pro.
+If you already know S3, this will feel familiar.
 
 ---
 
 ### The Configuration
 
-Here’s how you can configure OpenTofu to store its state file in Backblaze B2:
+Configure OpenTofu to store its state file in Backblaze B2:
 
 1. **Set Up Your Backend Configuration**
 
@@ -62,7 +62,7 @@ terraform {
 }
 ```
 
-What’s with all the `skip_` settings? They’re required because Backblaze doesn’t support some AWS-specific features like regions and metadata APIs. These skips ensure everything runs smoothly.
+The `skip_` settings are required because Backblaze doesn’t support some AWS-specific features like regions and metadata APIs.
 
 ---
 
@@ -76,7 +76,7 @@ tofu init \
   -backend-config="secret_key=yyyyyyy"
 ```
 
-Here’s what each flag does:
+The flags:
 - `access_key`: Your Backblaze application key ID.
 - `secret_key`: Your Backblaze application key.
 
@@ -84,20 +84,18 @@ Here’s what each flag does:
 
 ### What Happens Next?
 
-That’s it! Your state file is now stored securely in Backblaze B2. From this point, you can continue doing some magic and casting spells as usual.
-
-So go ahead, give Backblaze B2 a try!
+Your state file is now stored in Backblaze B2. Continue using OpenTofu as usual.
 
 ---
 
-### What is OpenTofu, and Why Does It Matter?
+### What is OpenTofu?
 
-**OpenTofu** is an open-source alternative to HashiCorp's Terraform, born after HashiCorp switched Terraform's licensing model from open-source to the more restrictive Business Source License (BSL). OpenTofu is a community-driven fork of Terraform, ensuring that infrastructure-as-code (IaC) tools remain truly open and accessible to everyone.
+**OpenTofu** is an open-source alternative to HashiCorp's Terraform, born after HashiCorp switched Terraform's licensing model from open-source to the more restrictive Business Source License (BSL). OpenTofu is a community-driven fork of Terraform, so that infrastructure-as-code (IaC) tools stay open.
 
-#### Why OpenTofu Matters:
-1. **True Open-Source:** Maintains an open license, enabling collaboration and innovation without restrictions.
-2. **Continuity:** Provides a drop-in replacement for Terraform users, ensuring seamless adoption with existing configurations.
-3. **Community-Driven:** Built and governed by a growing community of developers, prioritizing users' needs over corporate interests.
-4. **Future-Proof:** Protects IaC tools from sudden licensing changes that could disrupt workflows.
+#### Why OpenTofu matters
+1. **True Open-Source:** Maintains an open license.
+2. **Continuity:** A drop-in replacement for Terraform users, working with existing configurations.
+3. **Community-Driven:** Built and governed by a community of developers.
+4. **Future-Proof:** Protects IaC tools from sudden licensing changes.
 
-OpenTofu is more than a fork—it’s a stand for openness and trust in the infrastructure ecosystem.
+OpenTofu is a fork that keeps the license open.

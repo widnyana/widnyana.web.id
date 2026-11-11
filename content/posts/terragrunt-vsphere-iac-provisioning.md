@@ -31,9 +31,9 @@ cover:
 
 I used to build VMs by hand. Click through the wizard, guess an IP, forget which VLAN it went on, and a month later nobody remembers why `vm-1042` exists.
 
-This post is the replacement: OpenTofu + Terragrunt cloning from a golden template on vSphere, driven by a least-privilege SSO user. Everything here survived a real production estate, including the parts that **cost me actual debugging time**: the permission model in vCenter is full of silent traps, and I'll point at every one of them.
+This post is the replacement: OpenTofu + Terragrunt cloning from a golden template on vSphere, driven by a least-privilege SSO user. Everything here survived a real production estate, including the parts that cost me real debugging time: the permission model in vCenter is full of silent traps, and I'll point at every one of them.
 
-**Short on time?** Jump to the [pitfalls table](#the-consolidated-pitfalls-table) — sixteen failures, each one broke a real apply. Reading time for the full walkthrough: about 10 minutes.
+**Short on time?** Jump to the [pitfalls table](#the-consolidated-pitfalls-table): sixteen failures, each one broke a real apply.
 
 What you'll end up with:
 
@@ -89,7 +89,7 @@ done < <(mise exec -- sops --decrypt "$(git rev-parse --show-toplevel)/terraform
 exec terragrunt "$@"
 ```
 
-Every OpenTofu run goes through that one wrapper — exactly one path to the credentials. It decrypts `terraform/vsphere.sops.env` (SOPS + age, key stays on your machine), exports only the `VSPHERE_*` lines, and `exec`s terragrunt. Plaintext never lands on disk, and the secret's scope is the process: it ends when the command ends. (For `govc` side-work like discovery and imports, reuse the same decrypted values: same file, same keys, `GOVC_URL="$VSPHERE_SERVER"` and so on.)
+Every OpenTofu run goes through that one wrapper: exactly one path to the credentials. It decrypts `terraform/vsphere.sops.env` (SOPS + age, key stays on your machine), exports only the `VSPHERE_*` lines, and `exec`s terragrunt. Plaintext never lands on disk, and the secret's scope is the process: it ends when the command ends. (For `govc` side-work like discovery and imports, reuse the same decrypted values: same file, same keys, `GOVC_URL="$VSPHERE_SERVER"` and so on.)
 
 ```sh
 sops --encrypt --age age1<recipient> \
@@ -123,7 +123,7 @@ vCenter permissions are `(principal, object, role)` triples. Managing raw privil
 
 Two hard rules, both learned the expensive way:
 
-**Rule 1: a principal holds one role per object.** vCenter allows exactly one role assignment per `(principal, object)` pair. Assign a second role at the same scope and vCenter **silently replaces** the first — no error, no warning.
+**Rule 1: a principal holds one role per object.** vCenter allows exactly one role assignment per `(principal, object)` pair. Assign a second role at the same scope and vCenter silently replaces the first, with no error and no warning.
 
 This reproduced in my estate: two root-scoped roles set back-to-back, the second dropped the first's grant, and every VM apply 403'd on tag attach. Two roles that need the same scope belong in **one** role.
 
@@ -414,13 +414,11 @@ unit "vsphere_vm_app-web01" {
 }
 ```
 
-Here's what that unit doesn't ask you to write.
-
 A shared `root.hcl` generates the provider block from the `VSPHERE_*` env vars. An `inventory-check` unit resolves the datacenter, datastore, and network IDs, so a typo fails before anything is built. State lives in a small local file per unit, outside the rendered stack directory, so regenerating never touches it. (Prefer remote state? I wrote up [Backblaze B2 as a backend](/posts/opentofu-backblaze-backend/).)
 
 Static IPs are the one that bites. They go through `guestinfo.metadata`, keyed by the literal device name (`ens192`), not a `match:` glob. Use a glob and NetworkManager quietly configures a device that doesn't exist, then reports success.
 
-Easy to miss: the **tag taxonomy is code too**. Tags live once per vCenter, not per environment, so a separate `global` stack owns them — it applies before any environment stack and imports whatever already exists out-of-band. (Estates with a vCenter per environment run this stack once per vCenter.)
+Easy to miss: the **tag taxonomy is code too**. Tags live once per vCenter, not per environment, so a separate `global` stack owns them. It applies before any environment stack and imports whatever already exists out-of-band. (Estates with a vCenter per environment run this stack once per vCenter.)
 
 Environment stacks then reference tags *by name* only; a plan referencing a tag that doesn't exist fails fast instead of silently skipping it.
 
@@ -435,11 +433,11 @@ mise run tg -- stack run apply --out-dir ./tfplan
 mise run tg -- output                            # sanity: default_ip_address matches reality (run from the env dir)
 ```
 
-The `--out-dir ./tfplan` looks like a convenience and is not. Without it, each unit's plan lands inside its own `.terragrunt-stack/` directory, which the next `stack generate` **wipes**. Collecting plans under one gitignored path is what keeps the reviewed plan intact through apply: apply executes the plan you actually reviewed instead of re-planning against whatever state looks like by then.
+The `--out-dir ./tfplan` looks like a convenience and is not. Without it, each unit's plan lands inside its own `.terragrunt-stack/` directory, which the next `stack generate` wipes. Collecting plans under one gitignored path is what keeps the reviewed plan intact through apply: apply executes the plan you actually reviewed instead of re-planning against whatever state looks like by then.
 
 Three rules that bite if ignored:
 
-1. **Regenerate between every edit and every plan.** `stack generate` is not automatic. Skip it and the plan happily reports diffs from two edits ago — *ghost diffs* that make no sense until you remember you changed the file.
+1. **Regenerate between every edit and every plan.** `stack generate` is not automatic. Skip it and the plan happily reports diffs from two edits ago: *ghost diffs* that make no sense until you remember you changed the file.
 
 2. **Verify govc discovery data before trusting it.** `num_cpus` and `thin_provisioned` come from discovery, but govc lies by omission: `eagerlyScrub: false` reads like "thin" but actually describes eager-zeroing. `state show` after import is the ground truth. Put a placeholder like `num_cpus = -1` and it fails loudly at plan instead of quietly creating something wrong.
 
@@ -447,7 +445,7 @@ Three rules that bite if ignored:
 
 For VMs that already exist, the `vsphere-vm-imported` unit adopts them into state: discover the real spec with `govc` first, `mise run tg -- import vsphere_virtual_machine.vm "/Datacenter/vm/<folder>/<name>"` second, then reconcile the plan until it's clean. Nothing on the VM's disk is touched; the OS stays Ansible's problem.
 
-One habit ties the whole loop together: **`plan` and `apply` are human verbs.** The plan file holds rendered variable values in plaintext, the diff is the only review surface between a config mistake and a destroyed VM, and `apply` should execute exactly what was reviewed (the saved plan file, not a fresh plan against drifted state).
+One habit ties the whole loop together: `plan` and `apply` are human verbs. The plan file holds rendered variable values in plaintext, the diff is the only review surface between a config mistake and a destroyed VM, and `apply` should execute exactly what was reviewed (the saved plan file, not a fresh plan against drifted state).
 
 ---
 
@@ -480,7 +478,7 @@ Every entry here broke a real apply. Each maps to the section above.
 
 ### Can Terragrunt clone VMs on vSphere?
 
-Yes — the cloning itself is done by OpenTofu's `vsphere` provider (`vsphere_virtual_machine`), which clones from a template. Terragrunt layers on top: per-environment values, a shared `root.hcl`, and stack files that render one unit per VM. See [the Terragrunt stack](#the-terragrunt-stack).
+Yes, the cloning itself is done by OpenTofu's `vsphere` provider (`vsphere_virtual_machine`), which clones from a template. Terragrunt layers on top: per-environment values, a shared `root.hcl`, and stack files that render one unit per VM. See [the Terragrunt stack](#the-terragrunt-stack).
 
 ### What privileges does the vsphere provider need?
 
@@ -488,7 +486,7 @@ Fewer than you'd guess, if you split them correctly: a datacenter-scoped role co
 
 ### Why does the plan force-replace my cloned VM?
 
-Almost always a mismatch between the unit config and the template on `firmware`, `efi_secure_boot_enabled`, or `disk_thin_provisioned` — fields that aren't per-VM settable. `guest_id` and `scsi_type` must be read from the template, never restated. Full table in [six fields decide everything](#the-golden-template).
+Almost always a mismatch between the unit config and the template on `firmware`, `efi_secure_boot_enabled`, or `disk_thin_provisioned`, fields that aren't per-VM settable. `guest_id` and `scsi_type` must be read from the template, never restated. Full table in [six fields decide everything](#the-golden-template).
 
 ### Why doesn't the cloned VM get an IP or hostname?
 
@@ -496,7 +494,7 @@ cloud-init never read `guestinfo`: either `open-vm-tools` isn't installed in the
 
 ### Terragrunt or plain Terraform/OpenTofu for vSphere?
 
-Same provider either way — Terragrunt adds reusable units, environment separation, and a render-once stack file, which pays off once you're cloning more than a handful of VMs across environments. Plain OpenTofu is fine for a single environment.
+Same provider either way. Terragrunt adds reusable units, environment separation, and a render-once stack file, which pays off once you're cloning more than a handful of VMs across environments. Plain OpenTofu is fine for a single environment.
 
 ---
 

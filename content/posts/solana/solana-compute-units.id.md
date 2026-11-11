@@ -14,15 +14,13 @@ cover:
 
 Ini Bagian 2 dari seri [Solana Program Lifecycle](/id/series/solana-program-lifecycle/). Di Bagian 1 kita udah bahas cara kerja akun. Sekarang gue mau bahas hal yang bakal bikin kode lu hancur kalau dibiariin: compute units.
 
-Transaksi Solana nggak ngasih peringatan saat kita mendekatin batas compute. Dia cuma gagal aja. User kehilangan fees. Nggak ada pengembalian. Banyak developer baru nyadar masalah ini pas mainnet mulai nolak transaksi yang sebelumnya lancar jaya di devnet.
-
-Post ini about cara nghindarin pelajaran mahal itu.
+Transaksi Solana nggak ngasih peringatan saat kita mendekatin batas compute. Dia cuma gagal, dan user kehilangan fees tanpa pengembalian. Banyak developer baru nyadar masalah ini pas mainnet mulai nolak transaksi yang sebelumnya lancar jaya di devnet.
 
 ---
 
 ### Masalahnya: Transaksi kita lebih mahal dari yang kita kira
 
-Transaksi Solana nggak gagal secara elegan saat kehabisan compute. Dia cuma mati begitu aja. User kehilangan fees. Nggak ada pengembalian. Nggak ada peringatan.
+Transaksi Solana nggak gagal secara elegan saat kehabisan compute. Dia cuma mati begitu aja, user kehilangan fees, tanpa pengembalian dan tanpa peringatan.
 
 Masalahnya: kebanyakan developer menebak biaya compute mereka alih-alih ngukur. "Oh, CPI kayanya aman sih, gue bisa muat 10." Terus pas di-profiling, ternyata 10 CPI aja udah bakar porsi gede dari budget 1.4M. Tambah verifikasi tanda tangan, beberapa account load, dikit deserialization, dan tiba-tiba transaksi udah jebol budget.
 
@@ -144,7 +142,7 @@ Jalanin ini dan perhatiin outputnya. Kita bakal ngeliat sesuatu kayak:
 Program <id> consumed 78,432 of 200,000 compute units
 ```
 
-Angka 78,432 itu angka asli kita. Bukan tebakan, bukan hitung-hitungan. Pengukuran nyata.
+Angka 78,432 itu angka asli kita, hasil pengukuran, bukan tebakan.
 
 ---
 
@@ -224,7 +222,7 @@ Recovery secp256k1 makan 25,000 CU per tanda tangan (`secp256k1_recover_cost`). 
 - Pake program multisig yang mem-batch verifikasi
 - Pecah jadi beberapa transaksi
 
-Ini batasan keras, bukan pola. Kalau use case butuh 10 verifikasi tanda tangan dalam satu instruksi, berarti lu melawan arsitekturnya, bukan kerja samaama dia.
+Ini batasan keras, bukan pola. Kalau use case butuh 10 verifikasi tanda tangan dalam satu instruksi, berarti lu melawan arsitekturnya, bukan kerja sama dia.
 
 ---
 
@@ -286,9 +284,9 @@ Kalau mendekatin 1.4M, pecah jadi dua transaksi. Lakukan pas development dong, b
 
 ### Checklist sebelum mainnet
 
-Ini yang bedain kode yang bisa di-deploy dari kode yang gagal di produksi.
+Jalanin ini sebelum deploy ke mainnet.
 
-1. **Profil pake cargo test-sbf**: ukur penggunaan CU aslinya. Jangan nebak.
+1. **Profil pake cargo test-sbf**: ukur penggunaan CU aslinya.
 2. **Test kasus terberat**: akun maksimal, data maksimal, semua dibatasin. Berapa biayanya?
 3. **Estimasikan priority fees**: saat jam sibuk, berapa biaya 1,000 micro-lamports per CU dalam SOL?
 4. **Rencanain pemecahan**: kalau deket 1.4M, pecah jadi beberapa transaksi sekarang.
@@ -310,15 +308,15 @@ Kalau ada test yang melebihi 1.4M, refactor dulu sebelum deploy.
 
 Kejutan terbesar: kebanyakan developer Solana nggak tahu berapa banyak CU program mereka sebenernya pake. Semuanya lancar di devnet, terus mainnet mulai nolak transaksi dengan pesan "insufficient compute budget" dan errornya nggak ngasih tahu instruksi mana yang meledakkan budget.
 
-Kejutan kedua: CPI dominan di budget kebanyakan program. Kamu bisa ngoptimasi deserialisasi dan account loading seharian dan hemat 10,000 CU. Atau lu bisa ngilangin satu CPI yang nggak perlu dan hemat seluruh biaya eksekusinya. Satu perubahan, dampak gede.
+Kejutan kedua: CPI dominan di budget kebanyakan program. Kamu bisa ngoptimasi deserialisasi dan account loading seharian dan hemat 10,000 CU. Atau lu bisa ngilangin satu CPI yang nggak perlu dan hemat seluruh biaya eksekusinya.
 
-Hal ketiga: angka CU di log `cargo test-sbf` itu data nyata dari kode kamu yang sebenernya. Jangan ng_estimator. Profil.
+Hal ketiga: angka CU di log `cargo test-sbf` itu data nyata dari kode kamu yang sebenernya, jadi pake itu, bukan estimasi.
 
 ---
 
 ### Mengikat semuanya
 
-Bayangin semuanya bergerak. Sebuah transaksi masuk. Runtime ngasih dia 1.4M CU. Setiap instruksi di dalamnya dapet 200K. Setiap operasi, dari pembacaan memori sampai recovery secp256k1, nggerogoti budget itu. Saat nyapai nol, transaksi mati. Nggak ada pengembalian.
+Sebuah transaksi masuk. Runtime ngasih dia 1.4M CU. Setiap instruksi di dalamnya dapet 200K. Setiap operasi, dari pembacaan memori sampai recovery secp256k1, nggerogoti budget itu. Saat nyapai nol, transaksi mati. Nggak ada pengembalian.
 
 Langkah yang bisa diandalkan adalah profil sebelum hal lain. `cargo test-sbf` ngasih angka nyata. Pake. Cari tau ke mana CU sebenernya pergi. Biasanya itu CPI: satu cross-program invoke yang nggak perlu bisa lebih mahal dari semua yang lain digabungin. Hilangin itu, dan budget kebuka lagi.
 

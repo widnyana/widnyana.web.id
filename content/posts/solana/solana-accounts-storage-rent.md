@@ -30,7 +30,7 @@ Every account on Solana carries these fields:
 | `executable` | `true` if this account holds runnable program code |
 | `rent_epoch` | Legacy field. Tracks rent state (more below) |
 
-If you've done Ethereum development, here's the big difference: Solana separates code from data. A **program account** holds executable bytecode (like a contract). A **data account** holds state that the program reads and writes. They're different accounts.
+If you've done Ethereum development, the big difference is that Solana separates code from data. A **program account** holds executable bytecode (like a contract). A **data account** holds state that the program reads and writes. They're different accounts.
 
 Why does this matter? Because when transactions touch different data accounts, the runtime can process them in parallel. No single global state bottleneck.
 
@@ -113,11 +113,11 @@ Put fixed-size fields first, variable-size fields (strings, vecs) last. This kee
 
 Storing data on Solana costs SOL. The network calls this **rent**, but it works more like a deposit. You get the full balance back when you close the account.
 
-Here's the deal: every account must hold a minimum lamport balance proportional to its data size. This balance keeps the data alive on-chain.
+Every account must hold a minimum lamport balance proportional to its data size. This balance keeps the data alive on-chain.
 
 #### Rent-Exempt: The Normal State
 
-The practical approach is simple: fund every account with enough lamports to cover **two years** of rent upfront. Once you do that, the account is **rent-exempt**. The runtime never deducts anything from it.
+Fund every account with enough lamports to cover **two years** of rent upfront. Once you do that, the account is **rent-exempt**. The runtime never deducts anything from it.
 
 This isn't optional in practice. Every account you create needs to be rent-exempt from day one.
 
@@ -173,7 +173,7 @@ PDAs let programs own and manage accounts **without any private key**. This is p
 
 Normal Solana addresses are public keys from [Ed25519 keypairs](https://solana.com/docs/core/pda). They have a corresponding private key that signs transactions. A PDA is different: it's an address that's intentionally derived to **fall off the Ed25519 curve**. No private key exists for it. Ever.
 
-Think of it like this: a PDA is a mailbox address that only one specific program has the key to open. No human, no other program, can sign for it.
+A PDA is like a mailbox address that only one specific program has the key to open. No human, no other program, can sign for it.
 
 You derive a PDA from two things:
 
@@ -201,13 +201,13 @@ let (pda_address, bump_seed) = Pubkey::find_program_address(
 
 The derivation process tries bump values starting from 255, counting down, until it finds an address that's off the Ed25519 curve. That final bump byte is what it returns alongside the address.
 
-Important: deriving a PDA is just math. It doesn't create anything on-chain. As the [Solana docs](https://solana.com/docs/core/pda) put it, a PDA is like an address on a map. Just because the address exists doesn't mean there's anything built there. You still need to explicitly create the account.
+Deriving a PDA is just math. It doesn't create anything on-chain. As the [Solana docs](https://solana.com/docs/core/pda) put it, a PDA is like an address on a map. Just because the address exists doesn't mean there's anything built there. You still need to explicitly create the account.
 
 #### Why PDAs Are Useful
 
 **Predictable addresses.** Same seeds + same program = same address, every time. Your frontend can compute where an account lives without asking the chain.
 
-**Program-only control.** Only the owning program can sign for its PDAs via [`invoke_signed`](https://solana.com/docs/core/cpi). No external key can interfere. This is what makes PDAs safe. No human, no other program, can hijack them.
+**Program-only control.** Only the owning program can sign for its PDAs via [`invoke_signed`](https://solana.com/docs/core/cpi). No external key can interfere. This is what makes PDAs safe.
 
 **Flexible state design.** Different seed combinations give you different addresses. One account per user? Seeds `[b"profile", user_pubkey]`. A global config? Seeds `[b"config"]`. Map your state however you want.
 
@@ -251,9 +251,9 @@ The runtime re-derives the address from the seeds and program ID. If it matches 
 
 ### 6. Tying It All Together
 
-Put it all in motion. A user submits a transaction. The runtime loads every account listed in the instruction. Your program checks the owner field: does it actually own these data accounts? If yes, it reads and writes the raw bytes (Borsh-serialized).
+A user submits a transaction. The runtime loads every account listed in the instruction. Your program checks the owner field: does it actually own these data accounts? If yes, it reads and writes the raw bytes (Borsh-serialized).
 
-Every account involved needs its lamport balance at or above the rent-exempt minimum. If PDAs are part of the flow, your program signs with `invoke_signed` using the seeds. The runtime double-checks all ownership and signing rules. No exceptions.
+Every account involved needs its lamport balance at or above the rent-exempt minimum. If PDAs are part of the flow, your program signs with `invoke_signed` using the seeds. The runtime double-checks all ownership and signing rules.
 
 Accounts, storage, rent, and PDAs. Nail these four, and the rest of Solana development gets a lot more straightforward. [Part 2](/posts/solana-compute-units/) covers compute units: how Solana measures and limits the work your transactions can do.
 

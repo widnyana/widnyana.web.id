@@ -205,7 +205,7 @@ Not reversible. No instruction can set the authority back. The `SetAuthority` in
 
 What you lose: all upgrade capability. Bug fixes are impossible. If a critical vulnerability is discovered after going immutable, there is no recovery path through the original program ID. The only option is to deploy a new program at a new address and migrate all users.
 
-What you gain: absolute trust guarantees. Users can verify that the bytecode will never change. No key compromise, no governance vote, no multisig approval can alter the program. The code onchain is the code that runs, permanently.
+What you gain: certainty for users. They can verify that the bytecode will never change. No key compromise, no governance vote, no multisig approval can alter the program. The code onchain is the code that runs, permanently.
 
 ---
 
@@ -290,11 +290,11 @@ Step 3 is the one people forget. If you do not transfer the buffer authority to 
 
 **Transferring to a wrong address is catastrophic with `SetAuthority`.** The new address does not sign. There is no validation that anyone holds the private key. A single character typo in the pubkey means the authority is gone. Always use `SetAuthorityChecked` when the new authority is a keypair.
 
-**You cannot undo `--final`.** There is no recovery. There is no admin override. There is no "I made a mistake" instruction. The `SetAuthority` instruction requires the current authority to sign. When the current authority is `None`, there is no valid signer and the instruction is rejected. This is by design.
+**You cannot undo `--final`.** There is no recovery, admin override, or "I made a mistake" instruction. The `SetAuthority` instruction requires the current authority to sign. When the current authority is `None`, there is no valid signer and the instruction is rejected. This is by design.
 
 **A multisig or governance PDA has no private key.** The only way to act as the authority is through the program's approval process. For Squads, that means meeting the threshold. For SPL Governance, that means passing a vote and waiting through the timelock. You cannot extract a private key from a PDA because there is none.
 
-**Governance token distribution is an attack surface.** A whale who accumulates 51% of governance tokens can push any upgrade proposal through. Token-weighted governance is only as decentralized as the token distribution. If one entity holds a majority, the governance theater adds latency without adding security.
+**Governance token distribution is an attack surface.** A whale who accumulates 51% of governance tokens can push any upgrade proposal through. Token-weighted governance is only as decentralized as the token distribution. If one entity holds a majority, the governance adds latency without adding security.
 
 **After `--final`, you also cannot `Close` the program.** The `Close` instruction requires the authority to sign, same as `Upgrade` and `SetAuthority`. When the authority is `None`, the program and its ProgramData account exist forever. The rent SOL locked in the ProgramData account is unrecoverable. For a large program, that can be 2 to 3 SOL.
 
@@ -302,7 +302,7 @@ Step 3 is the one people forget. If you do not transfer the buffer authority to 
 
 ### Tying it together
 
-Put it all in motion. You deploy a program. The deployer's keypair holds the upgrade authority. Byte 12 in the ProgramData Account is `1`, and bytes 13 through 44 hold the keypair's public key. One person can replace the bytecode.
+You deploy a program. The deployer's keypair holds the upgrade authority. Byte 12 in the ProgramData Account is `1`, and bytes 13 through 44 hold the keypair's public key. One person can replace the bytecode.
 
 You transfer that authority to a Squads multisig. Now it takes M-of-N approvals to upgrade. You move it to SPL Governance. Now it takes a token-weighted vote. Each step narrows who can act, and each step is hard to reverse.
 
@@ -310,7 +310,7 @@ Then you run `--final`. The loader writes `0` into byte 12. The 32-byte authorit
 
 The progression tends to match how mature the protocol is. Keypair while developing. Multisig at mainnet launch. Governance for decentralization. Immutable for infrastructure that should never change. Do not skip stages.
 
-One thing worth remembering: `SetAuthorityChecked` exists because someone, at some point, fat-fingered a transfer address. A typo in `SetAuthority` is just as permanent as `--final`.
+`SetAuthorityChecked` exists because someone, at some point, fat-fingered a transfer address. A typo in `SetAuthority` is just as permanent as `--final`.
 
 [Part 6](/posts/solana/solana-deployment-pipeline-local-to-mainnet/) covers the full deployment pipeline from local testing through mainnet.
 

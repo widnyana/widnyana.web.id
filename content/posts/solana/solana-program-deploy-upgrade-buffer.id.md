@@ -12,9 +12,9 @@ cover:
   image: "images/solana/solana-program-deploy-upgrade-buffer.png"
 ---
 
-Ini Bagian 4 dari seri [Solana Program Lifecycle](/id/series/solana-program-lifecycle/). Di [Bagian 3](/id/posts/solana/solana-program-lifecycle-two-account-model/) kita udah bahas kalau satu program itu ternyata dua akun: Program Account 36-byte yang nge-point ke ProgramData Account yang nyimpen bytecode aslinya. Sekarang kita masuk ke bagian yang lebih seru: gimana kedua akun itu dibikin dan diganti.
+Ini Bagian 4 dari seri [Solana Program Lifecycle](/id/series/solana-program-lifecycle/). Di [Bagian 3](/id/posts/solana/solana-program-lifecycle-two-account-model/) kita udah bahas kalau satu program itu ternyata dua akun: Program Account 36-byte yang nge-point ke ProgramData Account yang nyimpen bytecode aslinya. Sekarang kita bahas gimana kedua akun itu dibikin dan diganti.
 
-Versi singkatnya: ada akun ketiga yang ikut campur. Akun sementara. Dia cuma ada selama deploy atau upgrade berlangsung, dan kalau ada yang nggak beres, dia bisa ngendon di chain nahan SOL lu sampai lu sadar dan klaim balik.
+Versi singkatnya: ada akun ketiga yang ikut campur, yaitu akun sementara. Dia cuma ada selama deploy atau upgrade berlangsung, dan kalau ada yang nggak beres, dia bisa ngendon di chain nahan SOL lu sampai lu sadar dan klaim balik.
 
 Akun ketiga itu adalah Buffer.
 
@@ -24,7 +24,7 @@ Akun ketiga itu adalah Buffer.
 
 Transaksi Solana punya batas keras 1232 byte. Itu sudah termasuk signature, message header, daftar akun, dan data instruksi. Setelah dikurangi overhead, payload instruksi yang bisa dipakai cuma sekitar 800 sampai 1000 byte per transaksi.
 
-Program Anchor tipikal itu ukurannya 200KB sampai 500KB bytecode ELF yang udah dikompilasi. Hitung-hitungannya nggak bakal cocok. Nggak mungkin muat nge-load bytecode program beneran di satu transaksi.
+Program Anchor tipikal itu ukurannya 200KB sampai 500KB bytecode ELF yang udah dikompilasi. Hitung-hitungannya nggak bakal cocok: bytecode program beneran nggak mungkin muat di satu transaksi.
 
 Jadi Solana mutusin bagi kerjanya ke banyak transaksi. Bytecode ditaruh dulu di area penampungan, baru diaktifin di langkah terakhir. Area penampungan itulah Buffer Account.
 
@@ -138,7 +138,7 @@ Versi baru langsung berlaku di slot berikutnya (`deployment_slot + 1`).
 
 Akun Program nggak berubah. Pointer `programdata_address` nggak berubah. Cuma bytecode di dalam akun ProgramData yang diganti. Semua yang nge-referensikan program ID sebelum upgrade tetap jalan setelahnya.
 
-Instruksi `Upgrade` butuh akun keempat yang nggak ada di versi deploy: **spill account**. Lamports buffer pertama-tama nambah dana akun ProgramData sampai rent-exempt, dan sisanya mendarat di spill account. CLI ngatur defaultnya ke wallet deployer, jadi SOL-nya balik lagi, cuma lewat beberapa lompatan.
+Instruksi `Upgrade` butuh akun keempat yang nggak ada di versi deploy: spill account. Lamports buffer pertama-tama nambah dana akun ProgramData sampai rent-exempt, dan sisanya mendarat di spill account. CLI ngatur defaultnya ke wallet deployer, jadi SOL-nya balik lagi, cuma lewat beberapa lompatan.
 
 Tiga batasan yang harus lu inget:
 
@@ -176,7 +176,7 @@ Setelah multisig nandatangani upgrade, program ke-update dan lamports buffer nga
 
 Buat build yang bisa diverifikasi, perintah `solana-verify get-buffer-hash <BUFFER_ADDRESS>` ngasih anggota multisig cara buat konfirmasi kalau buffer onchain cocok sama bytecode dari build yang diketahui.
 
-**Isolasi kegagalan.** Kalau unggahan gagal di tengah jalan, program yang aktif nggak terpengaruh sama sekali. Buffer sih rusak, tapi akun ProgramData yang ada nggak tersentuh. Bayangin kalau modelnya potongan ditulis langsung ke akun ProgramData: unggahan parsial bakal nyisain program aktif dalam keadaan rusak. Berabe kan?
+**Isolasi kegagalan.** Kalau unggahan gagal di tengah jalan, program yang aktif nggak terpengaruh sama sekali. Buffer sih rusak, tapi akun ProgramData yang ada nggak tersentuh. Bayangin kalau modelnya potongan ditulis langsung ke akun ProgramData: unggahan parsial bakal nyisain program aktif dalam keadaan rusak.
 
 ---
 
@@ -251,7 +251,7 @@ solana program extend <PROGRAM_ID> 10000
 
 Ini nambah 10000 byte kapasitas ke akun ProgramData dan bayar rent tambahan dari wallet deployer. Nggak ada perintah buat ngecilin balik. ProgramData cuma bisa tumbuh, nggak bisa nyusut.
 
-Pola umum buat proyek serius: deploy dengan nilai `--max-len` yang besar (misalnya, 2x binary saat ini) supaya upgrade di masa depan punya ruang tanpa perlu langkah extend. Tarifnya adalah ngunci SOL rent ekstra di awal. Imbalannya adalah upgrade jadi satu transaksi, bukan dua. Pilihan lu.
+Pola umum buat proyek serius: deploy dengan nilai `--max-len` yang besar (misalnya, 2x binary saat ini) supaya upgrade di masa depan punya ruang tanpa perlu langkah extend. Tarifnya adalah ngunci SOL rent ekstra di awal. Imbalannya adalah upgrade jadi satu transaksi, bukan dua.
 
 ---
 
@@ -288,9 +288,9 @@ Setelah deploy, jalanin `solana program show --buffers` lagi. Buffer udah ilang.
 
 **Program ID yang ditutup nggak bisa dipake ulang.** Kalau lu jalanin `solana program close <PROGRAM_ID>`, program ID itu dipensiunkan secara permanen. Nyoba deploy program baru di alamat yang sama bakal gagal dengan `Program <ID> has been closed, use a new Program Id`. Ini disengaja. Ini ngehalang program ID lama, yang mungkin di-hardcode contract lain, dari diam-diam diganti bytecode baru.
 
-**Nutup buffer bukan sama dengan nutup program.** `solana program close --buffers` cuma hapus akun Buffer, bukan akun Program atau ProgramData. Flag `--buffers` itu yang aman buat dijalanin rutin. Nutup akun program itu langkah yang nggak bisa dibatalkan, jadi hati-hati.
+**Nutup buffer bukan sama dengan nutup program.** `solana program close --buffers` cuma hapus akun Buffer, bukan akun Program atau ProgramData. Flag `--buffers` itu yang aman buat dijalanin rutin. Nutup akun program itu langkah yang nggak bisa dibatalkan.
 
-**Buffer authority default ke wallet deployer.** Kalau lu pengen multisig ngekontrol upgrade, lu harus eksplisit transfer buffer authority sebelum ngusulin transaksi upgrade. Lupa langkah ini bikin buffer terkunci ke hot wallet lu dan multisig nggak bisa make dia. Pusing nanti.
+**Buffer authority default ke wallet deployer.** Kalau lu pengen multisig ngekontrol upgrade, lu harus eksplisit transfer buffer authority sebelum ngusulin transaksi upgrade. Lupa langkah ini bikin buffer terkunci ke hot wallet lu dan multisig nggak bisa make dia.
 
 **Deploy bisa berhasil meskipun CLI lapor gagal.** Masalah jaringan kadang bikin CLI timeout nunggu konfirmasi, padahal transaksi aktivasi udah mendarat. Selalu jalanin `solana program show <PROGRAM_ID>` setelah deploy yang "gagal" sebelum nyoba lagi. Kalau nggak, lu bisa buang SOL senilai satu buffer lagi buat sesuatu yang sebenarnya udah sukses.
 
@@ -300,9 +300,9 @@ Setelah deploy, jalanin `solana program show --buffers` lagi. Buffer udah ilang.
 
 ### Mengikat semuanya
 
-Yuk taruh semuanya jadi satu. Lu jalanin `solana program deploy`. Di balik layar, CLI bikin akun Buffer, nulis bytecode lu ke dalamnya lewat ratusan transaksi, terus ngirim satu instruksi aktivasi terakhir yang nyalin bytecode ke akun ProgramData dan ngosongin Buffer. Program udah aktif.
+Lu jalanin `solana program deploy`. Di balik layar, CLI bikin akun Buffer, nulis bytecode lu ke dalamnya lewat ratusan transaksi, terus ngirim satu instruksi aktivasi terakhir yang nyalin bytecode ke akun ProgramData dan ngosongin Buffer. Program udah aktif.
 
-Kalau fase penulisan gagal, lu berakhir dengan Buffer yatang yang nahan SOL. Kalau aktivasi gagal, buffer udah lengkap tapi program nggak tersentuh. Dalam kedua kasus, program yang aktif nggak bermasalah. Pola Buffer ngisolasi kegagalan. `solana program close --buffers` ngembaliin SOL-nya.
+Kalau fase penulisan gagal, lu berakhir dengan Buffer yatim yang nahan SOL. Kalau aktivasi gagal, buffer udah lengkap tapi program nggak tersentuh. Dalam kedua kasus, program yang aktif nggak bermasalah. Pola Buffer ngisolasi kegagalan. `solana program close --buffers` ngembaliin SOL-nya.
 
 Pemisahan upload-lalu-aktivasi punya efek samping yang berguna: pihak yang ngunggah bytecode nggak harus sama dengan pihak yang nge-approve deploy. Seorang developer nulis buffer, transfer authority-nya ke multisig, dan multisig approve upgrade. Pemisahan inilah yang bikin upgrade yang dikontrol tim dan governance jadi mungkin.
 

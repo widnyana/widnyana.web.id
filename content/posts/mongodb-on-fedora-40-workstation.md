@@ -14,7 +14,7 @@ cover:
   image: "https://images.unsplash.com/photo-1658204238967-3a81a063d162?q=80&w=2062&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 ---
 
-I'm in the need to install `mongosh` on my Fedora Linux 40 Workstation, as a context the MongoDB server is using version 7.x running in container using `docker-compose.yaml` on docker version `26.1.4`.
+I need to install `mongosh` on my Fedora Linux 40 Workstation, as a context the MongoDB server is using version 7.x running in container using `docker-compose.yaml` on docker version `26.1.4`.
 
 <!--more-->
 ---
@@ -89,7 +89,7 @@ enabled=1
 gpgkey=https://pgp.mongodb.com/server-7.0.asc
 ```
 
-Then you can search for `mongosh` to get name of the package to install
+Search for `mongosh` to get the package name
 
 ```shell
 
@@ -122,7 +122,7 @@ Installed size: 243 M
 Is this ok [y/N]: y   // press 'y' follow by 'enter'    
 ```
 
-DO NOT install the `mongodb-mongosh` package, or you will get this following error when invoking the command:
+Do not install the `mongodb-mongosh` package, or you will get this error when invoking the command:
 
 ```shell
 user@localhost:~$ mongosh 'mongodb://localhost:27017/?authSource=selfhost'

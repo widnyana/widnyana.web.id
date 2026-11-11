@@ -66,7 +66,7 @@ For developers coming from Ethereum: EVM has no equivalent split. In Solidity, `
 
 Every authority field on Solana follows the same pattern. It is stored as an `Option<Pubkey>`: either a 32-byte public key, or `None`.
 
-When the value is `Some(pubkey)`, that pubkey must sign the transaction for the program to accept the instruction. When the value is `None`, the capability is permanently disabled. No one can exercise it. Not the original authority, not the program, not the runtime.
+When the value is `Some(pubkey)`, that pubkey must sign the transaction for the program to accept the instruction. When the value is `None`, the capability is permanently disabled. No one can exercise it: not the original authority, not the program, not the runtime.
 
 ```rust
 // How it looks in program state
@@ -96,7 +96,7 @@ Every account has an `owner` field (set by the runtime) and may contain authorit
 
 A single account can have multiple authority fields, each controlling a different capability. A Mint account has two: `mint_authority` (who can increase supply) and `freeze_authority` (who can freeze token accounts). A stake account also has two: `staker` (who can delegate/deactivate) and `withdrawer` (who can pull lamports out).
 
-The key insight: **losing an owner key means you cannot sign for the program's checks. Losing an authority that has been set to `None` means the capability is gone forever, regardless of who signs.**
+Losing an owner key means you cannot sign for the program's checks. Losing an authority that has been set to `None` means the capability is gone forever, regardless of who signs.
 
 ---
 
@@ -193,7 +193,7 @@ Bookmark this table. The rest of the series goes through each row in detail.
 
 ### What comes next
 
-The next seven posts go through each authority type in detail, from the familiar (mint and freeze) to the obscure (Token-2022 extensions) to the high-stakes (stake and governance).
+The next seven posts go through each authority type in detail, starting with mint and freeze, then Token-2022 extensions, then stake and governance.
 
 Next: [Part 2 covers Mint Authority and Freeze Authority](/posts/solana/solana-authorities-mint-freeze/), the two that every SPL token has and the two that get confused most often.
 
