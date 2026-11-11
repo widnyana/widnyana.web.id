@@ -1,5 +1,5 @@
 ---
-title: "Git push refused and the commits are stuck? Convert a SHA-256 repository to SHA-1 with full history"
+title: "Git push refused: converting a SHA-256 repo to SHA-1 without losing history"
 date: 2026-11-09T17:20:00+07:00
 draft: false
 params:
