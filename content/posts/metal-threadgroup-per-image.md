@@ -66,7 +66,7 @@ encoder.dispatchThreads(
 
 With `count` equal to the batch size of 32, the requested grid was 32 threads and the threadgroup was also 32 threads. That is one SIMD group, which runs on one GPU core and leaves every other core idle, and then the CPU blocked until the command buffer finished.
 
-This is the shape of bug that survives review, because it is not wrong. It produces the correct answer while using one core out of the ones the chip has, and `Correct` plus `slow` looks like `the GPU is not that fast`.
+This bug survives review because the code is not wrong. It produces the correct answer while using one core out of the ones the chip has, and a correct but slow result looks like a GPU that is not that fast.
 
 ## What Apple's own sizing note says
 
@@ -81,11 +81,11 @@ The second rule matters here because the GPU is shared with the window server. A
 
 The new kernel runs one threadgroup per image, 256 threads in the group, and lets those threads cooperate through threadgroup memory. Five phases, four barriers:
 
-1. **Grayscale cells.** 1,024 cells of a 32 x 32 downsample, 4 per thread. Each cell averages an 8 x 8 pixel block.
-2. **Row transform.** 256 threads compute `rows[y * 8 + u]`, one dot product per thread over 32 cells.
-3. **Column transform.** 64 threads compute `coef[v * 8 + u]` from the row results.
-4. **Median and hash bits.** Thread 0 insertion-sorts the 64 coefficients, takes the median of the middle pair, and sets a bit for each coefficient above it.
-5. **Laplacian.** All 256 threads walk the 254 x 254 interior, accumulate a sum and a sum of squares, then a tree reduction over threadgroup memory combines them.
+1. Grayscale cells: 1,024 cells of a 32 x 32 downsample, 4 per thread. Each cell averages an 8 x 8 pixel block.
+2. Row transform: 256 threads compute `rows[y * 8 + u]`, one dot product per thread over 32 cells.
+3. Column transform: 64 threads compute `coef[v * 8 + u]` from the row results.
+4. Median and hash bits: thread 0 insertion-sorts the 64 coefficients, takes the median of the middle pair, and sets a bit for each coefficient above it.
+5. Laplacian: all 256 threads walk the 254 x 254 interior, accumulate a sum and a sum of squares, then a tree reduction over threadgroup memory combines them.
 
 Threadgroup memory is about 9.5 KB per image: 4,096 bytes for the cells, 1,024 for the rows, 512 for the coefficients, 8 for the median pair, and 2,048 bytes for each of the two reduction arrays.
 
@@ -131,7 +131,7 @@ kernel void photo_features(device const uchar *rgba [[buffer(0)]],
 
 One caveat on rule 1. The 256 is a constant declared in the shader and matched by `PerceptualHash.photoThreads` on the host, not a value read from the pipeline at runtime. It fits under the `maxTotalThreadsPerThreadgroup` the pipeline reports here, but a device that reported less would need the constant lowered together with the array sizes. The flat kernels, the pair search included, do derive their threadgroup from `threadExecutionWidth` at dispatch time.
 
-The output is bit-identical to the CPU path, and that is not luck. Every reduction is an integer sum, and an integer sum does not care about the order of its terms. The median is computed by one thread, so no tie-breaking race exists. A test hashes the same fixture on both paths and compares the hash, the Laplacian sum, and the Laplacian squares exactly.
+The output is bit-identical to the CPU path. Every reduction is an integer sum, and an integer sum does not care about the order of its terms. The median is computed by one thread, so no tie-breaking race exists. A test hashes the same fixture on both paths and compares the hash, the Laplacian sum, and the Laplacian squares exactly.
 
 The host side changed from `dispatchThreads` to `dispatchThreadgroups`, because the grid is now groups of cooperating threads, not independent threads:
 
@@ -173,7 +173,7 @@ Two supporting settings make it stick:
 - `kCGImageSourceShouldCache: false` on the source. Without it, ImageIO caches the full decoded image, which is many times the size of the thumbnail we asked for.
 - One `autoreleasepool` per image. ImageIO holds decode buffers in the pool. One pool around the whole photo step means 26,553 images' worth of decode state stays alive to the end.
 
-The copies stopped. So did most of the memory growth, because a decode that writes into a reused 16 MB buffer leaves nothing behind.
+The copies stopped, and so did most of the memory growth, because a decode that writes into a reused 16 MB buffer leaves nothing behind.
 
 ## One buffer set per scan, 64 images per submission
 
@@ -215,7 +215,7 @@ How these were taken:
 - Time Profiler for where the wall time went, and a per-command-buffer timer inside the GPU wrapper for the submission duration. The timer is part of the app: the scan fails its own benchmark if one submission exceeds 50 ms.
 - Every number comes from the same folder, the same machine, and a release build.
 
-The 600-image fixture is a separate folder, 1/44 of the large one, used as a check that the same shape holds at a different size. It does not prove anything about caching: it proves the change was not specific to one folder's mix of file sizes.
+The 600-image fixture is a separate folder, 1/44 of the large one, used as a check that the same shape holds at a different size. It checks that the change was not specific to one folder's mix of file sizes.
 
 A later re-measure of the same step, after two further changes (the allocator relief described below, and a fixed pair buffer in the near-duplicate search), gave 77.2 s for the photo step, 172.9 s for the whole scan, and 1.29 GB peak RSS against the same 1.5 GB gate. That is a separate run on a later state of the folder, not a continuation of the table above.
 
@@ -235,6 +235,6 @@ public static func releaseFreePages() -> Int {
 }
 ```
 
-A null zone means all zones, and a zero goal means ask for as much as it can give. The scan calls it once every eight batches and once when the photo loop ends. It allocates nothing and changes no result, and it cannot raise the peak: it returns only pages that are already free. What it can cost is time, because a page handed back to the kernel is faulted in again if the allocator needs it later. That trade is the whole design question, and it is worth its own write-up, because the profile you get before the call looks exactly like a leak and is not one.
+A null zone means all zones, and a zero goal means ask for as much as it can give. The scan calls it once every eight batches and once when the photo loop ends. It allocates nothing and changes no result, and it cannot raise the peak: it returns only pages that are already free. What it can cost is time, because a page handed back to the kernel is faulted in again if the allocator needs it later. That trade is the design question. The profile before the call looks like a leak and is not one.
 
-The general shape is worth remembering: a GPU step can be fast, correct, and still the biggest thing on the machine, because the cost moved from arithmetic to allocation and copy. Measure the footprint with the time, or you will fix half of the problem and call it done.
+A GPU step can be fast, correct, and still the biggest thing on the machine, because the cost moved from arithmetic to allocation and copy. Measure the footprint along with the time.
