@@ -1,5 +1,5 @@
 ---
-title: "Git push refused: converting a SHA-256 repo to SHA-1 without losing history"
+title: "Convert a Git repo from SHA-256 to SHA-1 and keep the history"
 date: 2026-11-09T17:20:00+07:00
 draft: false
 params:
