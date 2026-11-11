@@ -30,19 +30,19 @@ A checkout flow that reserves inventory, charges a card, and creates a shipment 
 
 A note on scope: this is a conceptual comparison of two established patterns, not a report from a specific outage. The checkout example above is illustrative, not a real incident, and the mechanics described below are documented independently of any one team's experience with them.
 
-**Short on time?** Jump to [the comparison table](#the-comparison) or [the orchestration vs choreography diagram](#two-ways-to-run-a-saga). Full read: about 8 minutes.
+Short on time? Jump to [the comparison table](#the-comparison) or [the orchestration vs choreography diagram](#two-ways-to-run-a-saga).
 
 ## Two ways to keep a transaction consistent
 
 The database answer to "these three writes must all succeed or all fail" is a transaction. Two-phase commit (2PC) extends that idea across services: a coordinator asks every participant to prepare (lock its resources and confirm it can commit), waits for every participant to vote yes, then tells them all to commit. If any participant votes no, or times out, the coordinator tells everyone to abort instead. It's a real, atomic rollback, the same guarantee a single database gives you.
 
-The cost is in the waiting. Every participant holds its locks from the moment it votes yes until the coordinator's final decision arrives, so a slow network hop or a coordinator that crashes mid-decision leaves every other participant blocked, resources locked, until the coordinator recovers. And in practice, most of the infrastructure a modern system is built on doesn't speak the XA protocol 2PC needs at all: most message brokers, most NoSQL stores, and essentially every third-party API you call over HTTP have no concept of "prepare to commit, then wait for my signal." 2PC isn't just expensive in a microservices system. For most of the participants you'd need to coordinate, it's simply not an option.
+The cost is in the waiting. Every participant holds its locks from the moment it votes yes until the coordinator's final decision arrives, so a slow network hop or a coordinator that crashes mid-decision leaves every other participant blocked, resources locked, until the coordinator recovers. And in practice, most of the infrastructure a modern system is built on doesn't speak the XA protocol 2PC needs at all: most message brokers, most NoSQL stores, and essentially every third-party API you call over HTTP have no concept of "prepare to commit, then wait for my signal." For most of the participants you'd need to coordinate in a microservices system, 2PC is not an option.
 
 ## What the saga pattern does instead
 
 The Saga pattern, first described by Garcia-Molina and Salem in 1987 and popularized for microservices by Chris Richardson, gives up atomicity in exchange for not needing any of that. A saga is a sequence of local transactions, each one committed immediately in its own service, with no cross-service lock held at any point. Reserve inventory: commit. Charge the card: commit. Create the shipment: commit. If a later step fails, the saga doesn't roll back the earlier ones. It runs a compensating action for each one instead: release the inventory reservation, refund the charge.
 
-That trade shows up in two places a reader should see stated plainly rather than discovered later. First, there's a window where the system is honestly inconsistent: after the charge commits and before the shipment is created, an inventory reservation and a completed charge both exist for an order that isn't shipped yet, and anything reading that state during the window sees it. Second, "compensating action" is doing a lot of work in that sentence. Releasing an inventory reservation is a true undo. Refunding a charge is close to one. But some steps don't have an undo at all: once a confirmation email has gone out, there's no un-sending it, only a second email that says something changed. Designing the compensating action is often harder than designing the original step, and it's the part of adopting Saga that's easiest to underestimate.
+The trade shows up in two places. First, there's a window where the system is honestly inconsistent: after the charge commits and before the shipment is created, an inventory reservation and a completed charge both exist for an order that isn't shipped yet, and anything reading that state during the window sees it. Second, "compensating action" is doing a lot of work in that sentence. Releasing an inventory reservation is a true undo. Refunding a charge is close to one. But some steps don't have an undo at all: once a confirmation email has gone out, there's no un-sending it, only a second email that says something changed. Designing the compensating action is often harder than designing the original step, and it's the part of adopting Saga that's easiest to underestimate.
 
 ## Two patterns, weighed once you have both
 
@@ -56,7 +56,7 @@ That trade shows up in two places a reader should see stated plainly rather than
 | Coordinator failure | Every participant stays blocked, still holding locks, until the coordinator recovers | No coordinator to fail (choreography), or the workflow resumes from its event history (orchestration) |
 | Undo mechanism | A true rollback | A compensating action, which is sometimes approximate, not always a true undo |
 
-Read the table as a filter, not a scoreboard: if your participants don't support XA (most don't), 2PC is disqualified before the consistency-versus-availability trade-off even comes up.
+Read the table as a filter: if your participants don't support XA (most don't), 2PC is disqualified before the consistency-versus-availability trade-off even comes up.
 
 ## Two ways to run a saga
 
@@ -86,7 +86,7 @@ Choreography avoids a single coordinator, which sounds like a pure win until the
 
 ### Isn't two-phase commit just the correct answer, though?
 
-In principle, yes: it's a strictly stronger consistency guarantee than a saga ever gives you. In practice, it requires every participant to speak a protocol that most modern infrastructure never implemented, so the choice usually isn't "strong consistency or eventual consistency." It's "eventual consistency, or a coordination protocol most of your dependencies can't participate in at all."
+In principle, yes: it's a strictly stronger consistency guarantee than a saga ever gives you. In practice, it requires every participant to speak a protocol that most modern infrastructure never implemented, so the choice is usually between eventual consistency and a coordination protocol most of your dependencies can't participate in at all.
 
 ### Do compensating actions always work?
 

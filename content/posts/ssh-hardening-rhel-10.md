@@ -173,7 +173,7 @@ Read the denial, add the one rule it asks for, move on. `setenforce 0` is not a 
 
 ## Turn off SSH password authentication
 
-This is the core of it. No passwords, no keyboard-interactive, publickey and nothing else.
+This is the core of it: publickey only, with passwords and keyboard-interactive both off.
 
 ```
 PasswordAuthentication no
@@ -336,7 +336,7 @@ sshd -t && systemctl restart sshd
 
 ## Move SSH off port 22 (what it does and does not do)
 
-Be honest about what this buys you. Mass scanners only probe port 22, so moving off it makes most of the automated scan traffic and failed-login log spam simply stop arriving. It does close to nothing against someone specifically targeting your box, because a port scan finds the new port in seconds. It is noise reduction, not a security control. Worth doing, not worth overrating.
+Mass scanners only probe port 22, so moving off it makes most of the automated scan traffic and failed-login log spam simply stop arriving. It does close to nothing against someone specifically targeting your box, because a port scan finds the new port in seconds. It is noise reduction, not a security control.
 
 Pick a port below 32768 (the start of the [ephemeral port range](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml) on Linux) that is not a registered service. `magmar` uses 14567. The steps below use that; substitute your own.
 

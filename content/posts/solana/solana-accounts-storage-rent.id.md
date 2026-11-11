@@ -30,7 +30,7 @@ Setiap akun di Solana punya field-field ini:
 | `executable` | `true` kalau akun ini berisi kode program yang bisa dijalanin |
 | `rent_epoch` | Field warisan. Nyimpen state rent (detailnya bahas di bawah) |
 
-Buat kamu yang pernah develop di Ethereum, ini bedanya yang paling gede: Solana misahin kode dari data. Sebuah **program akun** nyimpen bytecode yang bisa dieksekusi (mirip contract). Sebuah **data akun** nyimpen state yang dibaca dan ditulis sama program. Itu dua akun yang beda, ya.
+Buat kamu yang pernah develop di Ethereum, bedanya yang paling gede adalah Solana misahin kode dari data. Sebuah **program akun** nyimpen bytecode yang bisa dieksekusi (mirip contract). Sebuah **data akun** nyimpen state yang dibaca dan ditulis sama program. Itu dua akun yang beda, ya.
 
 Kenapa sih penting? Karena pas transaksi nyentuh data akun yang beda-beda, runtime bisa proses semuanya secara paralel. Nggak ada bottleneck global state tunggal.
 
@@ -113,11 +113,11 @@ Taruh field berukuran tetap di awal, field berukuran variabel (string, vec) di a
 
 Nyimpen data di Solana butuh SOL. Jaringan sebutnya **rent**, tapi kerjanya lebih kayak deposit. Kamu bisa klaim balik seluruh saldonya pas nutup akun.
 
-Begini deal-nya: setiap akun harus pegang saldo lamport minimum yang proporsional sama ukuran datanya. Saldo ini bikin data tetap hidup on-chain.
+Setiap akun harus pegang saldo lamport minimum yang proporsional sama ukuran datanya. Saldo ini bikin data tetap hidup on-chain.
 
 #### Rent-Exempt: Kondisi Normal
 
-Pendekatan praktisnya gampang aja: danai setiap akun dengan cukup lamports buat nutup **dua tahun** rent di muka. Setelah itu, akun jadi **rent-exempt**. Runtime nggak pernah potong apa-apa dari akun itu.
+Pendekatan praktisnya: danai setiap akun dengan cukup lamports buat nutup **dua tahun** rent di muka. Setelah itu, akun jadi **rent-exempt**. Runtime nggak pernah potong apa-apa dari akun itu.
 
 Ini bukan opsional di praktiknya. Setiap akun yang kamu bikin harus rent-exempt sejak hari pertama.
 
@@ -173,7 +173,7 @@ PDA ngasih program buat punya dan ngelola akun **tanpa private key sama sekali**
 
 Alamat Solana normal itu public key dari [keypair Ed25519](https://solana.com/docs/core/pda). Mereka punya private key yang cocok buat nandatangan transaksi. PDA beda: ini alamat yang sengaja diturunkan supaya **jatuh dari kurva Ed25519**. Nggak ada private key buat PDA. Selamanya.
 
-Bayangin gini aja: PDA itu kayak alamat kotak surat yang cuma satu program tertentu punya kuncinya. Nggak ada manusia, nggak ada program lain, yang bisa nandatangani buat PDA itu.
+PDA itu kayak alamat kotak surat yang cuma satu program tertentu punya kuncinya. Nggak ada manusia, nggak ada program lain, yang bisa nandatangani buat PDA itu.
 
 Kamu nurunin PDA dari dua hal:
 
@@ -201,13 +201,13 @@ let (pda_address, bump_seed) = Pubkey::find_program_address(
 
 Proses derivasinya nyoba nilai bump mulai dari 255, hitung mundur, sampai nemu alamat yang ada di luar kurva Ed25519. Byte bump terakhir itulah yang dikembaliin bareng alamatnya.
 
-Yang penting diingat: nurunin PDA itu cuma matematika doang. Itu nggak bikin apa-apa jadi on-chain. Kaya yang dijelasin di [dokumentasi Solana](https://solana.com/docs/core/pda), PDA itu kayak alamat di peta. Karena alamatnya ada bukan berarti ada bangunan di situ. Kamu tetap harus bikin akunnya secara eksplisit.
+Nurunin PDA itu cuma matematika doang. Itu nggak bikin apa-apa jadi on-chain. Kaya yang dijelasin di [dokumentasi Solana](https://solana.com/docs/core/pda), PDA itu kayak alamat di peta. Karena alamatnya ada bukan berarti ada bangunan di situ. Kamu tetap harus bikin akunnya secara eksplisit.
 
 #### Kenapa PDA Berguna
 
 **Alamat yang bisa diprediksi.** Seeds yang sama + program yang sama = alamat yang sama, kapan aja. Frontend kamu bisa hitung di mana akun berada tanpa nanya ke chain.
 
-**Kontrol cuma oleh program.** Cuma program owner yang bisa nandatangani buat PDA-nya via [`invoke_signed`](https://solana.com/docs/core/cpi). Nggak ada key eksternal yang bisa campur tangan. Ini yang bikin PDA aman. Nggak ada manusia, nggak ada program lain, yang bisa bajak.
+**Kontrol cuma oleh program.** Cuma program owner yang bisa nandatangani buat PDA-nya via [`invoke_signed`](https://solana.com/docs/core/cpi). Nggak ada key eksternal yang bisa campur tangan. Ini yang bikin PDA aman.
 
 **Desain state yang fleksibel.** Kombinasi seed yang beda ngasih alamat yang beda. Satu akun per user? Seeds `[b"profile", user_pubkey]`. Config global? Seeds `[b"config"]`. Petakan state kamu sesuka hati deh.
 
@@ -251,9 +251,9 @@ Runtime nurunin ulang alamat dari seeds dan program ID. Kalau cocok sama akun ya
 
 ### 6. Mengikat Semuanya
 
-Yuk taruh semuanya ke praktik. Seorang user kirim transaksi. Runtime muat setiap akun yang nyangkut di instruksi. Program kamu cek field owner: bener nih program ini yang punya data akun tersebut? Kalau iya, dia baca dan tulis byte mentah (serialisasi Borsh).
+Seorang user kirim transaksi. Runtime muat setiap akun yang nyangkut di instruksi. Program kamu cek field owner: bener nih program ini yang punya data akun tersebut? Kalau iya, dia baca dan tulis byte mentah (serialisasi Borsh).
 
-Setiap akun yang nyangkut butuh saldo lamport-nya di atau di atas minimum rent-exempt. Kalau PDA jadi bagian dari alur, program kamu nandatangani pakai `invoke_signed` dengan seeds. Runtime cek ulang semua aturan kepemilikan dan penandatanganan. Nggak ada pengecualian.
+Setiap akun yang nyangkut butuh saldo lamport-nya di atau di atas minimum rent-exempt. Kalau PDA jadi bagian dari alur, program kamu nandatangani pakai `invoke_signed` dengan seeds. Runtime cek ulang semua aturan kepemilikan dan penandatanganan.
 
 Akun, penyimpanan, rent, dan PDA. Kuasai keempatnya, dan sisa pengembangan Solana bakal jauh lebih gampang. [Bagian 2](/id/posts/solana-compute-units/) bahas compute unit: gimana Solana ngukur dan mbatasin kerjaan yang bisa dikerjain transaksi kamu.
 

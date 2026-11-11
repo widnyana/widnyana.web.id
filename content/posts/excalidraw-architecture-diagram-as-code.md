@@ -46,7 +46,7 @@ That took two rounds of visibly broken output before anything usable existed. Wh
 
 ## 2. It placed coordinates it could not see
 
-The first full diagram had six frames stacked in one narrow column and text at 10 to 14 pixels. That is not a hard mistake, it is a consequence. The agent worked in numbers and had no way to look at the result. My read, not a measurement: every layout error was invisible to it while it was making it.
+The first full diagram had six frames stacked in one narrow column and text at 10 to 14 pixels. The agent worked in numbers and had no way to look at the result. My read, not a measurement: every layout error was invisible to it while it was making it.
 
 So placement became the tool's job. A frame is a function, boxes size themselves from their text, rows keep equal heights, and arrows bind to boxes at both ends:
 
@@ -112,11 +112,11 @@ One of the checks rejects dashes and emoji in labels. The first version of that 
 
 ## What I still check by hand
 
-- **Arrow label backgrounds.** I do not know yet how the Obsidian plugin draws the background behind a bound arrow label.
-- **Text widths.** The checks use a conservative width per character. Real fonts may leave more or less room.
-- **Moving a box later.** Arrows are fixed paths. If you move a box, you fix its arrow.
-- **Regenerating.** The generator runs once per diagram. The Obsidian plugin rewrites element ids when it opens a file, so a later re-run would overwrite hand edits.
-- **A clean install.** I have not yet installed the plugin on a clean machine and triggered the skill from a fresh session.
+- Arrow label backgrounds: I do not know yet how the Obsidian plugin draws the background behind a bound arrow label.
+- Text widths: the checks use a conservative width per character. Real fonts may leave more or less room.
+- Moving a box later: arrows are fixed paths. If you move a box, you fix its arrow.
+- Regenerating: the generator runs once per diagram. The Obsidian plugin rewrites element ids when it opens a file, so a later re-run would overwrite hand edits.
+- A clean install: I have not yet installed the plugin on a clean machine and triggered the skill from a fresh session.
 
 ## Use it
 

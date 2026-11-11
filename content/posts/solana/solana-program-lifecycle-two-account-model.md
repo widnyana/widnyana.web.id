@@ -14,7 +14,7 @@ cover:
 
 This is Part 3 of the [Solana Program Lifecycle](/series/solana-program-lifecycle/) series. In [Part 1](/posts/solana/solana-accounts-storage-rent/) we covered the account model. In [Part 2](/posts/solana/solana-compute-units/) we covered compute units. Now let's look at something most developers never think about until something breaks: how programs actually live onchain.
 
-Because here's the thing: a Solana program isn't one account. It's two. And the relationship between them is what makes upgrades possible without breaking everything that depends on the program.
+A Solana program isn't one account, it's two. The relationship between them is what makes upgrades possible without breaking everything that depends on the program.
 
 ---
 
@@ -56,7 +56,7 @@ Same program address, same ProgramData address. Every time. This is a PDA derive
 
 ### Why split it into two accounts?
 
-The split exists for one reason: **upgrades**.
+The split exists for one reason: upgrades.
 
 If the program ID and the bytecode lived in the same account, upgrading the bytecode would mean changing the account. But the program ID is referenced by PDAs, client code, configuration files, other programs' CPI calls, token accounts, and governance proposals. Changing it would break everything.
 
@@ -90,7 +90,7 @@ If both are true, the runtime follows the loader's account structure to find the
 
 The loader then verifies the bytecode (checksums, format validation) and JIT-compiles it for execution. This happens on the first invocation in a slot. The compiled result is cached by the runtime, so repeated calls within the same slot skip compilation.
 
-The key insight: `executable: true` doesn't mean "this account contains runnable code." It means "this account is a program entry point. Follow the loader's structure to find the actual code." The Program Account is the entry point. The ProgramData Account is the code.
+`executable: true` doesn't mean "this account contains runnable code." It means "this account is a program entry point. Follow the loader's structure to find the actual code." The Program Account is the entry point. The ProgramData Account is the code.
 
 ---
 
@@ -136,13 +136,13 @@ The Buffer account is the temporary holding area used during deploy and upgrade.
 
 ### Why the BPF Loader owns your program
 
-Both the Program Account and ProgramData Account have their `owner` field set to `BPFLoaderUpgradeab1e11111111111111111111111`. This isn't a suggestion. The runtime enforces it.
+Both the Program Account and ProgramData Account have their `owner` field set to `BPFLoaderUpgradeab1e11111111111111111111111`. The runtime enforces it.
 
 Recall the ownership rules from [Part 1](/posts/solana/solana-accounts-storage-rent/): only the owner program can modify an account's data. By owning the Program and ProgramData accounts, the BPF Loader is the only entity that can change the bytecode pointer or the bytecode itself. Your program can't modify its own code. No other program can either.
 
 This is why upgrades go through the BPF Loader's instructions (`Upgrade`, `DeployWithMaxDataLen`, `SetAuthority`). The loader checks the upgrade authority signature before allowing any changes. Without a valid authority signature, nothing happens.
 
-When you make a program immutable (with `solana program deploy --final` or `solana program set-upgrade-authority --final`), the loader sets the `upgrade_authority_address` field to `None` (the option byte at offset 12 becomes 0). Once that happens, the loader rejects all upgrade instructions permanently. No rollback. No undo. The bytecode is frozen.
+When you make a program immutable (with `solana program deploy --final` or `solana program set-upgrade-authority --final`), the loader sets the `upgrade_authority_address` field to `None` (the option byte at offset 12 becomes 0). Once that happens, the loader rejects all upgrade instructions permanently. There is no rollback or undo. The bytecode is frozen.
 
 ---
 
@@ -226,7 +226,7 @@ This should match the `ProgramData Address` shown by `solana program show`.
 
 **Orphaned buffer accounts waste SOL.** If a deploy fails midway, the buffer account stays onchain with SOL locked in it. Use `solana program close --buffers` to reclaim.
 
-**Making a program immutable is permanent.** There's no "unfinalize" command. Once the authority is removed, that program ID is frozen forever. If there's a bug, the only option is deploying a new program at a new address and migrating everything. This is by design. Immutability is a security feature, not a bug.
+**Making a program immutable is permanent.** There's no "unfinalize" command. Once the authority is removed, that program ID is frozen forever. If there's a bug, the only option is deploying a new program at a new address and migrating everything. This is by design. Immutability is a security feature.
 
 **The ProgramData account is a PDA, but you don't manage it.** The BPF Loader derives and manages it. You never interact with it directly. All operations go through the loader's instructions.
 
@@ -234,7 +234,7 @@ This should match the `ProgramData Address` shown by `solana program show`.
 
 ### Tying it together
 
-Put it all in motion. A transaction invokes your program. The runtime checks: is the account `executable: true`? Is it owned by a loader? If yes, it follows the pointer from the Program Account to the ProgramData Account, loads the ELF bytecode, and starts running.
+A transaction invokes your program. The runtime checks: is the account `executable: true`? Is it owned by a loader? If yes, it follows the pointer from the Program Account to the ProgramData Account, loads the ELF bytecode, and starts running.
 
 The program ID never changes. The pointer never changes. When you upgrade, the loader replaces the bytecode inside the ProgramData Account and bumps the slot number. Every client, every PDA derivation, every CPI call that referenced the program ID before the upgrade still works after. That is the whole point of the split.
 

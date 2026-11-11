@@ -14,7 +14,7 @@ cover:
 
 Ini bagian 3 dari seri [Solana Program Lifecycle](/id/series/solana-program-lifecycle/). Di [Bagian 1](/id/posts/solana/solana-accounts-storage-rent/) kita bahas model akun. Di [Bagian 2](/id/posts/solana/solana-compute-units/) kita bahas compute unit. Sekarang kita masuk ke sesuatu yang jarang kepikiran sama developer, biasanya cuma kepikiran pas sesuatu udah rusak: gimana sih program bener-bener hidup di on-chain?
 
-Begini nih: program Solana itu bukan satu akun. Dia dua akun. Dan hubungan antara keduanya adalah yang bikin upgrade bisa dilakuin tanpa merusak semua yang bergantung ke program tersebut.
+Program Solana itu bukan satu akun, tapi dua. Hubungan antara keduanya yang bikin upgrade bisa dilakuin tanpa merusak semua yang bergantung ke program tersebut.
 
 ---
 
@@ -58,7 +58,7 @@ Alamat program yang sama, alamat ProgramData yang sama. Setiap saat. Ini adalah 
 
 ### Kenapa dibagi dua akun sih?
 
-Pemisahan ini ada karena satu alasan: **upgrade**.
+Pemisahan ini ada karena satu alasan: upgrade.
 
 Kalau program ID dan bytecode hidup di akun yang sama, ng-upgrade bytecode berarti ngubah akun tersebut. Padahal program ID direferensikan di mana-mana: PDA, kode client, file konfigurasi, CPI call dari program lain, token accounts, governance proposal. Ubah itu, semuanya rusak.
 
@@ -92,7 +92,7 @@ Kalau keduanya `true`, runtime ngikutin struktur akun loader buat nemuin bytecod
 
 Loader terus verifikasi bytecode (checksum, validasi format) dan compile via JIT buat eksekusi. Ini cuma terjadi di pemanggilan pertama dalam sebuah slot. Hasil kompilasi di-cache sama runtime, jadi pemanggilan berulang dalam slot yang sama nggak usah compile ulang.
 
-Intinya: `executable: true` bukan berarti "akun ini isinya kode yang bisa dijalanin." Artinya "akun ini adalah entry point program. Ikutin struktur loader buat nemuin kode yang beneran." Program Account itu entry point. ProgramData Account itu kodenya.
+`executable: true` bukan berarti "akun ini isinya kode yang bisa dijalanin." Artinya "akun ini adalah entry point program. Ikutin struktur loader buat nemuin kode yang beneran." Program Account itu entry point. ProgramData Account itu kodenya.
 
 ---
 
@@ -138,13 +138,13 @@ Akun Buffer itu tempat penampungan sementara yang dipakai pas deploy dan upgrade
 
 ### Kenapa BPF Loader punya program kamu
 
-Baik Program Account maupun ProgramData Account punya field `owner` yang di-set ke `BPFLoaderUpgradeab1e11111111111111111111111`. Ini bukan cuma saran. Runtime ngejalanin ini keras.
+Baik Program Account maupun ProgramData Account punya field `owner` yang di-set ke `BPFLoaderUpgradeab1e11111111111111111111111`. Runtime ngejalanin ini secara ketat.
 
 Ingat aturan kepemilikan dari [Bagian 1](/id/posts/solana/solana-accounts-storage-rent/): cuma program owner yang bisa ngubah data sebuah akun. Karena BPF Loader punya akun Program dan ProgramData, dia satu-satunya entitas yang bisa ngubah pointer bytecode atau bytecode itu sendiri. Program kamu nggak bisa modif kodenya sendiri. Program lain juga nggak bisa.
 
 Makannya upgrade dilakuin lewat instruksi BPF Loader (`Upgrade`, `DeployWithMaxDataLen`, `SetAuthority`). Loader ngecek tanda tangan upgrade authority sebelum ngizinin perubahan apapun. Tanpa tanda tangan authority yang valid, nggak ada yang terjadi deh.
 
-Waktu kamu bikin program jadi immutable (pakai `solana program deploy --final` atau `solana program set-upgrade-authority --final`), loader set field `upgrade_authority_address` ke `None` (byte option di offset 12 jadi 0). Setelah itu, loader nolak semua instruksi upgrade secara permanen. Nggak ada rollback. Nggak ada undo. Bytecode-nya dibekukan.
+Waktu kamu bikin program jadi immutable (pakai `solana program deploy --final` atau `solana program set-upgrade-authority --final`), loader set field `upgrade_authority_address` ke `None` (byte option di offset 12 jadi 0). Setelah itu, loader nolak semua instruksi upgrade secara permanen. Nggak ada rollback atau undo. Bytecode-nya dibekukan.
 
 ---
 
@@ -228,7 +228,7 @@ Ini harus cocok sama `ProgramData Address` yang ditunjukin sama `solana program 
 
 **Akun buffer yatim bikin SOL terbuang.** Kalau deploy gagal di tengah jalan, akun buffer tetap ada on-chain dengan SOL yang terkunci di dalamnya. Pakai `solana program close --buffers` buat klaim balik.
 
-**Bikin program immutable itu permanen.** Nggak ada perintah "unfinalize." Setelah authority dihapus, program ID itu dibekuin selamanya. Kalau ada bug, satu-satunya pilihan deploy program baru di alamat baru dan migrasi semuanya. Ini by design. Immutability itu fitur keamanan, bukan bug.
+**Bikin program immutable itu permanen.** Nggak ada perintah "unfinalize." Setelah authority dihapus, program ID itu dibekuin selamanya. Kalau ada bug, satu-satunya pilihan deploy program baru di alamat baru dan migrasi semuanya. Ini by design. Immutability itu fitur keamanan.
 
 **Akun ProgramData adalah PDA, tapi kamu nggak ngelola dia.** BPF Loader yang nurunin dan ngelola itu. Kamu nggak pernah berinteraksi langsung dengannya. Semua operasi dilakuin lewat instruksi loader.
 
@@ -236,7 +236,7 @@ Ini harus cocok sama `ProgramData Address` yang ditunjukin sama `solana program 
 
 ### Mengikat Semuanya
 
-Yuk taruh semuanya dalam konteks. Sebuah transaksi manggil program kamu. Runtime ngecek: apakah akun `executable: true`? Apakah punya owner loader? Kalau iya, dia ngikutin pointer dari Program Account ke ProgramData Account, load ELF bytecode, dan mulai jalanin.
+Sebuah transaksi manggil program kamu. Runtime ngecek: apakah akun `executable: true`? Apakah punya owner loader? Kalau iya, dia ngikutin pointer dari Program Account ke ProgramData Account, load ELF bytecode, dan mulai jalanin.
 
 Program ID nggak pernah berubah. Pointer nggak pernah berubah. Waktu kamu upgrade, loader ganti bytecode di dalam ProgramData Account dan naikin nomor slot. Setiap client, setiap derivasi PDA, setiap CPI call yang mereferensikan program ID sebelum upgrade tetap jalan setelahnya. Itulah tujuan dari pemisahan ini.
 

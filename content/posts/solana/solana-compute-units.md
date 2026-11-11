@@ -14,21 +14,19 @@ cover:
 
 This is Part 2 of the [Solana Program Lifecycle](/series/solana-program-lifecycle/) series. In Part 1 we covered how accounts work. Now comes the thing that will break our code if we ignore it: compute units.
 
-Solana transactions don't warn you when you're close to the compute limit. They just fail. Users lose the fees. No refund. The first time many developers discover this is when mainnet starts rejecting transactions that worked fine on devnet.
-
-This post is about not learning that the hard way.
+Solana transactions don't warn you when you're close to the compute limit. They fail, and users lose the fees with no refund. The first time many developers discover this is when mainnet starts rejecting transactions that worked fine on devnet.
 
 ---
 
 ### The problem: Our transaction costs more than we think
 
-Solana transactions don't fail gracefully when they run out of compute. They just die. Users lose the fees. No refund. No warning.
+Solana transactions don't fail gracefully when they run out of compute. Users lose the fees, with no refund and no warning.
 
 The problem: most developers guess at their compute costs instead of measuring them. "Oh, a CPI is probably fine, I can fit 10 of them." Then profiling reveals that 10 CPIs alone burn significant compute out of the 1.4M budget. Add some signature verification, a few account loads, a bit of deserialization, and suddenly the transaction is over budget.
 
 The second problem: it's not obvious which parts of the code are expensive until measured. A signature verification is 25,000 CU. A simple arithmetic operation is around 100-150 CU in practice (including serialization overhead). The difference is significant. Without profiling, it's guesswork.
 
-This post covers how to see actual costs. And once they're visible, optimization becomes obvious.
+This post covers how to see actual costs. Once they're visible, optimization becomes obvious.
 
 ---
 
@@ -144,7 +142,7 @@ Run this and watch the output. We'll see something like:
 Program <id> consumed 78,432 of 200,000 compute units
 ```
 
-That 78,432 is our actual number. Not a guess, not a calculation. Real measurement.
+That 78,432 is our actual number, measured rather than guessed.
 
 ---
 
@@ -224,7 +222,7 @@ secp256k1 recovery is 25,000 CU per signature (`secp256k1_recover_cost`). Verify
 - Use a multisig program that batches verification
 - Split into multiple transactions
 
-This is a hard limit, not a pattern. If a use case needs 10 signature verifications in one instruction, it's fighting the architecture, not working with it.
+This is a hard limit, not a pattern. If a use case needs 10 signature verifications in one instruction, it's fighting the architecture.
 
 ---
 
@@ -286,9 +284,9 @@ If approaching 1.4M, split into two transactions. Do it during development, not 
 
 ### The checklist before mainnet
 
-This is what separates code that ships from code that fails in production.
+Run through these before deploying to mainnet.
 
-1. **Profile with cargo test-sbf**: measure actual CU usage. No guessing.
+1. **Profile with cargo test-sbf**: measure actual CU usage.
 2. **Test the hard case**: max accounts, max data, everything constrained. What does it cost?
 3. **Estimate priority fees**: during peak times, what does 1,000 micro-lamports per CU cost in SOL?
 4. **Plan for splits**: if close to 1.4M, split into multiple transactions now.
@@ -310,15 +308,15 @@ If any test exceeds 1.4M, refactor before shipping.
 
 The biggest surprise: most Solana developers don't know how much CU their programs actually use. Everything works on devnet, then mainnet starts rejecting transactions for "insufficient compute budget" and the error message tells you nothing about which instruction blew the budget.
 
-The second surprise: CPIs dominate the budget in most programs. You can optimize deserialization and account loading all day and save 10,000 CU. Or you can eliminate one unnecessary CPI and save its full execution cost. One change, outsized impact.
+The second surprise: CPIs dominate the budget in most programs. You can optimize deserialization and account loading all day and save 10,000 CU. Or you can eliminate one unnecessary CPI and save its full execution cost. 
 
-The third thing: the CU numbers in `cargo test-sbf` logs are real data from your actual code. Don't estimate. Profile.
+The third thing: the CU numbers in `cargo test-sbf` logs are real data from your actual code, so use them instead of estimating.
 
 ---
 
 ### Tying it together
 
-Put it all in motion. A transaction lands. The runtime gives it 1.4M CU. Each instruction inside gets 200K. Every operation, from a memory read to a secp256k1 recovery, chips away at that budget. When it hits zero, the transaction dies. No refund.
+A transaction lands. The runtime gives it 1.4M CU. Each instruction inside gets 200K. Every operation, from a memory read to a secp256k1 recovery, chips away at that budget. When it hits zero, the transaction dies. No refund.
 
 The reliable move is to profile before anything else. `cargo test-sbf` gives real numbers. Use them. Find where the CU actually goes. Usually it is CPIs: one unnecessary cross-program invoke can cost more than everything else combined. Eliminate it, and the budget opens back up.
 

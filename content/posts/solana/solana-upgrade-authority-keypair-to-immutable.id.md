@@ -187,7 +187,7 @@ Alur setup-nya:
 
 Apa yang kamu hilangin: kontrol tim. Komunitas yang nentuin. Eksekusi lebih lambat karena periode voting dan timelock udah built-in di konfigurasi governance. Setup tipikal mungkin butuh periode voting 3 hari ditambah timelock 1 hari sebelum bisa eksekusi.
 
-Distribusi token itu penting banget. Kalau satu entitas pegang 51% token governance, sistemnya secara efektif terpusat cuma with langkah ekstra. Governance cuma sedesentralisasi distribusi token-nya.
+Distribusi token itu penting banget. Kalau satu entitas pegang 51% token governance, sistemnya secara efektif terpusat cuma dengan langkah ekstra. Governance cuma sedesentralisasi distribusi token-nya.
 
 Apa yang kamu dapet: deliberasi publik. Setiap proposal upgrade keliatan on-chain. Pemegang token bisa nolak perubahan yang mereka nggak setuju. Tim nggak bisa ngirim upgrade kejutan.
 
@@ -205,7 +205,7 @@ Nggak bisa dibatalkan. Nggak ada instruksi yang bisa balikin authority. Instruks
 
 Apa yang kamu hilangin: seluruh kemampuan upgrade. Perbaikan bug mustahil dilakuin. Kalau kerentanan kritis ketemu setelah jadi immutable, nggak ada jalur pemulihan lewat program ID asli. Satu-satunya opsi adalah deploy program baru di alamat baru dan migrasi semua pengguna.
 
-Apa yang kamu dapet: jaminan kepercayaan absolut. Pengguna bisa verifikasi kalau bytecode nggak akan pernah berubah. Nggak ada kompromi key, nggak ada voting governance, nggak ada approval multisig yang bisa ubah program. Kode on-chain adalah kode yang dijalanin, secara permanen.
+Apa yang kamu dapet: kepastian buat pengguna. Mereka bisa verifikasi kalau bytecode nggak akan pernah berubah. Nggak ada kompromi key, nggak ada voting governance, nggak ada approval multisig yang bisa ubah program. Kode on-chain adalah kode yang dijalanin, secara permanen.
 
 ---
 
@@ -290,11 +290,11 @@ Langkah 3 itu yang paling sering kelupaan. Kalau kamu nggak transfer authority b
 
 **Transfer ke alamat yang salah itu katastrofik dengan `SetAuthority`.** Alamat baru nggak nandatangani. Nggak ada validasi bahwa ada yang pegang private key-nya. Satu karakter salah ketik di pubkey berarti authority hilang. Selalu pake `SetAuthorityChecked` kalau authority baru itu keypair.
 
-**Kamu nggak bisa batalkan `--final`.** Nggak ada pemulihan. Nggak ada override admin. Nggak ada instruksi "gue salah nih". Instruksi `SetAuthority` butuh authority yang sekarang buat nandatangani. Saat authority yang sekarang `None`, nggak ada signer yang valid dan instruksi ditolak. Ini emang sengaja didesain begitu.
+**Kamu nggak bisa batalkan `--final`.** Nggak ada pemulihan, override admin, atau instruksi "gue salah nih". Instruksi `SetAuthority` butuh authority yang sekarang buat nandatangani. Saat authority yang sekarang `None`, nggak ada signer yang valid dan instruksi ditolak. Ini emang sengaja didesain begitu.
 
 **PDA multisig atau governance nggak punya private key.** Satu-satunya cara buat bertindak sebagai authority adalah lewat proses approval program tersebut. Buat Squads, berarti musti penuhin threshold. Buat SPL Governance, berarti harus lolos voting dan nunggu timelock. Kamu nggak bisa ekstrak private key dari PDA karena memang nggak ada.
 
-**Distribusi token governance itu vektor serangan.** Seekor ikan paus yang ngakumulasi 51% token governance bisa ngelolosin proposal upgrade apapun. Governance berbobot token cuma sedesentralisasi distribusi token-nya. Kalau satu entitas pegang mayoritas, teater governance cuma nambah latensi tanpa nambah keamanan.
+**Distribusi token governance itu vektor serangan.** Seekor ikan paus yang ngakumulasi 51% token governance bisa ngelolosin proposal upgrade apapun. Governance berbobot token cuma sedesentralisasi distribusi token-nya. Kalau satu entitas pegang mayoritas, governance-nya cuma nambah latensi tanpa nambah keamanan.
 
 **Setelah `--final`, kamu juga nggak bisa `Close` program.** Instruksi `Close` butuh authority buat nandatangani, sama kayak `Upgrade` dan `SetAuthority`. Saat authority `None`, program dan akun ProgramData-nya ada selamanya. SOL rent yang terkunci di akun ProgramData nggak bisa diklaim balik. Buat program besar, itu bisa nyampe 2 sampe 3 SOL.
 
@@ -302,9 +302,9 @@ Langkah 3 itu yang paling sering kelupaan. Kalau kamu nggak transfer authority b
 
 ### Mengikat semuanya
 
-Bayangin semua bergerak. Kamu deploy sebuah program. Keypair deployer pegang upgrade authority. Byte 12 di akun ProgramData bernilai `1`, dan byte 13 sampe 44 nyimpen public key keypair itu. Satu orang bisa ganti bytecode.
+Kamu deploy sebuah program. Keypair deployer pegang upgrade authority. Byte 12 di akun ProgramData bernilai `1`, dan byte 13 sampe 44 nyimpen public key keypair itu. Satu orang bisa ganti bytecode.
 
-Kamu transfer authority itu ke multisig Squads. Sekarang butuh approval M-of-N buat upgrade. Kamu pindahin ke SPL Governance. Sekarang butuh voting berbobo token. Setiap langkah nyempitin siapa yang bisa bertindak, dan setiap langkah sulit dibatalkan.
+Kamu transfer authority itu ke multisig Squads. Sekarang butuh approval M-of-N buat upgrade. Kamu pindahin ke SPL Governance. Sekarang butuh voting berbobot token. Setiap langkah nyempitin siapa yang bisa bertindak, dan setiap langkah sulit dibatalkan.
 
 Terus kamu jalanin `--final`. Loader nulis `0` ke byte 12. Field authority 32-byte di-zero-in. Nggak ada instruksi yang bisa balikin. Program dibekuin secara permanen. Nggak ada kompromi key, nggak ada voting governance, nggak ada approval multisig yang bisa ubah lagi.
 

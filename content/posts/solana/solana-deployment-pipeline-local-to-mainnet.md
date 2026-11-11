@@ -107,7 +107,7 @@ After a successful devnet deploy, run your full integration test suite against d
 - Clock or slot-dependent logic that behaves differently under real timing
 - Priority fees too low for devnet congestion
 
-Devnet resets periodically. Programs deployed there are wiped on reset. Do not treat devnet state as persistent.
+Devnet resets periodically and wipes the programs deployed there, so do not treat devnet state as persistent.
 
 ---
 

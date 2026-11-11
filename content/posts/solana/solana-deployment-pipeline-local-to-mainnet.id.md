@@ -107,7 +107,7 @@ Setelah deploy devnet berhasil, jalanin test suite integrasi lengkap kamu ke dev
 - Logika yang bergantung ke clock atau slot berperilaku beda di timing nyata
 - Priority fee terlalu rendah buat kondisi kemacetan devnet
 
-Biasanya orang kelewat ini: devnet di-reset secara berkala. Program yang di-deploy di sana bakal hilang pas reset. Jangan perlakukan state devnet sebagai sesuatu yang permanen.
+Devnet di-reset secara berkala dan program yang di-deploy di sana ikut hilang, jadi jangan perlakukan state devnet sebagai sesuatu yang permanen.
 
 ---
 

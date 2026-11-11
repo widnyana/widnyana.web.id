@@ -17,14 +17,14 @@ categories: ["sui", "blockchain"]
 
 Sui is a Layer-1 blockchain that uses an [object-centric model](https://docs.sui.io/concepts/object-model) to process transactions in parallel, enabling high throughput and instant finality while providing native primitives for building decentralized applications.
 
-Developers choose Sui for several compelling reasons:
+Developers choose Sui for these reasons:
 
-* **Parallel execution** - Transactions don't wait in a single-file line, resulting in faster confirmation times
-* **Consumer-ready features** - [zkLogin](https://sui.io/zklogin) (sign in with Google/Apple) and [zkSend](https://www.mystenlabs.com/blog/zksend) (share crypto via link) lower barriers to entry
-* **Move programming language** - A secure, resource-oriented language designed specifically for blockchain development
-* **Built for scale** - Optimized for data-heavy applications like gaming, NFTs, DeFi, and social apps
+* Parallel execution - Transactions don't wait in a single-file line, resulting in faster confirmation times
+* Consumer-ready features - [zkLogin](https://sui.io/zklogin) (sign in with Google/Apple) and [zkSend](https://www.mystenlabs.com/blog/zksend) (share crypto via link) lower barriers to entry
+* Move programming language - A secure, resource-oriented language designed specifically for blockchain development
+* Built for scale - Optimized for data-heavy applications like gaming, NFTs, DeFi, and social apps
 
-This guide walks you through setting up the complete Sui development environment on your local machine. By the end, you'll have the Sui CLI installed, a local network running, and the essential developer tools configured to start building Move smart contracts and decentralized applications on Sui.
+This guide sets up the Sui development environment on your local machine: the Sui CLI, a local network, and the developer tools for building Move smart contracts and decentralized applications on Sui.
 
 ---
 
@@ -242,7 +242,7 @@ sui client faucet
 
 ### 5. Developer Tooling
 
-Enhance your development workflow with these essential tools and extensions.
+Tools and extensions for the development workflow.
 
 #### Move Analyzer for VS Code
 
@@ -437,8 +437,6 @@ If you encounter issues not covered here:
 
 ### 8. Wrap-up
 
-You've successfully set up a complete Sui development environment. Let's recap what you've accomplished:
-
 **What You've Set Up:**
 * Sui CLI installed and configured
 * Network connections (Devnet, Testnet, or local)
@@ -450,7 +448,7 @@ You've successfully set up a complete Sui development environment. Let's recap w
 1. **Build Your First Move Contract**
    * Follow the [Sui Move by Example](https://examples.sui.io) tutorials
    * Start with simple modules and gradually increase complexity
-   * Experiment with Sui's unique features (object model, parallel execution)
+   * Experiment with Sui's features (object model, parallel execution)
 
 2. **Connect to Testnet**
    * Get testnet tokens from the Discord faucet
@@ -458,9 +456,9 @@ You've successfully set up a complete Sui development environment. Let's recap w
    * Test your contracts in a production-like environment
 
 3. **Explore Advanced Features**
-   * Learn about zkLogin for seamless user authentication
-   * Experiment with zkSend for easy asset transfers
-   * Build consumer-facing dApps leveraging Sui's UX primitives
+   * Learn about zkLogin for user authentication
+   * Experiment with zkSend for asset transfers
+   * Build consumer-facing dApps using Sui's UX primitives
 
 4. **Join the Community**
    * [Sui Discord](https://discord.gg/sui) - Get help and connect with developers
@@ -472,6 +470,3 @@ You've successfully set up a complete Sui development environment. Let's recap w
 * [Sui Move Introduction Course](https://github.com/sui-foundation/sui-move-intro-course)
 * [Move Book](https://move-book.com) - Deep dive into Move language
 
----
-
-Happy building on Sui!

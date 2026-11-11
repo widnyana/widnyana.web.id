@@ -26,18 +26,17 @@ MikroTik routers are critical network components. Monitoring them helps you:
 - Get alerts when devices go down or perform poorly
 - Analyze long-term network trends for better decision making
 
-## Smart Database Choice
+## Database Choice
 
 I use PostgreSQL instead of the default SQLite because:
 - Better performance with large monitoring datasets
 - Multiple Grafana instances can share the same database
 - Built-in backup and replication capabilities
-- Handles concurrent queries much better
-- Reliable for long-term metrics storage
+- Handles concurrent queries better
 
 ## Pre-Built Dashboards
 
-Grafana comes pre-configured with useful dashboards:
+Grafana comes with these dashboards pre-configured:
 - MikroTik device overview with CPU, memory, and disk metrics
 - Network interface monitoring with bandwidth graphs
 - System health indicators and alerts
@@ -48,10 +47,10 @@ Grafana comes pre-configured with useful dashboards:
 
 [MKTXP](https://github.com/akpw/mktxp) is a specialized Prometheus exporter for MikroTik devices that:
 - Collects metrics via MikroTik's API
-- Has minimal performance impact on your devices
+- Has low performance impact on your devices
 - Provides detailed metrics about interfaces, resources, and system health
 - Supports multiple devices with a single instance
-- Highly configurable with fine-grained metric selection
+- Lets you select which metrics to collect
 
 ## Setting Up MikroTik User Access
 
@@ -77,7 +76,7 @@ To ensure security, create a dedicated user with minimum required permissions:
 - `read`: Enables reading device metrics and configuration
 - No write permissions: Ensures monitoring can't modify your device
 
-Once configured, your Grafana dashboards will automatically start showing MikroTik metrics. The pre-configured dashboards include interface traffic, CPU usage, memory utilization, and more.
+Once configured, your Grafana dashboards start showing MikroTik metrics. They include interface traffic, CPU usage, and memory utilization.
 
 ## How it Works
 
@@ -99,8 +98,6 @@ cd monitoring-stack/sentinel
 make init    # First-time setup
 ```
 
-The script will ask various questions, and will tell you how to run the stack after finished.
-
-That's it! Your monitoring system is ready to go. Connect to Grafana and your dashboards are waiting for you.
+The script asks a few questions and, when it finishes, tells you how to run the stack. Then connect to Grafana to see your dashboards.
 
 Note: Clean everything with `make clean` if needed.

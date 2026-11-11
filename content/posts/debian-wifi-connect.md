@@ -1,7 +1,7 @@
 ---
 title: "Connect WiFi without GUI on Debian Linux"
 date: 2025-04-13T01:49:50+07:00
-description: "Learn how to connect to Wi-Fi on Debian Linux using only the terminal — perfect for headless servers, Proxmox setups, and minimal environments without a graphical user interface (GUI) to help you get online quickly and reliably."
+description: "Learn how to connect to Wi-Fi on Debian Linux using only the terminal, perfect for headless servers, Proxmox setups, and minimal environments without a graphical user interface (GUI) to help you get online quickly and reliably."
 params:
   author: 'widnyana'
 cover:
@@ -25,13 +25,13 @@ apt install \
 
 ## Identify your wireless interface
 
-First, let’s figure out your wireless interface name using 
+Find your wireless interface name with:
 
 ```sh
 ip link
 ```
 
-You’ll see output like this:
+The output looks like this:
 
 ```sh
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
@@ -43,7 +43,7 @@ You’ll see output like this:
     link/ether d0:ab:d5:11:4r:5c brd ff:ff:ff:ff:ff:ff
 ```
 
-Look for the line that starts with something like `wl????` — that’s your **wireless interface**. In this example, it's `wlp2s0`. Make a note of it, you’ll use it in the next steps.
+Look for the line that starts with something like `wl????`. That is your wireless interface. In this example, it's `wlp2s0`. Note it down, you need it in the next steps.
 
 ## Configure WPA Auth
 
@@ -52,7 +52,7 @@ wpa_passphrase SSID_NAME PASSPHRASE \
 	| tee -a /etc/wpa_supplicant/wpa_supplicant.conf
 ```
 
-You might need to add these lines too at the beginning of the file:
+You may need to add these lines too at the beginning of the file:
 
 ```ini
 update_config=1                                 # allow wpa_supplicant to update (overwrite) configuration
@@ -95,7 +95,7 @@ iface wlp2s0 inet dhcp   # this one too
 
 ## Put them to actions
 
-Now after wpa_supplicant and network interface being configured, time to apply the update.
+With wpa_supplicant and the network interface configured, apply the update.
 
 ```sh
 systemctl enable --now wpa_supplicant.service    # refresh the configs
@@ -114,4 +114,4 @@ ip addr show [INTERFACE NAME]
 ip addr show wlp2s0
 ```
 
-That's it, you've successfully configure Wireless Connection on Linux.
+The wireless connection is now configured.
