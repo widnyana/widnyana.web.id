@@ -66,15 +66,15 @@ About a fifth of the pairs, or 71 million checks instead of 350 million. That is
 
 ## Real perceptual hashes are not uniform
 
-The measured candidate count on the real folder was **197,688,254**: 56 percent of all pairs, not 20 percent. The index removed fewer than half of the comparisons.
+The measured candidate count on the real folder was 197,688,254: 56 percent of all pairs, not 20 percent. The index removed fewer than half of the comparisons.
 
 The reason is in the data, not the formula. A perceptual hash encodes a 32 x 32 grayscale thumbnail's low-frequency content. Wallpapers, flat backgrounds, screenshots, dark frames, and images with a dominant single tone collapse to the same few hash values, and those values land in the same buckets in every range. The uniform assumption is exactly wrong for the input that matters.
 
-This one measurement invalidated the case for the index. Everything after it was me confirming the conclusion instead of guessing it.
+This one measurement invalidated the case for the index. The rest of the post confirms it.
 
 ## Dedupe was the first trap, and it was mine
 
-The first version collected verified pairs and deduplicated them with a `Set<UInt64>`, packing each pair into `low << 32 | high`. That version took **10.2 seconds and 1.1 GB of memory**.
+The first version collected verified pairs and deduplicated them with a `Set<UInt64>`, packing each pair into `low << 32 | high`. That version took 10.2 seconds and 1.1 GB of memory.
 
 The pairs themselves are not the problem: 12.8 million verified pairs is about 200 MB as plain tuples. The problem is 197 million `Set.contains` calls: each one hashes a 64-bit key, masks it, and probes a table that no longer fits in cache. The set grew to tens of millions of slots, so every probe was a memory round trip.
 
@@ -100,7 +100,7 @@ That bought 0.52 seconds and 523 MB, a 20 times speedup over the `Set` version, 
 
 ## Why the plain loop wins
 
-350 million hamming comparisons sounds heavy. It is not, because the operation is small and the data is small with it. 26,487 hashes is 212 KB, which fits in the last-level cache of the machine, so the nested loop streams a resident array and does one XOR, one popcount, and one compare per cell. That measured **0.254 seconds on one core**, roughly 1.4 billion comparisons a second.
+350 million hamming comparisons sounds heavy. It is not, because the operation is small and the data is small with it. 26,487 hashes is 212 KB, which fits in the last-level cache of the machine, so the nested loop streams a resident array and does one XOR, one popcount, and one compare per cell. That measured 0.254 seconds on one core, roughly 1.4 billion comparisons a second.
 
 The index pays three costs the plain loop does not:
 
@@ -112,7 +112,7 @@ Those costs are bigger than the 44 percent of comparisons the index saves. On un
 
 ## The bug the measurement actually found
 
-The exercise was not wasted, because it surfaced a real defect in the code path that shipped before it. The GPU pair search wrote all results into one fixed buffer of 1,048,576 pairs and threw when the library produced more. This folder produces **12,818,664 pairs**, so that path would have failed outright, and the count is not exotic: one cluster of 5,000 near-identical images is 12.5 million pairs on its own.
+The exercise was not wasted, because it surfaced a real defect in the code path that shipped before it. The GPU pair search wrote all results into one fixed buffer of 1,048,576 pairs and threw when the library produced more. This folder produces 12,818,664 pairs, so that path would have failed outright, and the count is not exotic: one cluster of 5,000 near-identical images is 12.5 million pairs on its own.
 
 The fix is to drain the buffer per tile instead of per call. The kernel already wrote into a shared buffer with an atomic counter; each tile now resets the counter, runs one command buffer, and copies its results out before the next tile starts:
 
@@ -133,8 +133,8 @@ A 2048 x 2048 tile can report at most 2,097,152 pairs, which sizes the buffer at
 
 The index is the right structure when the comparison itself is expensive or the candidate fraction is genuinely small. Neither holds here:
 
-- **Distance.** At `d = 10` on 64 bits the chunks are 5 and 6 bits, so buckets hold about `n/64` hashes each and the candidate fraction stays near half on clustered data. A smaller distance with more chunks would cut candidates, but the caller sets the distance, not the search.
-- **Scale.** At the measured rate of about 1.4 billion comparisons a second, 350 million comparisons costs a quarter second. Extrapolated, 100,000 hashes is 5 billion comparisons and 3.6 seconds on one core, and only around that size does an index start to pay for its bookkeeping.
-- **Exactness.** Everything here is exact. Approximate structures (locality sensitive hashing, random projection) would cut the work further and give up the guarantee, which is not a trade a duplicate finder should make quietly.
+- Distance: at `d = 10` on 64 bits the chunks are 5 and 6 bits, so buckets hold about `n/64` hashes each and the candidate fraction stays near half on clustered data. A smaller distance with more chunks would cut candidates, but the caller sets the distance, not the search.
+- Scale: at the measured rate of about 1.4 billion comparisons a second, 350 million comparisons costs a quarter second. Extrapolated, 100,000 hashes is 5 billion comparisons and 3.6 seconds on one core, and only around that size does an index start to pay for its bookkeeping.
+- Exactness: everything here is exact. Approximate structures (locality sensitive hashing, random projection) would cut the work further and give up the guarantee, which is not a trade a duplicate finder should make quietly.
 
-The honest summary is the boring one: measure the constant before choosing the algorithm. 350 million comparisons is 0.25 seconds on one core and 0.13 seconds on the GPU, so the pair search was never the bottleneck in that photo step. The fixed buffer was.
+Measure the constant before choosing the algorithm. 350 million comparisons is 0.25 seconds on one core and 0.13 seconds on the GPU, so the pair search was never the bottleneck in that photo step. The fixed buffer was.
