@@ -1,5 +1,5 @@
 ---
-title: "Tauri app won't start and shows nothing? How to trap the boot error in a dialog"
+title: "Tauri app dies silently on startup: catch the error in a dialog"
 date: 2026-10-10T03:30:00+07:00
 draft: false
 params:

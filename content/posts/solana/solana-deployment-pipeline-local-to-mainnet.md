@@ -1,5 +1,5 @@
 ---
-title: 'From Local to Mainnet: The Deployment Pipeline'
+title: "Deploy a Solana program from local to mainnet"
 date: 2026-05-08T10:00:00+07:00
 description: "Getting a Solana program to mainnet involves more than running a deploy command. This post maps the full pipeline from local testing with Surfpool through devnet validation and mainnet deployment, covering deployment costs, priority fees, post-deploy verification, and the pre-mainnet checklist most tutorials skip."
 params:

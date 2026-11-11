@@ -1,5 +1,5 @@
 ---
-title: "Saga vs Two-Phase Commit: Two Ways to Keep a Transaction Consistent Across Services"
+title: "Saga vs two-phase commit: keeping a transaction consistent across services"
 date: 2026-09-08T11:00:00+07:00
 draft: false
 params:

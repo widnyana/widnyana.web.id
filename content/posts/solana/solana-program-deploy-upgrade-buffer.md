@@ -1,5 +1,5 @@
 ---
-title: 'Deploy, Upgrade, and the Buffer Account Pattern'
+title: "Solana program deploy, upgrade, and the buffer account"
 date: 2026-05-02T10:00:00+07:00
 description: "Solana program deploys are not atomic. They are a multi-step dance involving a temporary Buffer account, chunked bytecode writes, and a final activation step that creates or replaces the program. This post walks through the full deploy and upgrade flows, explains why Buffer accounts exist, and shows how to recover SOL when a deploy fails midway."
 params:

@@ -1,5 +1,5 @@
 ---
-title: 'Akun Solana, Penyimpanan, dan Rent: Bagaimana Solana Mengingat Sesuatu'
+title: "Akun Solana, penyimpanan, dan rent"
 date: 2026-04-18T10:00:00+07:00
 description: "Panduan mendalam tentang model akun Solana, penyimpanan on-chain dengan serialisasi Borsh, minimum rent-exempt, menutup akun, dan Program Derived Addresses (PDA): fondasi yang perlu dipahami setiap developer Solana."
 params:

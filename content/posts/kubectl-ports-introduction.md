@@ -1,5 +1,5 @@
 ---
-title: "Introducing kubectl-ports: Easily List Exposed Ports in Kubernetes"
+title: "kubectl-ports: list exposed ports in Kubernetes"
 date: 2024-10-10T21:30:00+07:00
 description: "kubectl-ports is a handy kubectl plugin that retrieves exposed ports information from Kubernetes pods and services, presenting it in a clean, readable table format."
 params:

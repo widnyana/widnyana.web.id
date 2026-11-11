@@ -1,5 +1,5 @@
 ---
-title: 'How Solana Programs Actually Live Onchain: The Two-Account Model'
+title: "Solana program lifecycle: the two-account model"
 date: 2026-04-25T10:00:00+07:00
 description: "Solana programs aren't stored in a single account. They're split across two linked accounts managed by the BPF Loader: a tiny Program Account that acts as the identity, and a larger ProgramData Account that holds the bytecode. This post breaks down the two-account model, explains why program IDs never change across upgrades, and shows how this architecture makes hot-swappable code possible."
 params:
