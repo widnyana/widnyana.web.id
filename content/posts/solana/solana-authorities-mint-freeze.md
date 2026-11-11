@@ -1,5 +1,5 @@
 ---
-title: 'Mint Authority and Freeze Authority: The Two Powers Every SPL Token Has'
+title: "Mint authority and freeze authority on SPL tokens"
 date: 2026-05-20T10:00:00+07:00
 draft: false
 description: "Every SPL token has two authority fields in its mint account: mint authority controls who can create new supply, freeze authority controls who can lock any holder's tokens. They get confused constantly. This post covers what each one does, how they interact, and why checking both is the first step in auditing any token."

@@ -1,5 +1,5 @@
 ---
-title: "Temporal: When It Fits, and When It Doesn't"
+title: "When to adopt Temporal, and when not to"
 date: 2026-09-05T10:00:00+07:00
 draft: false
 params:

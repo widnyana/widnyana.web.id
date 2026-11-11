@@ -1,5 +1,5 @@
 ---
-title: "Hamming search over 26,000 perceptual hashes: the index I built lost to comparing every pair"
+title: "Hamming search over 26,000 perceptual hashes: my index lost to brute force"
 date: 2026-11-16T09:00:00+07:00
 draft: true
 params:

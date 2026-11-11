@@ -1,5 +1,5 @@
 ---
-title: "Why my AI agent kept drawing blank boxes in Excalidraw, and what stopped it"
+title: "Excalidraw diagrams as code: stop your AI agent drawing blank boxes"
 date: 2026-10-07T17:00:00+07:00
 draft: false
 params:

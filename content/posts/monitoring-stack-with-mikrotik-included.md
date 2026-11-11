@@ -1,5 +1,5 @@
 ---
-title: 'Monitoring Stack With Mikrotik Included'
+title: "Monitoring stack with MikroTik included"
 publishdate: 2025-01-22T15:32:34+07:00
 draft: false
 params: 

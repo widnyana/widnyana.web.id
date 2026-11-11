@@ -1,5 +1,5 @@
 ---
-title: 'Solana Authorities: The Pattern That Governs Everything'
+title: "Solana authorities pattern"
 date: 2026-05-19T10:00:00+07:00
 draft: false
 description: "On Solana, 'authority' is not one concept. It is a pattern that appears in at least seven different places, with different defaults, different transfer mechanics, and different consequences when set to None. This post establishes the vocabulary and mental model you need before going deep on any specific authority type."

@@ -1,5 +1,5 @@
 ---
-title: 'Dari Lokal ke Mainnet: Pipeline Deployment'
+title: "Deploy program Solana dari lokal ke mainnet"
 date: 2026-05-08T10:00:00+07:00
 description: "Men-deploy program Solana ke mainnet lebih dari sekedar menjalankan perintah deploy. Tulisan ini memetakan pipeline lengkap dari testing lokal dengan Surfpool, validasi di devnet, hingga deployment ke mainnet, termasuk biaya deployment, priority fees, verifikasi pasca-deploy, dan checklist pra-mainnet yang sering dilewatkan tutorial."
 params:

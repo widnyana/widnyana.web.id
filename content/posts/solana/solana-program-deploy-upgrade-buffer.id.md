@@ -1,5 +1,5 @@
 ---
-title: 'Deploy, Upgrade, dan Pola Buffer Account'
+title: "Deploy, upgrade, dan buffer account di program Solana"
 date: 2026-05-02T10:00:00+07:00
 description: "Deploy program Solana tidak bersifat atomik. Ini adalah rangkaian langkah yang melibatkan akun Buffer sementara, penulisan bytecode dalam potongan (chunk), dan langkah aktivasi akhir yang membuat atau mengganti program. Postingan ini membahas alur deploy dan upgrade secara lengkap, menjelaskan kenapa Buffer account ada, dan menunjukkan cara mengklaim kembali SOL saat deploy gagal di tengah jalan."
 params:

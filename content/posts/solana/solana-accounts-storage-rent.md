@@ -1,5 +1,5 @@
 ---
-title: 'Solana Accounts, Storage, and Rent: How Solana Remembers Things'
+title: "Solana accounts, storage, and rent"
 date: 2026-04-18T10:00:00+07:00
 description: "A deep guide to the Solana account model, on-chain storage with Borsh serialization, rent-exempt minimums, closing accounts, and Program Derived Addresses (PDAs): the fundamentals every Solana developer needs to understand."
 params:

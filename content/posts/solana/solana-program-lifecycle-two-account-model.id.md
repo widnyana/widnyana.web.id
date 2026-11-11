@@ -1,5 +1,5 @@
 ---
-title: 'Bagaimana Program Solana Benar-Benar Hidup On-Chain: Model Dua Akun'
+title: "Lifecycle program Solana: model dua akun"
 date: 2026-04-25T10:00:00+07:00
 description: "Program Solana tidak disimpan dalam satu akun. Mereka terbagi menjadi dua akun yang saling terhubung dan dikelola oleh BPF Loader: sebuah Program Account kecil yang berfungsi sebagai identitas, dan ProgramData Account yang lebih besar yang menyimpan bytecode. Post ini membahas model dua akun, menjelaskan kenapa program ID tidak pernah berubah saat upgrade, dan menunjukkan bagaimana arsitektur ini membuat hot-swappable code menjadi mungkin."
 params:

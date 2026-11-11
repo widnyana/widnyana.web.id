@@ -1,5 +1,5 @@
 ---
-title: 'Upgrade Authority: From Keypair to Immutable'
+title: "Solana upgrade authority: from keypair to immutable"
 date: 2026-05-05T10:00:00+07:00
 description: "Every upgradeable Solana program has one field that controls who can replace its bytecode: the upgrade_authority_address in the ProgramData account. This post traces the full lifecycle of that field, from a single keypair through Squads multisig and SPL Governance, to the irreversible --final flag that freezes a program forever."
 params:

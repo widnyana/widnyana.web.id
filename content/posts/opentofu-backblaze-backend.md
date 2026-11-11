@@ -1,5 +1,5 @@
 ---
-title: 'Opentofu Backblaze Backend'
+title: "Use Backblaze as an OpenTofu backend"
 date: 2025-01-20T14:51:11+07:00
 draft: false
 params: 
