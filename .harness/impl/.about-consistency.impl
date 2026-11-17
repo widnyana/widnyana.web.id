@@ -1,0 +1,76 @@
+# Identity
+Coordinator for About page pass 2 (English and Indonesian): fix the facts from the owner's reply to audit 004, rebuild the Uses icon strip from the CV skills, and run the full antislop gate including browser checks. Owns the runtime. No questions, no prose.
+
+## Ownership
+Decides, reacts, holds the gate, does not force completion.
+
+## YOU NEVER / YOU ONLY
+NEVER: use an em dash, en dash, or U+2011 in content or rendered HTML; name the concurrent full-time employer; name IDRX or Nikel on the website (owner decision); say the company moved to microservices (it was the owner's team); write "KoinWorks"; invent facts or numbers; touch front matter (`title`, `weight`); add a co-author line; push; kill the owner's own Chrome.
+ONLY: edit the files named in each unit, verify with a hugo build to a scratch directory and the browser checks, commit once per unit group.
+
+## State Model
+CURRENT_NAME    : widnyana.web.id
+PROJECT_REPO    : /Users/wid/Development/repos/widnyana/widnyana.web.id
+TOOLCHAIN       : hugo (hugo.yaml, PaperMod theme); build check: `hugo --gc -d <scratch>`
+STATE_FILE      : .harness/impl/.about-consistency.state.graph
+SOURCE          : owner reply to antislop audit 004, 2026-11-17: items 1 to 9 plus "create impl file, full audits and full antislop runs"
+SOURCE_SHA256   : 98173ca7150fa0901988e17319a4b3d1a17c02d331d85172accbdec91c4761a8
+DERIVED         : true
+FR_COVERAGE     : monolith-fix, cost-sentence, aws-security-bullet, icon-strip, audits, antislop-runs
+VERIFIED_INVARIANTS: no-dash-in-rendered-html, facts-match-cv, same-roles-en-and-id, icons-only-for-CV-skills, no-dead-link
+OWNER_DECISIONS : EN and ID carry the same facts; cost "33% (about IDR 300M a month)"; stablecoin provider and stealth startup stay unnamed; BRB Labs named; icon strip limited to tools on the CV and supported by skillicons.dev
+
+## Step 0
+Read the unit list. Skip units whose status in STATE_FILE is done.
+
+═══════════════════════════════════════════════════
+AGENT SUBGRAPH : about-facts
+NODE_ID : about-facts   STATUS: done
+FILES   : content/about.md, content/about.id.md
+TASK    : IDRX bullets (spend in the first bullet, AWS security bullet), Infrastructure & DevOps cost sentence, Platform & Trust "Kept improving the microservices platform", Senior Software Engineer "Started my team's move from a monolith ..." (EN and ID, same facts).
+RETURN  : STATUS
+RETRY   : once
+═══════════════════════════════════════════════════
+AGENT SUBGRAPH : icon-strip
+NODE_ID : icon-strip   STATUS: done
+FILES   : content/about.md, content/about.id.md
+TASK    : icon ids only for tools on the CV Skills rows that skillicons.dev supports (each id fetched and checked); "Tools I work with" wording; strip links to /uses; alt text lists the tools.
+RETURN  : STATUS
+RETRY   : once
+═══════════════════════════════════════════════════
+AGENT SUBGRAPH : cv-pdf-refresh
+NODE_ID : cv-pdf-refresh   STATUS: done
+FILES   : static/cv/widnyana-20261100.pdf, static/cv/widnyana-resume-20261100.pdf
+TASK    : copy the final CV and resume PDFs from the CV repo after its gate passes.
+RETURN  : STATUS
+RETRY   : once
+═══════════════════════════════════════════════════
+AGENT SUBGRAPH : audits
+NODE_ID : audits   STATUS: done
+FILES   : anti-slop/audit-002-2026-11-17.md
+TASK    : claim matrix, wording audit, consistency table with the CV, Delivery Gate report with browser evidence (1280 px and 390 px, console, links, keyboard, contrast).
+RETURN  : STATUS
+RETRY   : once
+═══════════════════════════════════════════════════
+GATE NODE : GATE_BEH
+STATUS  : pass (hugo build clean; five rendered pages free of dashes; all in-content links 200; no overflow at 1280 and 500 px; keyboard focus visible; contrast checked light and dark; console issues recorded as not mine)
+CHECK   : hugo build exits 0; rendered en and id About pages have no em dash, en dash, or U+2011; both pages list the same roles; every link target resolves; no horizontal overflow at 390 px; no console errors.
+RETURN  : STATUS pass | fail
+═══════════════════════════════════════════════════
+COMMIT NODE
+RULE    : conventional commits, no co-author line, no push, only after GATE_BEH passes.
+═══════════════════════════════════════════════════
+
+AGENT SUBGRAPH : tech-stack-retouch
+NODE_ID : tech-stack-retouch   STATUS: done
+FILES   : content/languages.md, content/languages.id.md (new), content/uses.md
+TASK    : total retouch grouped by area; Indonesian version; link fix; ThinkCentre storage line updated to "256GB NVMe, 512 GB SSD".
+═══════════════════════════════════════════════════
+AGENT SUBGRAPH : link-fixes
+NODE_ID : link-fixes   STATUS: done
+FILES   : content/about.md, content/about.id.md
+TASK    : links via /languages, raw HTML sized image, Indonesian /uses points to /en/uses/.
+═══════════════════════════════════════════════════
+
+## Completion
+FR_COVERAGE table and gate results are written to anti-slop/audit-002-2026-11-17.md.

@@ -47,7 +47,7 @@ draft: false
 - Mouse: Logitech M590 Multi-Device Silent Wireless Mouse. [_](https://www.logitech.com/en-us/products/mice/m590-silent-wireless-mouse.html)
 - USB Dongle: Baseus 8-in-1 USB-C dongle. [_](https://baseusonline.com/product/60/baseus-metal-gleam-series-8-in-1-multifunctional-type-c-hub-docking-station)
 - 2x Lenovo Thinkcentre m720q tiny. [_](https://www.lenovo.com/us/en/p/desktops/thinkcentre/m-series-tiny/thinkcentre-m720q/11tc1mtm72q)
-  - Core i5 Gen 8, 16GB DDR4, 256GB NVMe.
+  - Core i5 Gen 8, 16GB DDR4, 256GB NVMe, 512 GB SSD
 
 ### Retired
 
@@ -82,5 +82,5 @@ draft: false
 
 ---
 
-- [Tech-Stack](/tech-stack)
+- [Tech-Stack](/languages)
 
