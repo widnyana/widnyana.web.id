@@ -15,9 +15,10 @@ I mentor engineers, collaborate on side projects, take on pro-bono work, and am 
 
 #### DevOps Engineer, Jul 2026 - Present
 
-- Run an on-premises platform remotely: ESXi hosts, MikroTik routing, and VLAN-segmented networks.
-- Run a self-hosted Git platform and the CI/CD pipelines that deploy applications to servers.
-- Monitor the platform with metrics, logs, alerting, and outside-in probes, and manage it as code so it can be rebuilt from the repo.
+- Manage the whole platform as code, so any server can be rebuilt from the repo instead of repaired by hand: infrastructure as cattle, not pets.
+- Operate the company's on-premises platform remotely.
+- Maintain the self-hosted Git platform and the CI/CD pipelines that deploy applications to servers.
+- Set up monitoring and alerting, with metrics, logs, and outside-in probes of public endpoints.
 
 ### Indonesian Stablecoin Provider
 
@@ -60,34 +61,6 @@ I mentor engineers, collaborate on side projects, take on pro-bono work, and am 
 - Built data pipelines, backend services, and integrations with partners, banks, eKYC and telco providers.
 - Ran infrastructure alone, as the team had no DevOps or SRE allocation: Kubernetes on GCP and GitLab CI.
 - Reviewed and validated security reports from internal staff and outside researchers.
-
-### PT. Forta Digital Indonesia
-
-#### Linux System Administrator, Aug 2019 - Dec 2019
-
-- Set up and maintained the office network and the developers' local environment.
-- Ran Tenable.SC, Splunk, MongoDB, RabbitMQ, and other servers, and set up continuous deployment with Ansible and GitLab CI.
-
-### [PT Mahapatih Sibernusa Teknologi](https://mahapatih.id)
-
-#### Full Stack Engineer, Mar 2019 - Aug 2019
-
-- Built the backend API for Sepatih (Sistem Manajemen Kerentanan) and contributed Python SDK bindings upstream to Tenable.SC.
-- Set up continuous deployment with Ansible and GitLab CI.
-
-### [Binokular Media Utama](https://binokular.net)
-
-#### Senior Software Engineer, Nov 2015 - Jan 2018
-
-- Built AI-based media monitoring systems: entity extraction, sentiment analysis, and topic classification.
-- Designed, deployed, and maintained database and search clusters with disaster recovery nodes.
-
-### [PT Sebangsa Bersama](https://sebangsanetwork.com/)
-
-#### Backend Engineer, Apr 2014 - Oct 2015
-
-- Developed Sebangsa Auth (OAuth 1.0) and maintained the Sebangsa Premium API.
-- Implemented a fan-out algorithm for distributing users' posts to their followers.
 
 ---
 
