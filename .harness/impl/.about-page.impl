@@ -1,0 +1,67 @@
+# Identity
+Coordinator for the About page rewrite (English and Indonesian) and the CV PDF refresh. Owns the runtime. No questions, no prose.
+
+## Ownership
+Decides, reacts, holds the gate, does not force completion.
+
+## YOU NEVER / YOU ONLY
+NEVER: use an em dash, en dash, or U+2011 in content or rendered HTML; name the concurrent full-time employer; name IDRX or Nikel on the website (owner decision); invent numbers; add a co-author line to commits; push; touch front matter (`title`, `weight`); write outside PROJECT_REPO except the CV PDFs copied from the CV repo.
+ONLY: edit the files named in each unit, verify by building the site to a scratch directory, commit once per unit group.
+
+## State Model
+CURRENT_NAME    : widnyana.web.id
+PROJECT_REPO    : /Users/wid/Development/repos/widnyana/widnyana.web.id
+TOOLCHAIN       : hugo (hugo.yaml, PaperMod theme); build check: `hugo --gc -d <scratch>`
+STATE_FILE      : .harness/impl/.about-page.state.graph
+SOURCE          : user prompt, 2026-11-17: "while you at it, run `antislop` on about page; you are allowed to re-arrange the content of the about page; cover BOTH english and indonesian"
+SOURCE_SHA256   : 119bef549044ab8f7272194873571a1073e21ee25d86341bcf8c460427a143b8
+DERIVED         : true
+FR_COVERAGE     : antislop-audit, about-en, about-id, cv-pdf-refresh, audit-report
+VERIFIED_INVARIANTS: no-dash-in-rendered-html, facts-match-cv, same-roles-en-and-id, no-dead-link
+OWNER_DECISIONS : years 12+; keep 33% and 25%; keep stablecoin provider and stealth startup unnamed, name BRB Labs; plain intro; re-arrange allowed
+
+## Step 0
+Read the unit list. Skip units whose status in STATE_FILE is done.
+
+═══════════════════════════════════════════════════
+AGENT SUBGRAPH : audit
+NODE_ID : audit   STATUS: done
+FILES   : anti-slop/audit-001-2026-11-17.md
+TASK    : numbered antislop findings (R-02, R-16, R-17, R-26, R-36, R-38, R-39) for both pages.
+RETURN  : STATUS
+RETRY   : once
+═══════════════════════════════════════════════════
+AGENT SUBGRAPH : about-en
+NODE_ID : about-en   STATUS: done
+FILES   : content/about.md
+TASK    : plain intro; work experience newest first (BRB Labs, stablecoin provider, self-employed, stealth startup, Koinworks x3, Forta, Mahapatih, Binokular, Sebangsa); "Role, Mon YYYY - Mon YYYY" headings; icon image links to /uses with real alt text.
+RETURN  : STATUS
+RETRY   : once
+═══════════════════════════════════════════════════
+AGENT SUBGRAPH : about-id
+NODE_ID : about-id   STATUS: done
+FILES   : content/about.id.md
+TASK    : same structure, facts, and order as about-en, in plain Indonesian; headings translated; months in Indonesian (Agu, Okt, Des, Sekarang).
+RETURN  : STATUS
+RETRY   : once
+═══════════════════════════════════════════════════
+AGENT SUBGRAPH : cv-pdf-refresh
+NODE_ID : cv-pdf-refresh   STATUS: done
+FILES   : static/cv/widnyana-20260500.pdf, static/cv/widnyana-resume-20260500.pdf (public/cv is untracked build output)
+TASK    : copy `Widnyana - CV.pdf` and `Widnyana - Resume.pdf` from the CV repo; keep the old file names so links stay valid.
+RETURN  : STATUS
+RETRY   : once
+═══════════════════════════════════════════════════
+GATE NODE : GATE_BEH
+STATUS  : pass (hugo build exits 0; rendered en/about and id/about contain no em dash, en dash, U+2011; both pages list the same roles; CV link resolves to the new PDF; cmp of static PDFs matches the CV repo outputs)
+CHECK   : rg for U+2014, U+2013, U+2011 and their HTML entities on the built pages returns nothing.
+RETURN  : STATUS pass | fail
+═══════════════════════════════════════════════════
+COMMIT NODE
+STATUS  : done   commit_sha="3c4d587"
+RULE    : conventional commit, no co-author line, no push.
+═══════════════════════════════════════════════════
+
+## Completion
+FR_COVERAGE : antislop-audit done, about-en done, about-id done, cv-pdf-refresh done, audit-report done.
+DEFERRED    : Digital Siber Indonesia (Feb 2018 - Jan 2019) is on the CV but on neither page; it was already missing. Push and deploy are the owner's.
