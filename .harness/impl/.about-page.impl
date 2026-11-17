@@ -47,7 +47,7 @@ RETRY   : once
 ═══════════════════════════════════════════════════
 AGENT SUBGRAPH : cv-pdf-refresh
 NODE_ID : cv-pdf-refresh   STATUS: done
-FILES   : static/cv/widnyana-20260500.pdf, static/cv/widnyana-resume-20260500.pdf (public/cv is untracked build output)
+FILES   : static/cv/widnyana-20261100.pdf, static/cv/widnyana-resume-20261100.pdf (public/cv is untracked build output)
 TASK    : copy `Widnyana - CV.pdf` and `Widnyana - Resume.pdf` from the CV repo; keep the old file names so links stay valid.
 RETURN  : STATUS
 RETRY   : once

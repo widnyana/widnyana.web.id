@@ -64,7 +64,7 @@ I mentor engineers, collaborate on side projects, take on pro-bono work, and am 
 
 ---
 
-Detailed view of my experience and skills can be found on this [CV](/cv/widnyana-20260500.pdf).
+Detailed view of my experience and skills can be found on this [CV](/cv/widnyana-20261100.pdf).
 
 ## Uses
 
