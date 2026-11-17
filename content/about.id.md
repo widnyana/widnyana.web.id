@@ -24,9 +24,9 @@ Saya terbuka untuk kegiatan mentoring, kolaborasi proyek sampingan, diskusi ide,
 
 #### Sr. Cloud Infrastructure Engineer, Jun 2025 - Agu 2026
 
-- Memindahkan production dari satu server GCP yang di-deploy manual, tanpa staging dan tanpa rilis otomatis, ke AWS, lalu mematikan GCP.
+- Memindahkan production dari satu server GCP yang di-deploy manual, tanpa staging dan tanpa rilis otomatis, ke AWS, lalu mematikan GCP, dengan biaya tetap di bawah IDR 15 juta per bulan.
 - Memisahkan staging dan production, serta mengotomatiskan rilis dengan GitHub Actions dan ArgoCD di Kubernetes.
-- Menjaga biaya AWS di bawah IDR 15 juta per bulan selama seluruh masa kerja.
+- Membangun lingkungan AWS sesuai praktik terbaik AWS untuk keamanan: akun terpisah per lingkungan, akses dengan hak minimum, MFA, audit logging, enkripsi, dan jaringan privat.
 
 ### Self-Employed
 
@@ -47,17 +47,19 @@ Saya terbuka untuk kegiatan mentoring, kolaborasi proyek sampingan, diskusi ide,
 
 #### Engineering Manager, Infrastructure & DevOps, Apr 2023 - Mar 2024
 
-- Memangkas biaya infrastruktur cloud sebesar 33%, dan membantu engineer mengelola deployment dan pipeline CI/CD mereka sendiri.
+- Memangkas biaya infrastruktur cloud sebesar 33% (sekitar IDR 300 juta per bulan), dan membantu engineer mengelola deployment dan pipeline CI/CD mereka sendiri.
 - Membangun praktik dokumentasi untuk onboarding, keputusan (ADR, RFC), dan runbook.
 
 #### Engineering Manager, Platform & Trust, Okt 2021 - Mar 2023
 
-- Merancang ulang infrastruktur cloud: dari VM ke Kubernetes di GKE, dan dari monolit ke microservices berbasis event dengan GitLab CI dan RabbitMQ.
+- Merancang ulang infrastruktur cloud dan memindahkan deployment dari VM ke Kubernetes di GKE.
+- Terus memperbaiki platform microservices: build lebih cepat, layanan lebih tangguh, trunk-based development, dan lebih banyak otomasi.
 - Membangun tim engineering beranggotakan 8 orang yang men-deploy layanannya sendiri. Kecepatan pengiriman naik 25% dan waktu rapat turun 50%.
 - Memasang observabilitas Datadog di seluruh layanan.
 
 #### Senior Software Engineer, Jan 2020 - Okt 2021
 
+- Memulai migrasi dari monolit ke microservices berbasis event di tim saya: tim pertama yang pindah dari Jenkins ke GitLab CI, dengan RabbitMQ sebagai message broker.
 - Membangun pipeline data, layanan backend, dan integrasi dengan mitra, bank, penyedia eKYC dan telekomunikasi.
 - Mengelola infrastruktur sendirian karena tim tidak punya alokasi DevOps atau SRE: Kubernetes di GCP dan GitLab CI.
 - Meninjau dan memvalidasi laporan keamanan dari staf internal dan peneliti luar.
@@ -68,6 +70,6 @@ Detail pengalaman dan keahlian saya dapat Anda temukan melalui tautan berikut [C
 
 ## Uses
 
-[![Ikon alat yang saya pakai: AWS, GCP, Linux, Kubernetes, Docker, Python, Go, PostgreSQL, dan lainnya](https://skillicons.dev/icons?i=aws,gcp,linux,redhat,kubernetes,git,docker,py,go,lua,mongodb,mysql,postgres,sqlite,nix,nodejs,raspberrypi,md,jenkins,flutter,dart,react,ts&perline=15)](/uses)
+<p><a href="/id/tech-stack/"><img src="https://skillicons.dev/icons?i=aws,gcp,linux,kubernetes,docker,terraform,ansible,cloudflare,gitlab,githubactions,jenkins,grafana,prometheus,go,rust,py,ts,bash,php,postgres,mysql,redis,mongodb,cassandra,rabbitmq,elasticsearch&amp;perline=9" alt="Ikon alat yang saya pakai: AWS, GCP, Linux, Kubernetes, Docker, Terraform, Ansible, Go, Rust, Python, PostgreSQL, dan lainnya" width="498" height="161" loading="lazy" style="max-width:100%;height:auto"></a></p>
 
-Lihat halaman [/uses](/uses) untuk informasi lebih lanjut mengenai alat dan teknologi yang saya gunakan.
+Lihat [tech stack](/languages) untuk daftar lengkap teknologi dan [/uses](/en/uses/) (Inggris) untuk perangkat yang saya gunakan.
