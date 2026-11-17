@@ -3,85 +3,91 @@ title='Hello!'
 weight=2
 +++
 
-Saya **Wid**nyana, seorang *tech-agnostic* yang tidak terikat pada satu *stack* tertentu dengan pengalaman profesional lebih dari 11 tahun di bidang Administrasi Sistem, Infrastruktur Cloud, dan Rekayasa Perangkat Lunak.
+Saya **Wid**nyana, seorang System Architect dengan pengalaman lebih dari 12 tahun di bidang infrastruktur cloud, rekayasa perangkat lunak, dan otomasi. Saya membangun dan menjalankan platform cloud dan on-premises untuk tim fintech dan blockchain.
 
-Saya terbuka untuk kegiatan mentoring, kolaborasi proyek sampingan, diskusi ide, uji coba produk baru, maupun menulis. Saya juga terbuka untuk kegiatan pro-bono — silakan hubungi saya jika Anda membutuhkannya.
+Saya terbuka untuk kegiatan mentoring, kolaborasi proyek sampingan, diskusi ide, uji coba produk baru, maupun menulis. Saya juga terbuka untuk kegiatan pro-bono, silakan hubungi saya jika Anda membutuhkannya.
 
 ---
 
-## Work Experiences
+## Pengalaman Kerja
 
-### Self-Employed
+### BRB Labs
 
-#### Cloud Infrastructure & System Architecture Consultant --- January 2025 - Present
+#### DevOps Engineer, Jul 2026 - Sekarang
 
-- Helping organizations design and scale resilient infrastructure across AWS, GCP, and other public clouds. Specializing in System Architecture, Team Management, Web3 infrastructure, and Cloud Infrastructure Strategy.
+- Menjalankan platform on-premises dari jarak jauh: server ESXi, routing MikroTik, dan jaringan yang dipisah dengan VLAN.
+- Menjalankan platform Git self-hosted dan pipeline CI/CD yang men-deploy aplikasi ke server.
+- Memantau platform dengan metrik, log, alerting, dan probe dari luar, serta mengelolanya sebagai kode agar bisa dibangun ulang dari repositori.
 
 ### Indonesian Stablecoin Provider
 
-#### Sr. Infrastructure Engineer --- June 2025 - Present
+#### Sr. Cloud Infrastructure Engineer, Jun 2025 - Agu 2026
 
-- Designing and maintaining cloud infrastructure for a stablecoin issuance and management platform.
+- Memindahkan production dari satu server GCP yang di-deploy manual, tanpa staging dan tanpa rilis otomatis, ke AWS, lalu mematikan GCP.
+- Memisahkan staging dan production, serta mengotomatiskan rilis dengan GitHub Actions dan ArgoCD di Kubernetes.
+- Menjaga biaya AWS di bawah IDR 15 juta per bulan selama seluruh masa kerja.
+
+### Self-Employed
+
+#### Cloud Infrastructure & System Architecture Consultant, Jan 2025 - Sekarang
+
+- Merancang infrastruktur di AWS, GCP, dan public cloud lain untuk organisasi klien, termasuk infrastruktur Web3, serta memberi saran arsitektur dan manajemen tim.
 
 ### Stealth Startup
 
-#### Sr. DevOps Engineer --- June 2024 ‑ January 2025
+#### Sr. DevOps Engineer, Jun 2024 - Jan 2025
 
-- Built and maintained IaC on GCP; ensuring scalability and reliability on Kubernetes clusters and VMs.
-- Led OpenTelemetry adoption for observability, collaborated with Data Team on data pipelines optimization, and reduced Cloud Infrastructure costs.
+- Membangun dan memelihara Infrastructure as Code untuk Google Cloud Platform.
+- Menjalankan klaster Kubernetes dan virtual machine, serta menambahkan alerting dan observabilitas OpenTelemetry.
+- Membuat pipeline data lebih andal dan lebih cepat bersama Tim Data.
+- Menyelesaikan beberapa proyek bersama tim produk dan software dengan tenggat ketat, termasuk sistem loan origination dalam dua bulan.
 
 ### Koinworks
 
-#### Engineering Manager at Infrastructure.DevOps team --- *Apr 2023 - Mar 2024*
+#### Engineering Manager, Infrastructure & DevOps, Apr 2023 - Mar 2024
 
-- Led cloud infrastructure cost optimization (33.33% savings) while transforming DevOps culture—enabling engineers to own deployments, CI/CD pipelines, and workflow automation.
-- Established a strong documentation and knowledge-sharing culture, improving onboarding, decision-making (ADR, RFC), and team efficiency through mentorship and system reliability practices.
+- Memangkas biaya infrastruktur cloud sebesar 33%, dan membantu engineer mengelola deployment dan pipeline CI/CD mereka sendiri.
+- Membangun praktik dokumentasi untuk onboarding, keputusan (ADR, RFC), dan runbook.
 
-#### Engineering Manager at  Platform.Trust team --- *Oct 2021 - Mar 2023*
+#### Engineering Manager, Platform & Trust, Okt 2021 - Mar 2023
 
-- Re-architected cloud infrastructure, shifting from VM-based to container-based deployments on GKE, and led the migration from a monolith to event-driven microservices, adopting GitLab CI and RabbitMQ.  
-- Built a high-performing, autonomous engineering team, streamlined Scrum ceremonies (reducing meeting time by 50%), and drove observability adoption using Datadog.  
+- Merancang ulang infrastruktur cloud: dari VM ke Kubernetes di GKE, dan dari monolit ke microservices berbasis event dengan GitLab CI dan RabbitMQ.
+- Membangun tim engineering beranggotakan 8 orang yang men-deploy layanannya sendiri. Kecepatan pengiriman naik 25% dan waktu rapat turun 50%.
+- Memasang observabilitas Datadog di seluruh layanan.
 
-#### Sotfware Engineer --- *Jan 2020 - Oct 2021*
+#### Senior Software Engineer, Jan 2020 - Okt 2021
 
-- Built and optimized data pipelines, backend services, and private integrations while independently managing Kubernetes clusters and GCP services.  
-- Introduced CI/CD with GitLab CI and ensured security compliance through rigorous report validation.  
-
----
+- Membangun pipeline data, layanan backend, dan integrasi dengan mitra, bank, penyedia eKYC dan telekomunikasi.
+- Mengelola infrastruktur sendirian karena tim tidak punya alokasi DevOps atau SRE: Kubernetes di GCP dan GitLab CI.
+- Meninjau dan memvalidasi laporan keamanan dari staf internal dan peneliti luar.
 
 ### PT. Forta Digital Indonesia
 
-#### Linux System Administrator --- *Aug 2019 - Dec 2019*
+#### Linux System Administrator, Agu 2019 - Des 2019
 
-- Set up and maintained the office network, local development ecosystem, and key infrastructure components like Tenable.SC, Splunk, MongoDB, and RabbitMQ.  
-- Implemented Continuous Deployment with Ansible and GitLab CI, while managing product deployments to client environments.  
-
----
+- Membangun dan memelihara jaringan kantor serta lingkungan lokal para developer.
+- Menjalankan Tenable.SC, Splunk, MongoDB, RabbitMQ, dan server lain, serta menyiapkan continuous deployment dengan Ansible dan GitLab CI.
 
 ### [PT Mahapatih Sibernusa Teknologi](https://mahapatih.id)
 
-#### Full Stack Engineer --- *Mar 2019 - Aug 2019*
+#### Full Stack Engineer, Mar 2019 - Agu 2019
 
-- Developed backend API for Sistem Manajemen Kerentanan (Sepatih) and implemented a missing Python SDK for the Tenable.SC API.  
-- Automated deployment processes using Ansible and GitLab CI.
-
----
+- Membangun API backend untuk Sepatih (Sistem Manajemen Kerentanan) dan menyumbang SDK Python ke Tenable.SC secara upstream.
+- Menyiapkan continuous deployment dengan Ansible dan GitLab CI.
 
 ### [Binokular Media Utama](https://binokular.net)
 
-#### Senior Software Engineer --- *Nov 2015 - Jan 2018*
+#### Senior Software Engineer, Nov 2015 - Jan 2018
 
-- Built and optimized AI-driven media monitoring systems, including entity extraction, sentiment analysis, and topic classification.  
-- Designed and maintained high-availability database and search clusters, ensuring reliability and scalability.
-
----
+- Membangun sistem pemantauan media berbasis AI: ekstraksi entitas, analisis sentimen, dan klasifikasi topik.
+- Merancang, men-deploy, dan memelihara klaster database dan pencarian beserta node disaster recovery.
 
 ### [PT Sebangsa Bersama](https://sebangsanetwork.com/)
 
-#### Backend Engineer ~ *Apr 2014 - Oct 2015*
+#### Backend Engineer, Apr 2014 - Okt 2015
 
-- Developed Sebangsa Auth with OAuth 1.0 and maintained Sebangsa Premium API.  
-- Implemented a fan-out algorithm for efficient post distribution to followers.
+- Mengembangkan Sebangsa Auth (OAuth 1.0) dan memelihara Sebangsa Premium API.
+- Membuat algoritma fan-out untuk mendistribusikan postingan pengguna ke pengikutnya.
 
 ---
 
@@ -89,6 +95,6 @@ Detail pengalaman dan keahlian saya dapat Anda temukan melalui tautan berikut [C
 
 ## Uses
 
-[![familiarity](https://skillicons.dev/icons?i=aws,gcp,linux,redhat,kubernetes,git,docker,py,go,lua,mongodb,mysql,postgres,sqlite,nix,nodejs,raspberrypi,md,jenkins,flutter,dart,react,ts&perline=15)](#_)
+[![Ikon alat yang saya pakai: AWS, GCP, Linux, Kubernetes, Docker, Python, Go, PostgreSQL, dan lainnya](https://skillicons.dev/icons?i=aws,gcp,linux,redhat,kubernetes,git,docker,py,go,lua,mongodb,mysql,postgres,sqlite,nix,nodejs,raspberrypi,md,jenkins,flutter,dart,react,ts&perline=15)](/uses)
 
 Lihat halaman [/uses](/uses) untuk informasi lebih lanjut mengenai alat dan teknologi yang saya gunakan.
