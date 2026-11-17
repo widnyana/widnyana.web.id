@@ -15,9 +15,10 @@ Saya terbuka untuk kegiatan mentoring, kolaborasi proyek sampingan, diskusi ide,
 
 #### DevOps Engineer, Jul 2026 - Sekarang
 
-- Menjalankan platform on-premises dari jarak jauh: server ESXi, routing MikroTik, dan jaringan yang dipisah dengan VLAN.
-- Menjalankan platform Git self-hosted dan pipeline CI/CD yang men-deploy aplikasi ke server.
-- Memantau platform dengan metrik, log, alerting, dan probe dari luar, serta mengelolanya sebagai kode agar bisa dibangun ulang dari repositori.
+- Mengelola seluruh platform sebagai kode, sehingga server mana pun bisa dibangun ulang dari repositori, bukan diperbaiki manual: infrastruktur sebagai cattle, bukan pet.
+- Mengoperasikan platform on-premises perusahaan dari jarak jauh.
+- Memelihara platform Git self-hosted dan pipeline CI/CD yang men-deploy aplikasi ke server.
+- Menyiapkan monitoring dan alerting dengan metrik, log, dan probe dari luar ke endpoint publik.
 
 ### Indonesian Stablecoin Provider
 
@@ -60,34 +61,6 @@ Saya terbuka untuk kegiatan mentoring, kolaborasi proyek sampingan, diskusi ide,
 - Membangun pipeline data, layanan backend, dan integrasi dengan mitra, bank, penyedia eKYC dan telekomunikasi.
 - Mengelola infrastruktur sendirian karena tim tidak punya alokasi DevOps atau SRE: Kubernetes di GCP dan GitLab CI.
 - Meninjau dan memvalidasi laporan keamanan dari staf internal dan peneliti luar.
-
-### PT. Forta Digital Indonesia
-
-#### Linux System Administrator, Agu 2019 - Des 2019
-
-- Membangun dan memelihara jaringan kantor serta lingkungan lokal para developer.
-- Menjalankan Tenable.SC, Splunk, MongoDB, RabbitMQ, dan server lain, serta menyiapkan continuous deployment dengan Ansible dan GitLab CI.
-
-### [PT Mahapatih Sibernusa Teknologi](https://mahapatih.id)
-
-#### Full Stack Engineer, Mar 2019 - Agu 2019
-
-- Membangun API backend untuk Sepatih (Sistem Manajemen Kerentanan) dan menyumbang SDK Python ke Tenable.SC secara upstream.
-- Menyiapkan continuous deployment dengan Ansible dan GitLab CI.
-
-### [Binokular Media Utama](https://binokular.net)
-
-#### Senior Software Engineer, Nov 2015 - Jan 2018
-
-- Membangun sistem pemantauan media berbasis AI: ekstraksi entitas, analisis sentimen, dan klasifikasi topik.
-- Merancang, men-deploy, dan memelihara klaster database dan pencarian beserta node disaster recovery.
-
-### [PT Sebangsa Bersama](https://sebangsanetwork.com/)
-
-#### Backend Engineer, Apr 2014 - Okt 2015
-
-- Mengembangkan Sebangsa Auth (OAuth 1.0) dan memelihara Sebangsa Premium API.
-- Membuat algoritma fan-out untuk mendistribusikan postingan pengguna ke pengikutnya.
 
 ---
 

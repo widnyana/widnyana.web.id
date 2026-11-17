@@ -62,6 +62,13 @@ STATUS  : done   commit_sha="3c4d587"
 RULE    : conventional commit, no co-author line, no push.
 ═══════════════════════════════════════════════════
 
+AGENT SUBGRAPH : trim-and-brb-wording
+NODE_ID : trim-and-brb-wording   STATUS: done
+FILES   : content/about.md, content/about.id.md
+TASK    : show only the last four employers (BRB Labs, stablecoin provider, stealth startup, Koinworks); drop Forta, Mahapatih, Binokular, Sebangsa; BRB bullets reworded without ESXi, MikroTik, VLAN, or the verb "run"; the as-code, rebuild-from-repo, cattle-not-pets line is its own first bullet.
+RETURN  : STATUS
+═══════════════════════════════════════════════════
+
 ## Completion
 FR_COVERAGE : antislop-audit done, about-en done, about-id done, cv-pdf-refresh done, audit-report done.
-DEFERRED    : Digital Siber Indonesia (Feb 2018 - Jan 2019) is on the CV but on neither page; it was already missing. Push and deploy are the owner's.
+DEFERRED    : the Self-Employed consultant entry (concurrent, not an employment) stays as the owner wrote it. Push and deploy are the owner's.
