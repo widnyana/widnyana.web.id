@@ -69,6 +69,12 @@ TASK    : show only the last four employers (BRB Labs, stablecoin provider, stea
 RETURN  : STATUS
 ═══════════════════════════════════════════════════
 
+AGENT SUBGRAPH : title-and-cv-sync
+NODE_ID : title-and-cv-sync   STATUS: done
+FILES   : content/about.md, content/about.id.md, static/cv/*.pdf
+TASK    : intro title "Cloud Infrastructure Engineer" (matches the CV header); refresh the PDFs with the same BRB Labs bullets as the website.
+═══════════════════════════════════════════════════
+
 ## Completion
 FR_COVERAGE : antislop-audit done, about-en done, about-id done, cv-pdf-refresh done, audit-report done.
 DEFERRED    : the Self-Employed consultant entry (concurrent, not an employment) stays as the owner wrote it. Push and deploy are the owner's.

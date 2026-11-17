@@ -3,7 +3,7 @@ title='Hello!'
 weight=2
 +++
 
-Saya **Wid**nyana, seorang System Architect dengan pengalaman lebih dari 12 tahun di bidang infrastruktur cloud, rekayasa perangkat lunak, dan otomasi. Saya membangun dan menjalankan platform cloud dan on-premises untuk tim fintech dan blockchain.
+Saya **Wid**nyana, seorang Cloud Infrastructure Engineer dengan pengalaman lebih dari 12 tahun di bidang infrastruktur cloud, rekayasa perangkat lunak, dan otomasi. Saya membangun dan menjalankan platform cloud dan on-premises untuk tim fintech dan blockchain.
 
 Saya terbuka untuk kegiatan mentoring, kolaborasi proyek sampingan, diskusi ide, uji coba produk baru, maupun menulis. Saya juga terbuka untuk kegiatan pro-bono, silakan hubungi saya jika Anda membutuhkannya.
 

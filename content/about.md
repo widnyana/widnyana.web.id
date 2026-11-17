@@ -3,7 +3,7 @@ title='Hello!'
 weight=2
 +++
 
-I'm **Wid**nyana, a System Architect with 12+ years in cloud infrastructure, software engineering, and automation. I build and run cloud and on-premises platforms for fintech and blockchain teams.
+I'm **Wid**nyana, a Cloud Infrastructure Engineer with 12+ years in cloud infrastructure, software engineering, and automation. I build and run cloud and on-premises platforms for fintech and blockchain teams.
 
 I mentor engineers, collaborate on side projects, take on pro-bono work, and am open to brainstorming sessions or beta testing opportunities.
 
