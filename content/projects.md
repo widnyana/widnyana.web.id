@@ -6,7 +6,7 @@ params:
 ---
 
 
-These are some open source projects I've contributed to or created along the way — each one with its own story, challenge, and lessons learned.
+Projects I contributed to, and repositories I maintain.
 
 ## Opensource Contributions
 
@@ -19,7 +19,8 @@ These are some open source projects I've contributed to or created along the way
 
 ## Personal Projects
 
-- [tulkit](https://tulkit.widnyana.web.id/) - Web toolkit: .env comparator, IP planner, IP calculator, random string generator, invoice generator.
+- [chet](https://github.com/widnyana/chet) - macOS cleaner for disk space and hidden settings: clear caches and app leftovers, map what takes up space, and tweak what macOS hides. Built in Swift.
+- [tulkit](https://github.com/widnyana/tulkit) - Web toolkit: .env comparator, IP planner, IP calculator, random string generator, invoice generator. Live at [tulkit.widnyana.web.id](https://tulkit.widnyana.web.id/).
 - [solana-onchain-mcp](https://github.com/widnyana/solana-onchain-mcp) - MCP server for Solana on-chain activity, built in Rust.
 - [idrx-go](https://github.com/widnyana/idrx-go) - Unofficial Go SDK for IDRX stablecoin.
 - [Docker Intro](https://github.com/widnyana/docker-intro) - Tips and tricks to build docker container image for various stack.

@@ -5,7 +5,7 @@ params:
   toc: true
 ---
 
-Berikut beberapa proyek open source yang pernah saya kontribusi atau buat.
+Proyek open source yang saya kontribusikan, dan repositori yang saya kelola.
 
 ## Kontribusi Open Source
 
@@ -18,7 +18,8 @@ Berikut beberapa proyek open source yang pernah saya kontribusi atau buat.
 
 ## Proyek Pribadi
 
-- [tulkit](https://tulkit.widnyana.web.id/) - Toolkit web: pembanding .env, perencana IP, kalkulator IP, generator string acak, generator invoice.
+- [chet](https://github.com/widnyana/chet) - Pembersih macOS untuk ruang disk dan pengaturan tersembunyi: bersihkan cache dan sisa aplikasi, petakan pemakan ruang, dan ubah hal yang disembunyikan macOS. Dibuat dengan Swift.
+- [tulkit](https://github.com/widnyana/tulkit) - Toolkit web: pembanding .env, perencana IP, kalkulator IP, generator string acak, generator invoice. Versi live di [tulkit.widnyana.web.id](https://tulkit.widnyana.web.id/).
 - [solana-onchain-mcp](https://github.com/widnyana/solana-onchain-mcp) - MCP server for Solana on-chain activity, built in Rust.
 - [idrx-go](https://github.com/widnyana/idrx-go) - Unofficial Go SDK for IDRX stablecoin.
 - [Docker Intro](https://github.com/widnyana/docker-intro) - Tips and tricks to build docker container image for various stack.
