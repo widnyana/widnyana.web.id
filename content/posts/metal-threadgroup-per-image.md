@@ -1,7 +1,7 @@
 ---
 title: "3 Metal mistakes that made my Mac GPU code 4x slower and ate 6.9 GB"
 date: 2026-11-12T09:00:00+07:00
-draft: true
+draft: false
 params:
   author: 'widnyana'
 description: "A photo hashing step took 329 s and held 6.9 GB. One GPU thread hashed a whole image, every bitmap was copied by the CPU into a shared buffer, and every batch allocated fresh Metal buffers. How threadgroup sizing, decode-into-buffer, and one reused buffer set changed it to 84 s and 1.23 GB."
