@@ -1,7 +1,7 @@
 ---
 title: "Hamming search over 26,000 perceptual hashes: my index lost to brute force"
-date: 2026-11-16T09:00:00+07:00
-draft: true
+date: 2026-11-28T09:00:00+07:00
+draft: false
 params:
   author: 'widnyana'
 description: "26,487 perceptual hashes and a distance limit of 10 bits is 350 million comparisons. I built a pigeonhole bucket index expecting five times fewer checks, then measured it: on real hashes the index removed 44 percent of the comparisons and ran 2 to 4 times slower than doing all of them. Here are the numbers, and the real bug the exercise found."
