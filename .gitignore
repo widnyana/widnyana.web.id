@@ -47,6 +47,8 @@ hugo.linux
 
 # Temporary lock file while building
 /.hugo_build.lock
-
+.frontmatter
+frontmatter.json
 ideas/*
 docs/plans/
+
